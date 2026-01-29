@@ -1,0 +1,55 @@
+@import "tailwindcss";
+
+@layer components {
+    .container {
+        @apply w-full p-10 m-auto;
+    }
+
+    .header {
+        @apply flex justify-end gap-2 mb-4;
+    }
+
+    .input {
+        @apply px-2 py-1 rounded;
+    }
+
+    .refreshButton {
+        @apply px-3 py-1 cursor-pointer rounded hover:bg-gray-50;
+    }
+
+    .table {
+        @apply w-full border-gray-300;
+    }
+
+    .thead {
+        @apply bg-gray-100;
+    }
+
+    .th {
+        @apply px-3 py-2 font-medium;
+    }
+
+    .thCenter {
+        @apply text-center;
+    }
+
+    .td {
+        @apply px-3 py-3;
+    }
+
+    .tdCenter {
+        @apply text-center;
+    }
+
+    .nameCell {
+        @apply flex items-center gap-2;
+    }
+
+    .empty {
+        @apply text-center text-gray-400 py-4;
+    }
+
+    .error {
+        @apply text-red-500;
+    }
+}

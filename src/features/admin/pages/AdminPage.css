@@ -1,0 +1,29 @@
+@import "tailwindcss";
+
+@layer components {
+    .admin-page-container {
+        @apply flex;
+        height: 100%;
+    }
+
+    .admin-page-side-menu {
+        @apply w-1/5 mt-10;
+        /* @apply border border-gray-300; */
+    }
+
+    .admin-page-content {
+        @apply w-full flex flex-col p-1;
+    }
+
+    .admin-page-content-header {
+        @apply w-full flex justify-between px-3 py-5;
+    }
+
+    .admin-page-main-content {
+        @apply border border-gray-300 rounded-lg;
+    }
+
+    .refreshButton {
+        @apply border border-gray-200 rounded-lg flex gap-2 items-center;
+    }
+}

@@ -1,0 +1,32 @@
+@import "tailwindcss";
+
+@layer components {
+    .plus-modal-container {
+        @apply fixed inset-0 bg-black/40 flex items-center justify-center;
+    }
+
+    .plus-modal-wrapper {
+        @apply bg-white rounded-lg w-96 p-6;
+    }
+
+    .plus-modal-header {
+        @apply text-lg font-semibold mb-4;
+    }
+
+    .plus-modal-input {
+        @apply w-full border px-3 py-2 rounded mb-4;
+    }
+
+    .plus-modal-button-wrapper {
+        @apply flex justify-between gap-2 mt-6;
+    }
+
+    .plus-modal-cancel-button {
+        @apply cursor-pointer;
+        ;
+    }
+
+    .plus-modal-submit-button {
+        @apply bg-[#1F6761] text-white px-4 py-2 rounded cursor-pointer;
+    }
+}
