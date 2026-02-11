@@ -4,6 +4,7 @@ import ProjectCreateModal from "@/features/project/components/ProjectCreateModal
 import InsightCard from "@/features/project/components/InsightCard";
 import Calendar from "react-calendar";
 import 'react-calendar/dist/Calendar.css';
+import './Calender.css'
 
 type Props = {
     projectCount: number;
@@ -55,7 +56,8 @@ export default function SideMenu({ projectCount }: Props) {
                 {/* 캘린더 */}
                 <div className="mt-3">
                     <Calendar
-                        className="rounded-lg shadow-sm border border-gray-200"
+                        className="react-calendar"
+                        formatDay={(locale, date) => date.getDate().toString()}
                     />
                 </div>
             </div>

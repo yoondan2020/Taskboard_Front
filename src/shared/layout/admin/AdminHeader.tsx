@@ -1,4 +1,4 @@
-import logo from "@/assets/images/logo/koas_logo.png";
+import logo from "@/assets/images/logo/logo.png";
 import { useNavigate } from "react-router-dom";
 
 export default function AdminHeader() {

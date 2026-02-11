@@ -1,4 +1,4 @@
-import logo from "@/assets/images/logo/koas_logo.png";
+import logo from "@/assets/images/logo/logo.png";
 import { BellIcon } from "@/shared/components/icons/BellIcon";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -30,7 +30,7 @@ export default function Header() {
             flex gap-10 items-center
             //border border-gray-300
             ">
-                <img src={logo} width={100} alt="KOAS 로고" onClick={() => navigate("/")} className="cursor-pointer" />
+                <img src={logo} width={180} alt="KOAS 로고" onClick={() => navigate("/")} className="cursor-pointer" />
                 <div className="flex gap-5 items-center">
                     <div
                         className={`${currentPath === "/dashboard" ? "bg-primary text-white" : "bg-white text-gray-800"} 
