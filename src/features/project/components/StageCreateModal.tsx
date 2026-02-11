@@ -9,7 +9,6 @@ interface CreateStageModalProps {
     onClose: () => void;
     onSave: (data: StageFromData) => void;
     stateItems: { label: string; value: number }[];
-    stageItems: { label: string; value: number }[];
     userItems: { label: string; value: number }[];
 }
 
@@ -36,6 +35,17 @@ export default function StageCreateModal({
         setFormData((prev) => ({ ...prev, [key]: value }));
     };
 
+    // 생성 버튼 클릭 핸들러
+    const handelCreate = async () => {
+        //필수값 검증
+        if (!formData.name.trim()) {
+            alert("단계명을 입력하세요");
+            return;
+        }
+        onSave(formData);
+        onClose();
+    }
+
     if (!isOpen) return null;
 
     return (
@@ -48,7 +58,7 @@ export default function StageCreateModal({
                         <div className="flex-1 space-y-4">
                             {/* 단계 */}
                             <Input
-                                label="단계 명"
+                                label="단계 명 *"
                                 value={formData.name}
                                 onChange={(value) => handleChange("name", value)}
                             />
@@ -120,8 +130,7 @@ export default function StageCreateModal({
                         </button>
                         <button
                             onClick={() => {
-                                onSave(formData);
-                                onClose();
+                                handelCreate()
                             }}
                             className="px-6 py-1 text-primary rounded-full border-2 border-primary bg-primary text-white hover:bg-primary-dark cursor-pointer"
                         >

@@ -9,7 +9,6 @@ import { projectStageApi } from "@/shared/lib/api/projectStage";
 type Props = {
     stage: DetailProjectStage;
     stateItems: { value: number; label: string }[];
-    stageItems: { value: number; label: string }[];
     userItems: { value: number; label: string }[];
     onCancel: () => void;
     onSave: (data: StageFromData) => void | Promise<void>;

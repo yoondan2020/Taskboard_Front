@@ -33,7 +33,6 @@ export default function ProjectDetailPage() {
     const fetchState = useStateStore((s) => s.fetchActive);
     const fetchStage = useStageStore((s) => s.fetchActive);
     const states = useStateStore((s) => s.items);
-    const stages = useStageStore((s) => s.items);
     const updateStage = useProjectStageStore((s) => s.update);
     const deleteStage = useProjectStageStore((s) => s.delete);
     const create = useProjectStageStore((s) => s.create);
@@ -97,11 +96,7 @@ export default function ProjectDetailPage() {
         value: item.id,
         label: item.name,
     }));
-    // Stage
-    const stageItems = stages.map((item) => ({
-        value: item.id,
-        label: item.name
-    }))
+
     // user
     const userItems = users.map((user) => ({
         value: user.id,
@@ -202,7 +197,6 @@ export default function ProjectDetailPage() {
                             create(projectId, payload);
                         }}
                         stateItems={stateItems}
-                        stageItems={stageItems}
                         userItems={userItems}
                     />
                 )}
@@ -210,62 +204,63 @@ export default function ProjectDetailPage() {
                 <div className="flex flex-col py-5">
                     <div className="flex gap-5">
                         {/* Left Sidebar */}
-                        <div className="flex-[1] space-y-5 border rounded-xl p-4 bg-white h-fit">
-                            {/* Thumbnail */}
-                            <div className="space-y-2">
-                                <div className="font-bold text-3xl">{project.title}</div>
-                                <div className="bg-gray-200 h-64 rounded-lg border"></div>
-                            </div>
-
-                            {/* Project Info */}
-                            <div className="border rounded-xl p-2 truncate whitespace-nowrap">
-                                <table className="w-full table-auto border-collapse text-right">
-                                    <tbody>
-                                        <tr>
-                                            <th className="font-medium">구분 :</th>
-                                            <td className="text-gray-900 pl-3 text-left">{project.product_group_name}</td>
-                                        </tr>
-                                        <tr>
-                                            <th className="font-medium">목표일 :</th>
-                                            <td className="text-gray-900 pl-3 text-left">{project.goal_due_date}</td>
-                                        </tr>
-                                        <tr>
-                                            <th className="font-medium">담당자 :</th>
-                                            <td className="text-gray-900 pl-3 text-left">{project.owner_name}</td>
-                                        </tr>
-                                        <tr>
-                                            <th className="font-medium">유관자 :</th>
-                                            <td className="text-gray-900 pl-3 text-left">{project.stage_owner_names.join(", ")}</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            {/* Progress */}
-                            <div className="">
-                                <div className="text-lg font-semibold mb-2">진행률</div>
-                                <div className="relative w-full h-3 bg-gray-100 rounded-full overflow-hidden border">
-                                    <div
-                                        className="absolute h-full bg-gray-700"
-                                        style={{
-                                            width: `${(project.progress.completed / project.progress.total) * 100}%`
-                                        }}
-                                    ></div>
+                        <div className={`flex-[1] rounded-xl ${getStateInfo(project.state_name).color}`} >
+                            <div className="space-y-5 p-4 h-fit border rounded-xl bg-white mt-2">
+                                {/* Thumbnail */}
+                                <div className="space-y-2">
+                                    <div className="font-bold text-3xl">{project.title}</div>
+                                    <div className="bg-gray-200 h-64 rounded-lg border"></div>
                                 </div>
-                                <p className="text-sm text-gray-600 mt-1">
-                                    {project.progress.completed}/{project.progress.total} 단계 {project.progress.total > 0 ? Math.round((project.progress.completed / project.progress.total) * 100) : 0}%
-                                </p>
-                            </div>
 
-                            {/* Note or Remark */}
-                            <div className="border-gray-300">
-                                <h3 className="text-lg font-semibold mb-2">비고</h3>
-                                <p className="text-gray-700 whitespace-pre-wrap border rounded-lg p-3">
-                                    {project.remark || "-"}
-                                </p>
+                                {/* Project Info */}
+                                <div className="border rounded-xl p-2 truncate whitespace-nowrap">
+                                    <table className="w-full table-auto border-collapse text-right">
+                                        <tbody>
+                                            <tr>
+                                                <th className="font-medium">구분 :</th>
+                                                <td className="text-gray-900 pl-3 text-left">{project.product_group_name}</td>
+                                            </tr>
+                                            <tr>
+                                                <th className="font-medium">목표일 :</th>
+                                                <td className="text-gray-900 pl-3 text-left">{project.goal_due_date}</td>
+                                            </tr>
+                                            <tr>
+                                                <th className="font-medium">담당자 :</th>
+                                                <td className="text-gray-900 pl-3 text-left">{project.owner_name}</td>
+                                            </tr>
+                                            <tr>
+                                                <th className="font-medium">유관자 :</th>
+                                                <td className="text-gray-900 pl-3 text-left">{project.stage_owner_names.join(", ")}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                {/* Progress */}
+                                <div className="">
+                                    <div className="text-lg font-semibold mb-2">진행률</div>
+                                    <div className="relative w-full h-3 bg-gray-100 rounded-full overflow-hidden border">
+                                        <div
+                                            className="absolute h-full bg-gray-700"
+                                            style={{
+                                                width: `${(project.progress.completed / project.progress.total) * 100}%`
+                                            }}
+                                        ></div>
+                                    </div>
+                                    <p className="text-sm text-gray-600 mt-1">
+                                        {project.progress.completed}/{project.progress.total} 단계 {project.progress.total > 0 ? Math.round((project.progress.completed / project.progress.total) * 100) : 0}%
+                                    </p>
+                                </div>
+
+                                {/* Note or Remark */}
+                                <div className="border-gray-300">
+                                    <h3 className="text-lg font-semibold mb-2">비고</h3>
+                                    <p className="text-gray-700 whitespace-pre-wrap border rounded-lg p-3">
+                                        {project.remark || "-"}
+                                    </p>
+                                </div>
                             </div>
                         </div>
-
                         {/* Right Content - Stages Table */}
                         <div className="flex-[4] space-y-5">
 
@@ -394,7 +389,6 @@ export default function ProjectDetailPage() {
                                                             <StageUpdateFrom
                                                                 stage={stage}
                                                                 stateItems={stateItems}
-                                                                stageItems={stageItems}
                                                                 userItems={userItems}
                                                                 onCancel={() => setExpandedStageId(null)}
                                                                 onSave={(formData) => {
@@ -427,6 +421,6 @@ export default function ProjectDetailPage() {
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     );
 }

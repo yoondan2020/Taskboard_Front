@@ -97,6 +97,27 @@ export default function ProjectCreateModal({ open, onClose }: Props) {
         fetchUsers();
     }, [fetchProjectGroup, fetchState, fetchStage, fetchUsers]);
 
+    // 생성 버튼 클릭 핸들러
+    const handleCreate = async () => {
+        // 필수값 검증
+        if (!formData.title.trim()) {
+            alert("프로젝트명을 입력하세요");
+            return;
+        }
+        if (!formData.product_group_id) {
+            alert("프로젝트 구분을 선택하세요");
+            return;
+        }
+        if (!formData.state_id) {
+            alert("진행 상태를 선택하세요");
+            return;
+        }
+
+        const dto = toCreateProjectDTO(formData);
+        await create(dto);
+        onClose();
+    };
+
     return (
         <>
             <div className="fixed inset-0 z-50 flex items-center justify-center">
@@ -104,7 +125,7 @@ export default function ProjectCreateModal({ open, onClose }: Props) {
                 <div className="absolute inset-0 bg-black/40" onClick={onClose} />
 
                 {/* modal */}
-                <div className="relative w-[900px] max-h-[80vh] bg-white shadow-lg overflow-hidden rounded-xl">
+                <div className="relative w-[650px] max-h-[80vh] bg-white shadow-lg overflow-hidden rounded-xl">
                     {/* header */}
                     <div className="w-full flex items-center justify-between px-6 py-3 text-black border-b border-black">
                         <h1 className="text-xl">새 프로젝트 생성</h1>
@@ -209,9 +230,7 @@ export default function ProjectCreateModal({ open, onClose }: Props) {
                             <button
                                 className="px-7 rounded-xl border-1 border-black text-white bg-primary hover:bg-primary-dark hover:text-white cursor-pointer"
                                 onClick={async () => {
-                                    const dto = toCreateProjectDTO(formData);
-                                    await create(dto);
-                                    onClose();
+                                    handleCreate();
                                 }}
                             >
                                 생성
