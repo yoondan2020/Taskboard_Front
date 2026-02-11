@@ -1,6 +1,6 @@
 export type StageFromData = {
     state_id: number | "";
-    stage_id: number | "";
+    name: string;
     note: string;
     remark: string;
     planned_date: string;

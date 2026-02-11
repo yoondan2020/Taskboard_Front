@@ -124,7 +124,7 @@ export default function ProjectDetailPage() {
 
     // 단계 수정 폼 데이터 정규화
     const normalizeFormData = (formData: StageFromData) => ({
-        stage_id: formData.stage_id ? Number(formData.stage_id) : undefined,
+        name: formData.name || undefined,
         state_id: formData.state_id ? Number(formData.state_id) : undefined,
         planned_date: formData.planned_date || undefined,
         act_date: formData.act_date || undefined,
@@ -136,12 +136,8 @@ export default function ProjectDetailPage() {
 
     // 단계 생성 폼 데이터 정규화
     const createNormalizeFormData = (formData: StageFromData): CreateProjectStage => {
-        if (formData.stage_id === "") {
-            throw new Error("stage_id is required");
-        }
-
         return {
-            stage_id: Number(formData.stage_id),
+            name: formData.name,
             state_id: formData.state_id === "" ? undefined : Number(formData.state_id),
 
             planned_date: formData.planned_date || undefined,
@@ -166,7 +162,6 @@ export default function ProjectDetailPage() {
 
         return (
             me.role === "ADMIN" ||
-            me.role === "LAB_HEAD" ||
             (stage.stage_owner_id != null && me.id === stage.stage_owner_id) ||
             (project.owner_id != null && me.id == project.owner_id)
         );
@@ -334,7 +329,7 @@ export default function ProjectDetailPage() {
 
                                                             {/* 상태 (단계명) */}
                                                             <td className="py-3 px-2 items-center">
-                                                                <div className="font-medium">{stage.stage_name}</div>
+                                                                <div className="font-medium">{stage.name}</div>
                                                             </td>
 
                                                             {/* State Badge (상태) */}

@@ -6,6 +6,4 @@ export type ProjectFormData = {
     owner_id: string;
     goal_due_date: string;
     remark: string;
-    is_create_stage: boolean,
-    stage_order?: number[];
 };

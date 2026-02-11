@@ -1,7 +1,7 @@
 // projectStage.types.ts
 
 export interface CreateProjectStage {
-  stage_id: number;          // Stage ID (must exist)
+  name: string;
   state_id?: number;     
   
   planned_date?: string;     
@@ -58,7 +58,7 @@ export interface DetailProjectStage {
 
   // Stage
   stage_id:number;
-  stage_name: string;        // Stage.name 
+  name: string;        // Stage.name 
 
   // State
   state_id: number;

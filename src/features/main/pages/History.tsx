@@ -108,7 +108,7 @@ export default function History() {
                 return "완료 예정일";
             case "state_id":
                 return "단계 상태";
-            case "stage_id":
+            case "stage_name":
                 return "단계 변경";
             case "note":
                 return "업무내용";

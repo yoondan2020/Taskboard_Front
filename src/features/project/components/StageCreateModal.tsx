@@ -18,12 +18,11 @@ export default function StageCreateModal({
     onClose,
     onSave,
     stateItems,
-    stageItems,
     userItems,
 }: CreateStageModalProps) {
     const [formData, setFormData] = useState<StageFromData>({
         state_id: "",
-        stage_id: "",
+        name: "",
         planned_date: "",
         act_date: "",
         eta: "",
@@ -48,11 +47,10 @@ export default function StageCreateModal({
                     <div className="flex gap-6">
                         <div className="flex-1 space-y-4">
                             {/* 단계 */}
-                            <Select
-                                label="단계 선택"
-                                value={formData.stage_id}
-                                items={stageItems}
-                                onChange={(value) => handleChange("stage_id", value)}
+                            <Input
+                                label="단계 명"
+                                value={formData.name}
+                                onChange={(value) => handleChange("name", value)}
                             />
 
                             {/* 상태 */}

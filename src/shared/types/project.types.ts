@@ -13,8 +13,6 @@ export type CreateProjectDTO = {
   owner_id?: number;
   goal_due_date: string | null;
   remark?: string;
-  is_create_stage: boolean;
-  stage_order?: number[];
 };
 
 export type UpdateProjectDTO = {

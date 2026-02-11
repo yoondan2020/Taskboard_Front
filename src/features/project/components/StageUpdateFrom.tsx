@@ -18,7 +18,6 @@ type Props = {
 export default function StageUpdateFrom({
     stage,
     stateItems,
-    stageItems,
     userItems,
     onCancel,
     onSave,
@@ -30,7 +29,7 @@ export default function StageUpdateFrom({
 
     const [formData, setFormData] = useState<StageFromData>({
         state_id: stage.state_id ?? "",
-        stage_id: stage.stage_id ?? "",
+        name: stage.name ?? "",
         stage_owner_id: stage.stage_owner_id ?? "",
         note: stage.note ?? "",
         remark: stage.remark ?? "",
@@ -44,7 +43,7 @@ export default function StageUpdateFrom({
     useEffect(() => {
         setFormData({
             state_id: stage.state_id ?? "",
-            stage_id: stage.stage_id ?? "",
+            name: stage.name ?? "",
             stage_owner_id: stage.stage_owner_id ?? "",
             note: stage.note ?? "",
             remark: stage.remark ?? "",
@@ -54,6 +53,7 @@ export default function StageUpdateFrom({
             eta_change_reason: "",
         });
     }, [stage.id]);
+
     // stage 변경 시 담당자 초기화
     useEffect(() => {
         setStageOwnerId(stage.stage_owner_id ?? "");
@@ -118,11 +118,10 @@ export default function StageUpdateFrom({
                     <div className="flex gap-10">
                         {/* LEFT */}
                         <div className="flex-1 space-y-4">
-                            <Select
+                            <Input
                                 label="현재 단계"
-                                value={formData.stage_id === "" ? "" : String(formData.stage_id)}
-                                items={stageItems}
-                                onChange={(v) => handleChange("stage_id", Number(v))}
+                                value={formData.name}
+                                onChange={(v) => handleChange("name", v)}
                             />
                             <Select
                                 label="현재 상태"

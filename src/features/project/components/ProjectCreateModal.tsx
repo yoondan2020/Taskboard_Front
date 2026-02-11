@@ -9,7 +9,6 @@ import { useStageStore } from "@/features/admin/store/stage.store";
 import { useUserStore } from "@/features/user/store/user.store";
 import { type CreateProjectDTO } from "@/shared/types/project.types";
 import { type ProjectFormData } from "@/shared/types/projectFromData.types";
-import StageOrderModal from "./StageOrderModal";
 
 type Props = {
     open: boolean;
@@ -25,7 +24,6 @@ export default function ProjectCreateModal({ open, onClose }: Props) {
     const fetchUsers = useUserStore((s) => s.fetchActive);
     const productGroups = useProductGroupStore((s) => s.items);
     const states = useStateStore((s) => s.items);
-    const stages = useStageStore((s) => s.items);
     const users = useUserStore((s) => s.items);
     const create = useProjectStore((s) => s.create);
 
@@ -38,11 +36,6 @@ export default function ProjectCreateModal({ open, onClose }: Props) {
         value: item.id,
         label: item.name,
     }));
-
-    const stageItems = stages.map((item) => ({
-        value: item.id,
-        label: item.name
-    }))
 
     const userItems = users.map((user) => ({
         value: user.id,
@@ -58,8 +51,6 @@ export default function ProjectCreateModal({ open, onClose }: Props) {
         owner_id: "",
         goal_due_date: "",
         remark: "",
-        is_create_stage: true,
-        stage_order: undefined,
     });
 
     const handleChange = (key: keyof typeof formData, value: string) => {
@@ -79,11 +70,6 @@ export default function ProjectCreateModal({ open, onClose }: Props) {
             owner_id: formData.owner_id ? Number(formData.owner_id) : undefined,
             goal_due_date: formData.goal_due_date || null,
             remark: formData.remark || undefined,
-            is_create_stage: formData.is_create_stage,
-            stage_order:
-                formData.is_create_stage && formData.stage_order?.length
-                    ? formData.stage_order
-                    : undefined,
         };
     };
 
@@ -103,10 +89,6 @@ export default function ProjectCreateModal({ open, onClose }: Props) {
     const fakeUpload = async (file: File): Promise<string> => {
         return URL.createObjectURL(file); // 임시 preview URL
     };
-
-    // Project Stage 
-    const [isStageOrderOpen, setIsStageOrderOpen] = useState(false);
-
 
     useEffect(() => {
         fetchProjectGroup();
@@ -137,14 +119,14 @@ export default function ProjectCreateModal({ open, onClose }: Props) {
                             {/* left */}
                             <div className="flex-1 flex flex-col gap-3 p-5">
                                 <Input
-                                    label="프로젝트명"
+                                    label="프로젝트명 *"
                                     placeholder="프로젝트명"
                                     value={formData.title}
                                     type="text"
                                     onChange={(value: string) => handleChange("title", value)}
                                 />
                                 <Select
-                                    label="프로젝트 구분"
+                                    label="프로젝트 구분 *"
                                     items={productGroupItems}
                                     value={formData.product_group_id}
                                     onChange={(value: string) =>
@@ -153,7 +135,7 @@ export default function ProjectCreateModal({ open, onClose }: Props) {
                                 />
 
                                 <Select
-                                    label="진행 상태"
+                                    label="진행 상태 *"
                                     items={stateItems}
                                     value={formData.state_id}
                                     onChange={(value: string) => handleChange("state_id", value)}
@@ -215,20 +197,7 @@ export default function ProjectCreateModal({ open, onClose }: Props) {
 
                     {/* footer */}
                     <div className="w-full px-5 py-2 flex items-center justify-between">
-                        <label className="flex items-center gap-2">
-                            <span className="font-medium">단계 자동 생성</span>
-                            <input
-                                type="checkbox"
-                                className="toggle"
-                                checked={formData.is_create_stage}
-                                onChange={(e) =>
-                                    setFormData((prev) => ({
-                                        ...prev,
-                                        is_create_stage: e.target.checked,
-                                    }))
-                                }
-                            />
-                        </label>
+                        <div />
 
                         <div className="flex gap-2 ">
                             <button
@@ -240,10 +209,6 @@ export default function ProjectCreateModal({ open, onClose }: Props) {
                             <button
                                 className="px-7 rounded-xl border-1 border-black text-white bg-primary hover:bg-primary-dark hover:text-white cursor-pointer"
                                 onClick={async () => {
-                                    if (formData.is_create_stage) {
-                                        setIsStageOrderOpen(true);
-                                        return;
-                                    }
                                     const dto = toCreateProjectDTO(formData);
                                     await create(dto);
                                     onClose();
@@ -255,23 +220,6 @@ export default function ProjectCreateModal({ open, onClose }: Props) {
                     </div>
                 </div>
             </div>
-            {isStageOrderOpen && (
-                <StageOrderModal
-                    open={isStageOrderOpen}
-                    onClose={() => setIsStageOrderOpen(false)}
-                    stageItems={stageItems}
-                    onConfirm={(order) => {
-                        setFormData((prev) => ({ ...prev, stage_order: order }));
-                        const dto = toCreateProjectDTO({
-                            ...formData,
-                            stage_order: order,
-                        });
-                        create(dto);
-                        setIsStageOrderOpen(false);
-                        onClose();
-                    }}
-                />
-            )}
         </>
     );
 }
