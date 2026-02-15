@@ -1,8 +1,8 @@
 import { request } from "./client";
 
-import type { 
-     DetailProject,  CreateProjectDTO,  ProjectOut,  UpdateProjectDTO, SummaryProjectDTO, ChangeProjectOwnerDTO
- } from "@/shared/types/project.types";
+import type {
+    DetailProject, CreateProjectDTO, ProjectOut, UpdateProjectDTO, SummaryProjectDTO, ChangeProjectOwnerDTO
+} from "@/shared/types/project.types";
 
 
 
@@ -20,17 +20,20 @@ export const projectApi = {
         request<DetailProject>(`${BASE}/${id}`, { method: "GET" }),
 
     myProjects: () =>
-        request<SummaryProjectDTO[]>(`${BASE}/owned`, { method: "GET" }),  
+        request<SummaryProjectDTO[]>(`${BASE}/owned`, { method: "GET" }),
 
     relatedProjects: () =>
-        request<SummaryProjectDTO[]>(`${BASE}/related`, { method: "GET" }),  
+        request<SummaryProjectDTO[]>(`${BASE}/related`, { method: "GET" }),
+
+    urgentProjectsCount: () =>
+        request<number>(`${BASE}/urgent/count`, { method: "GET" }),
 
     //Update
     update: (id: number, payload: UpdateProjectDTO) =>
         request<ProjectOut>(`${BASE}/${id}`, { method: "PATCH", body: payload }),
 
-    fetchUpdateForm: (id: number) => 
-        request<UpdateProjectDTO>(`${BASE}/${id}/update`, {method: "GET"}),
+    fetchUpdateForm: (id: number) =>
+        request<UpdateProjectDTO>(`${BASE}/${id}/update`, { method: "GET" }),
 
     changeOwner: (id: number, payload: ChangeProjectOwnerDTO) =>
         request<ProjectOut>(`${BASE}/${id}/owner`, { method: "PATCH", body: payload }),

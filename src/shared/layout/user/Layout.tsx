@@ -8,12 +8,16 @@ import { useEffect } from "react";
 
 export default function Layout() {
     const fetchProjectSummary = useProjectStore((s) => s.fetchProjectSummary);
+    const fetchUrgentProject = useProjectStore((s) => s.fetchUrgentProject)
     const projectList = useProjectStore((s) => s.projectSummary);
     const projectCount = projectList.length;
+    const urgentProjectCount = useProjectStore((s) => s.urgentProjectsCount)
+    console.log('Layout urgentProjectCount:', urgentProjectCount);
 
     useEffect(() => {
         fetchProjectSummary();
-    }, [fetchProjectSummary])
+        fetchUrgentProject();
+    }, [fetchProjectSummary, fetchUrgentProject])
 
     return (
         <div className="w-full px-5 pb-2 max-w-[1920px] min-w-[1500px] mx-auto space-y-3 h-screen flex flex-col">
@@ -29,7 +33,7 @@ export default function Layout() {
 
                 <div className="flex gap-5 flex-1 overflow-hidden">
                     <div className="flex-[1] border-r items-center justify-center">
-                        <SideMenu projectCount={projectCount} />
+                        <SideMenu projectCount={projectCount} urgentProjectCount={urgentProjectCount} />
                     </div>
                     <div className="flex-[4] py-5 pr-5 overflow-y-auto">
                         <Outlet />

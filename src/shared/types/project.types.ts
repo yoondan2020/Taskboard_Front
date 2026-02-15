@@ -72,6 +72,11 @@ export type SummaryProjectDTO = {
   progress: ProjectProgressDTO;
 };
 
+// 마감 임박 프로젝트
+export type urgentProjects = {
+  count: number
+}
+
 
 /* =========================
  * Detail

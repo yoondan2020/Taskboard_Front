@@ -8,9 +8,10 @@ import './Calender.css'
 
 type Props = {
     projectCount: number;
+    urgentProjectCount: number;
 }
 
-export default function SideMenu({ projectCount }: Props) {
+export default function SideMenu({ projectCount, urgentProjectCount }: Props) {
 
     const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
     //const [date, setDate] = useState(new Date());
@@ -46,13 +47,12 @@ export default function SideMenu({ projectCount }: Props) {
                         value={projectCount}
                     />
                 </div>
-                {/* <div>
+                <div>
                     <InsightCard
                         label={"마감 임박 프로젝트"}
-                        value={projectCount}
-                    //Todo 마감 임박 프로젝트
+                        value={urgentProjectCount}
                     />
-                </div> */}
+                </div>
                 {/* 캘린더 */}
                 <div className="mt-3">
                     <Calendar

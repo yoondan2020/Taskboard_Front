@@ -1,4 +1,5 @@
 import RightIcon from "@/shared/components/icons/RightIcon"
+import { log } from "@/shared/lib/log"
 
 type props = {
     label: string,
@@ -6,6 +7,7 @@ type props = {
 }
 
 export default function InsightCard({ label, value }: props) {
+    log("[InsightCard] label, value :", label, value)
     return (
         <div className="w-full border rounded-xl p-3 flex justify-between items-center bg-white">
             <div className="flex gap-2 items-center">
