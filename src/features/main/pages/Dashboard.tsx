@@ -7,7 +7,7 @@ import type { SummaryProjectDTO } from "@/shared/types/project.types";
 import ContextMenu from "@/features/project/components/ContextMenu";
 import { useMemo } from "react";
 import { useUserStore } from "@/features/user/store/user.store";
-import "./Dashboard.css"
+import '@/shared/lib/styles/Scrollbar.css'
 
 export default function Dashboard() {
     const projectSummary = useProjectStore((s) => s.projectSummary); // raw 구독

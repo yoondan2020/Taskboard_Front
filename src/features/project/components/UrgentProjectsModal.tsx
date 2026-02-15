@@ -3,7 +3,7 @@ import { useProjectStore } from "../store/project.store"
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import type { SummaryProjectDTO } from "@/shared/types/project.types";
-import "@/features/main/pages/Dashboard.css";
+import '@/shared/lib/styles/Scrollbar.css';
 
 type Props = {
     open: boolean;

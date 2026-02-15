@@ -26,10 +26,15 @@ type State = {
     items: ProjectOut[];
     projectSummary: SummaryProjectDTO[]; // 대시보드 카드 리스트
     projectDetail: DetailProject | null; // 디테일 프로젝트
+
     myProjects: SummaryProjectDTO[]; // 내가 담당자인 프로젝트
     relatedProject: SummaryProjectDTO[]; // 유관자인 프로젝트
+
     urgentProjectsCount: number; // 마감 임박 프로젝트 수
     urgentProjects: SummaryProjectDTO[]; // 마감 임박 프로젝트
+    deadlineProjects: SummaryProjectDTO[];  // 특정 날짜 마감 프로젝트
+    selectedDate: Date;  // 선택된 날짜
+
     updateFormData: UpdateProjectDTO | null;
     loading: boolean;
     error: string | null;
@@ -48,6 +53,8 @@ type State = {
 
     fetchMyProject: () => Promise<void>; // 내 프로젝트 
     fetchRelatedProject: () => Promise<void>; // 유관 프로젝트
+    fetchDeadlineProjects: (date: string) => Promise<void>;  // 특정 날짜 마감 프로젝트
+    setSelectedDate: (date: Date) => void;
 
     fetchUpdateForm: (id: number) => Promise<void>;
 
@@ -69,6 +76,8 @@ export const useProjectStore = create<State>((set, get) => ({
     projectDetail: null,
     urgentProjectsCount: 0,
     urgentProjects: [],
+    deadlineProjects: [],
+    selectedDate: new Date(),
     updateFormData: null,
     loading: false,
     error: null,
@@ -209,6 +218,7 @@ export const useProjectStore = create<State>((set, get) => ({
         }
     },
 
+    // 담당 프로젝트
     fetchMyProject: async () => {
         set({ loading: true, error: null });
         try {
@@ -222,6 +232,7 @@ export const useProjectStore = create<State>((set, get) => ({
         }
     },
 
+    // 유관 프로젝트
     fetchRelatedProject: async () => {
         set({ loading: true, error: null });
         try {
@@ -269,6 +280,22 @@ export const useProjectStore = create<State>((set, get) => ({
             const data = await projectApi.urgentProjects();
             log("[API] urgentProjects data:", data);
             set({ urgentProjects: data });
+        } catch (e: any) {
+            set({ error: e?.message ?? String(e) });
+        } finally {
+            set({ loading: false });
+        }
+    },
+
+    // 특정 날짜 마감 임박 프로젝트
+    setSelectedDate: (date) => set({ selectedDate: date }),
+
+    fetchDeadlineProjects: async (date) => {
+        set({ loading: true, error: null });
+        try {
+            const data = await projectApi.deadlineProjects(date);
+            log("[API] deadlineProjects data:", data);
+            set({ deadlineProjects: data });
         } catch (e: any) {
             set({ error: e?.message ?? String(e) });
         } finally {

@@ -31,6 +31,10 @@ export const projectApi = {
     urgentProjects: () =>
         request<SummaryProjectDTO[]>(`${BASE}/urgent`, { method: "GET" }),
 
+    // 특정 날짜 마감 프로젝트
+    deadlineProjects: (date: string): Promise<SummaryProjectDTO[]> =>
+        request<SummaryProjectDTO[]>(`${BASE}/deadline?date=${date}`, { method: "GET" }),
+
     //Update
     update: (id: number, payload: UpdateProjectDTO) =>
         request<ProjectOut>(`${BASE}/${id}`, { method: "PATCH", body: payload }),

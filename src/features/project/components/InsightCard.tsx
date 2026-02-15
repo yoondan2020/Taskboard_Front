@@ -1,4 +1,4 @@
-import RightIcon from "@/shared/components/icons/RightIcon"
+//app/features/project/components
 import { log } from "@/shared/lib/log"
 
 type ColorType = 'black' | 'red' | 'blue';
@@ -8,7 +8,6 @@ type props = {
     value: number,
     color: ColorType,
 }
-
 
 export default function InsightCard({ label, value, color }: props) {
     log("[InsightCard] label, value :", label, value)
@@ -20,10 +19,9 @@ export default function InsightCard({ label, value, color }: props) {
     };
 
     return (
-        <div className="w-full border rounded-xl p-3 flex justify-between items-center bg-white">
+        <div className="w-full border rounded-xl p-3 flex flex-col justify-between items-center bg-white">
             <div className="flex gap-2 items-center">
                 {label}
-                <RightIcon />
             </div>
             <div className={`font-bold ${colorClasses[color]}`}>
                 {value}

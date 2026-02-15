@@ -204,8 +204,9 @@ export default function ProjectDetailPage() {
                 <div className="flex flex-col py-5">
                     <div className="flex gap-5">
                         {/* Left Sidebar */}
-                        <div className={`flex-[1] rounded-xl ${getStateInfo(project.state_name).color}`} >
-                            <div className="space-y-5 p-4 h-fit border rounded-xl bg-white mt-2">
+                        <div className={`flex-[1] h-fit border rounded-xl gap-0 overflow-hidden`} >
+                            <div className={`h-5 ${getStateInfo(project.state_name).color}`}></div>
+                            <div className="space-y-5 p-4 h-fit bg-white">
                                 {/* Thumbnail */}
                                 <div className="space-y-2">
                                     <div className="font-bold text-3xl">{project.title}</div>
