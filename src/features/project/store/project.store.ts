@@ -29,24 +29,31 @@ type State = {
     myProjects: SummaryProjectDTO[]; // 내가 담당자인 프로젝트
     relatedProject: SummaryProjectDTO[]; // 유관자인 프로젝트
     urgentProjectsCount: number; // 마감 임박 프로젝트 수
+    urgentProjects: SummaryProjectDTO[]; // 마감 임박 프로젝트
     updateFormData: UpdateProjectDTO | null;
     loading: boolean;
     error: string | null;
-
     filters: ProjectFilters;
     myPagefilters: ProjectFilters;
+
     setFilters: (patch: Partial<ProjectFilters>) => void;
     getFilteredProjectSummary: () => SummaryProjectDTO[];
     setMyPageFilters: (patch: Partial<ProjectFilters>) => void;
     getMyPageFilteredProjectSummary: () => SummaryProjectDTO[];
 
     create: (data: CreateProjectDTO) => Promise<void>;
+
     fetchProjectSummary: () => Promise<void>;
     fetchDetail: (id: number) => Promise<void>; // 디테일
-    fetchMyProject: () => Promise<void>; // 내 프로젝트
-    fetchRelatedProject: () => Promise<void>;
+
+    fetchMyProject: () => Promise<void>; // 내 프로젝트 
+    fetchRelatedProject: () => Promise<void>; // 유관 프로젝트
+
     fetchUpdateForm: (id: number) => Promise<void>;
-    fetchUrgentProject: () => Promise<void>;
+
+    fetchUrgentProjectsCount: () => Promise<void>;
+    fetchUrgentProjects: () => Promise<void>;
+
     update: (id: number, data: UpdateProjectDTO) => Promise<void>;
     changeOwner: (id: number, data: ChangeProjectOwnerDTO) => Promise<void>;
     delete: (id: number) => Promise<void>;
@@ -61,6 +68,7 @@ export const useProjectStore = create<State>((set, get) => ({
     relatedProject: [],
     projectDetail: null,
     urgentProjectsCount: 0,
+    urgentProjects: [],
     updateFormData: null,
     loading: false,
     error: null,
@@ -241,12 +249,26 @@ export const useProjectStore = create<State>((set, get) => ({
     },
 
     // 마감 임박 프로젝트 수
-    fetchUrgentProject: async () => {
+    fetchUrgentProjectsCount: async () => {
         set({ loading: true, error: null });
         try {
             const data = await projectApi.urgentProjectsCount();
             log("[API] urgentProjectsCount data:", data);
             set({ urgentProjectsCount: data });
+        } catch (e: any) {
+            set({ error: e?.message ?? String(e) });
+        } finally {
+            set({ loading: false });
+        }
+    },
+
+    // 마감 임박 프로젝트
+    fetchUrgentProjects: async () => {
+        set({ loading: true, error: null });
+        try {
+            const data = await projectApi.urgentProjects();
+            log("[API] urgentProjects data:", data);
+            set({ urgentProjects: data });
         } catch (e: any) {
             set({ error: e?.message ?? String(e) });
         } finally {

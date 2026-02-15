@@ -28,6 +28,9 @@ export const projectApi = {
     urgentProjectsCount: () =>
         request<number>(`${BASE}/urgent/count`, { method: "GET" }),
 
+    urgentProjects: () =>
+        request<SummaryProjectDTO[]>(`${BASE}/urgent`, { method: "GET" }),
+
     //Update
     update: (id: number, payload: UpdateProjectDTO) =>
         request<ProjectOut>(`${BASE}/${id}`, { method: "PATCH", body: payload }),

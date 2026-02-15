@@ -1,6 +1,7 @@
 import PlusButton from "@/shared/components/button/PlusButton"
 import { useState } from "react"
 import ProjectCreateModal from "@/features/project/components/ProjectCreateModal";
+import UrgentProjectsModal from "@/features/project/components/UrgentProjectsModal";
 import InsightCard from "@/features/project/components/InsightCard";
 import Calendar from "react-calendar";
 import 'react-calendar/dist/Calendar.css';
@@ -14,6 +15,7 @@ type Props = {
 export default function SideMenu({ projectCount, urgentProjectCount }: Props) {
 
     const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
+    const [isUrgentModalOpen, setIsUrgentModalOpen] = useState(false);
     //const [date, setDate] = useState(new Date());
 
     return (
@@ -45,14 +47,28 @@ export default function SideMenu({ projectCount, urgentProjectCount }: Props) {
                     <InsightCard
                         label={"총 프로젝트"}
                         value={projectCount}
+                        color={"black"}
                     />
                 </div>
-                <div>
+                <div
+                    onClick={() => setIsUrgentModalOpen(true)}
+                    className="cursor-pointer"
+                >
                     <InsightCard
                         label={"마감 임박 프로젝트"}
                         value={urgentProjectCount}
+                        color={"red"}
                     />
                 </div>
+
+                {/* 마감 임박 프로젝트 모달 */}
+                {isUrgentModalOpen && (
+                    <UrgentProjectsModal
+                        open={isUrgentModalOpen}
+                        onClose={() => setIsUrgentModalOpen(false)}
+                    />
+                )}
+
                 {/* 캘린더 */}
                 <div className="mt-3">
                     <Calendar

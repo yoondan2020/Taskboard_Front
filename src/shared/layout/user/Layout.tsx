@@ -8,7 +8,7 @@ import { useEffect } from "react";
 
 export default function Layout() {
     const fetchProjectSummary = useProjectStore((s) => s.fetchProjectSummary);
-    const fetchUrgentProject = useProjectStore((s) => s.fetchUrgentProject)
+    const fetchUrgentProjectsCount = useProjectStore((s) => s.fetchUrgentProjectsCount)
     const projectList = useProjectStore((s) => s.projectSummary);
     const projectCount = projectList.length;
     const urgentProjectCount = useProjectStore((s) => s.urgentProjectsCount)
@@ -16,8 +16,8 @@ export default function Layout() {
 
     useEffect(() => {
         fetchProjectSummary();
-        fetchUrgentProject();
-    }, [fetchProjectSummary, fetchUrgentProject])
+        fetchUrgentProjectsCount();
+    }, [fetchProjectSummary, fetchUrgentProjectsCount])
 
     return (
         <div className="w-full px-5 pb-2 max-w-[1920px] min-w-[1500px] mx-auto space-y-3 h-screen flex flex-col">
