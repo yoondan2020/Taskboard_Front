@@ -1,6 +1,4 @@
 //app/features/project/components
-import { log } from "@/shared/lib/log"
-
 type ColorType = 'black' | 'red' | 'blue';
 
 type props = {
@@ -10,7 +8,6 @@ type props = {
 }
 
 export default function InsightCard({ label, value, color }: props) {
-    log("[InsightCard] label, value :", label, value)
 
     const colorClasses: Record<ColorType, string> = {
         black: 'text-black',
@@ -19,7 +16,7 @@ export default function InsightCard({ label, value, color }: props) {
     };
 
     return (
-        <div className="w-full border rounded-xl p-3 flex flex-col justify-between items-center bg-white">
+        <div className="w-full border rounded-xl p-3 flex flex-col justify-between items-center bg-white whitespace-nowrap">
             <div className="flex gap-2 items-center">
                 {label}
             </div>

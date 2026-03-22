@@ -9,7 +9,7 @@ import type {
 const BASE = "/project";
 
 export const projectApi = {
-    //Crate
+    //Create
     create: (payload: CreateProjectDTO) =>
         request<ProjectOut>(BASE, { method: "POST", body: payload }),
 

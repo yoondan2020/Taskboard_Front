@@ -3,8 +3,10 @@ import { BellIcon } from "@/shared/components/icons/BellIcon";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import MyPageModal from "@/features/user/components/MyPageModal";
+import NotificationModal from "@/features/notification/components/notificationModal";
 import { useUserStore } from "@/features/user/store/user.store";
 import { useAuthStore } from "@/features/auth/store/auth.store";
+import { useNotificationStore } from "@/features/notification/store/notifications.store";
 
 export default function Header() {
 
@@ -13,13 +15,17 @@ export default function Header() {
 
     const currentPath = location.pathname;
     const fetchMe = useUserStore((s) => s.fetchMe);
+    const fetchNoti = useNotificationStore((s) => s.fetch);
     const me = useUserStore((s) => s.me);
+    const myNoti = useNotificationStore((s) => s.items);
     const logout = useAuthStore((s) => s.logout);
 
     const [openMyModal, setOpenMyModal] = useState(false);
+    const [openNotiModal, setOpenNotiModal] = useState(false);
 
     useEffect(() => {
         fetchMe();
+        fetchNoti();
     }, []);
 
     return (
@@ -78,7 +84,8 @@ export default function Header() {
                         {me ? `${me.name} 님` : ""}
                     </button>
                 </div>
-                <div className="w-9 h-9 bg-primary text-white items-center justify-center flex rounded-full cursor-pointer border border-black hover:bg-white hover:text-primary">
+                <div className="w-9 h-9 bg-primary text-white items-center justify-center flex rounded-full cursor-pointer border border-black hover:bg-white hover:text-primary"
+                    onClick={() => setOpenNotiModal(true)}>
                     <BellIcon className="w-5 h-5" />
                 </div>
             </div>
@@ -87,6 +94,11 @@ export default function Header() {
                 onClose={() => setOpenMyModal(false)}
                 me={me}
                 logout={() => logout()}
+            />
+            <NotificationModal
+                open={openNotiModal}
+                onClose={() => setOpenNotiModal(false)}
+                notifications={myNoti}
             />
         </div>
     );

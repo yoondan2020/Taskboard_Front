@@ -1,6 +1,6 @@
 //store/state.store.ts
 import { create } from "zustand";
-import { stateApi} from "@/shared/lib/api/state";
+import { stateApi } from "@/shared/lib/api/state";
 import type { StateOut } from "@/shared/types/state.type";
 
 type So = StateOut;
@@ -13,7 +13,7 @@ type State = {
     fetchAll: () => Promise<void>;
     fetchActive: () => Promise<void>;
     create: (data: { name: string }) => Promise<void>;
-    update: (id: number, data: {name: string}) => Promise<void>;
+    update: (id: number, data: { name: string }) => Promise<void>;
     restore: (id: number) => Promise<void>;
     deactivate: (id: number) => Promise<void>;
 
@@ -28,7 +28,7 @@ export const useStateStore = create<State>((set) => ({
     clearError: () => set({ error: null }),
 
     //Create
-    create: async (data:{name: string}) => {
+    create: async (data: { name: string }) => {
         set({ loading: true, error: null });
         try {
             const item = await stateApi.create(data);
@@ -68,11 +68,11 @@ export const useStateStore = create<State>((set) => ({
     },
 
     //Update
-    update: async (id, data:{name: string} ) => {
+    update: async (id, data: { name: string }) => {
         set({ loading: true, error: null });
         try {
             const item = await stateApi.update(id, data);
-           set((state) => ({
+            set((state) => ({
                 items: state.items.map((x) =>
                     x.id === item.id ? item : x
                 ),
@@ -84,9 +84,9 @@ export const useStateStore = create<State>((set) => ({
         }
     },
 
-    restore: async(id) => {
-        set({loading: true, error: null});
-        try{
+    restore: async (id) => {
+        set({ loading: true, error: null });
+        try {
             await stateApi.restore(id);
             set((state) => ({
                 items: state.items.map((x) =>
@@ -94,9 +94,9 @@ export const useStateStore = create<State>((set) => ({
                 ),
             }));
         } catch (e: any) {
-            set({error: e?.message ?? String(e)});
+            set({ error: e?.message ?? String(e) });
         } finally {
-            set({loading: false});
+            set({ loading: false });
         }
     },
 
@@ -105,10 +105,10 @@ export const useStateStore = create<State>((set) => ({
         set({ loading: true, error: null });
         try {
             await stateApi.deactivate(id);
-            set((s) => ({ 
-                items: s.items.map((x) => 
+            set((s) => ({
+                items: s.items.map((x) =>
                     x.id === id ? { ...x, is_active: false } : x
-                ) 
+                )
             }));
         } catch (e: any) {
             set({ error: e?.message ?? String(e) });

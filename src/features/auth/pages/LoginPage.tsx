@@ -68,8 +68,8 @@ export default function LoginPage({ onFindPassword }: Props) {
                     <div className="w-full">
                         {/* Title */}
                         <div className="mb-14 text-center">
-                            <h1 className="text-5xl font-extrabold tracking-wide text-black">LAB</h1>
-                            <p className="mt-2 text-sm text-gray-500">제품 개발 관리 시스템</p>
+                            <h1 className="text-5xl font-extrabold tracking-wide text-black">TaskBoard</h1>
+                            <p className="mt-2 text-sm text-gray-500">프로젝트 관리 시스템</p>
                         </div>
 
                         {/* Form */}

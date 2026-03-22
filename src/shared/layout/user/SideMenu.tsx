@@ -82,7 +82,7 @@ export default function SideMenu({ projectCount, urgentProjectCount }: Props) {
                         className="cursor-pointer flex-1"
                     >
                         <InsightCard
-                            label={"마감 임박 프로젝트"}
+                            label={"마감임박 프로젝트"}
                             value={urgentProjectCount}
                             color={"red"}
                         />
