@@ -9,7 +9,7 @@ export const notificationApi = {
 
     // Read
     // 내 알림
-    myNotifiactions: () =>
+    myNotifications: () =>
         request<NotificationOut[]>(BASE),
 
     // Update

@@ -36,6 +36,7 @@ const MENU: { key: MenuKey; label: string }[] = [
     { key: "read", label: "읽은 알림" },
 ];
 
+
 export default function NotificationModal({
     open,
     onClose,
@@ -46,6 +47,8 @@ export default function NotificationModal({
     const navigate = useNavigate();
     const [active, setActive] = useState<MenuKey>("all");
     const [query, setQuery] = useState("");
+
+    console.log(notifications);
 
     useEffect(() => {
         if (!open) {

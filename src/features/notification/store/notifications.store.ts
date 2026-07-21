@@ -1,6 +1,6 @@
 // notification/store/notifiaction.store.ts
 import { create } from "zustand";
-import { notificationApi } from "@/shared/lib/api/notifiaction";
+import { notificationApi } from "@/shared/lib/api/notification";
 import type { NotificationOut } from "@/shared/types/notification.types";
 import { log } from "@/shared/lib/log";
 
@@ -31,7 +31,7 @@ export const useNotificationStore = create<State>((set) => ({
     fetch: async () => {
         set({ loading: true, error: null });
         try {
-            const data = await notificationApi.myNotifiactions();
+            const data = await notificationApi.myNotifications();
             set({ items: data });
             log("[API] fetch", data);
         } catch (e: any) {
