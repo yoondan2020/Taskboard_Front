@@ -3,23 +3,6 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import type { NotificationOut } from "@/shared/types/notification.types";
 
-type NotificationItem = {
-    id: number;
-    title: string;
-    message: string;
-    isRead: boolean;
-    createdAt: string;
-    projectId?: number;
-    projectTitle?: string;
-    type:
-    | "NOTICE_DEADLINE"
-    | "NOTICE_REASON_MISSING"
-    | "NOTICE_OVERDUE"
-    | "NOTICE_DELAY"
-    | "NOTICE_NORMALIZED"
-    | "NOTICE_SCHEDULE_UPDATED";
-};
-
 type Props = {
     open: boolean;
     onClose: () => void;
@@ -37,6 +20,40 @@ const MENU: { key: MenuKey; label: string }[] = [
 ];
 
 
+const NOTIFICATION_CONFIG = {
+    NOTICE_DEADLINE: {
+        icon: "⏰",
+        title: "마감 예정",
+        color: "bg-orange-50",
+    },
+    NOTICE_REASON_MISSING: {
+        icon: "⚠️",
+        title: "사유 미입력",
+        color: "bg-yellow-50",
+    },
+    NOTICE_OVERDUE: {
+        icon: "🚨",
+        title: "지연 초과",
+        color: "bg-red-50",
+    },
+    NOTICE_DELAY: {
+        icon: "⏱️",
+        title: "지연",
+        color: "bg-blue-50",
+    },
+    NOTICE_NORMALIZED: {
+        icon: "✅",
+        title: "정상화",
+        color: "bg-green-50",
+    },
+    NOTICE_SCHEDULE_UPDATED: {
+        icon: "📅",
+        title: "일정 변경",
+        color: "bg-purple-50",
+    },
+} as const;
+
+
 export default function NotificationModal({
     open,
     onClose,
@@ -45,10 +62,9 @@ export default function NotificationModal({
     onReadAll,
 }: Props) {
     const navigate = useNavigate();
+
     const [active, setActive] = useState<MenuKey>("all");
     const [query, setQuery] = useState("");
-
-    console.log(notifications);
 
     useEffect(() => {
         if (!open) {
@@ -57,170 +73,239 @@ export default function NotificationModal({
         }
     }, [open]);
 
+
     const title = useMemo(() => {
         return MENU.find((m) => m.key === active)?.label ?? "알림";
     }, [active]);
 
     const unreadCount = useMemo(
-        () => notifications.filter((n) => !n.isRead).length,
+        () => notifications.filter((n) => !n.is_read).length,
         [notifications]
     );
 
     const filteredNotifications = useMemo(() => {
         let base = notifications;
-
         if (active === "unread") {
-            base = base.filter((n) => !n.isRead);
+            base = base.filter((n) => !n.is_read);
         }
-
         if (active === "read") {
-            base = base.filter((n) => n.isRead);
+            base = base.filter((n) => n.is_read);
         }
-
         if (query.trim()) {
             const q = query.toLowerCase();
             base = base.filter(
                 (n) =>
-                    n.title?.toLowerCase().includes(q) ||
-                    n.message?.toLowerCase().includes(q)
+                    n.project_title
+                        ?.toLowerCase()
+                        .includes(q) ||
+                    n.project_stage_name
+                        ?.toLowerCase()
+                        .includes(q)
             );
         }
-
         return base;
     }, [notifications, active, query]);
-
     if (!open) return null;
 
     return (
         <div
             className="fixed inset-0 z-50 flex items-center justify-center"
-            role="dialog"
-            aria-modal="true"
-            aria-label="알림 모달"
             onMouseDown={(e) => {
-                if (e.target === e.currentTarget) onClose();
+                if (e.target === e.currentTarget) {
+                    onClose();
+                }
             }}
         >
-            {/* overlay */}
             <div className="absolute inset-0 bg-black/40" />
+            <div className="
+                relative
+                w-[980px]
+                max-w-[92vw]
+                h-[640px]
+                max-h-[86vh]
+                bg-white
+                rounded-2xl
+                shadow-xl
+                overflow-hidden
+            ">
 
-            {/* modal */}
-            <div className="relative w-[980px] max-w-[92vw] h-[640px] max-h-[86vh] bg-white rounded-2xl shadow-xl overflow-hidden">
-                {/* header */}
-                <div className="h-14 px-5 flex items-center justify-between border-b">
+                {/* Header */}
+                <div className="
+                    h-14
+                    px-5
+                    flex
+                    items-center
+                    justify-between
+                    border-b
+                ">
+
                     <div className="flex items-center gap-3">
-                        <div className="text-lg font-semibold">{title}</div>
+                        <div className="text-lg font-semibold">
+                            {title}
+                        </div>
                         <div className="text-sm text-gray-500">
                             안 읽은 알림 {unreadCount}개
                         </div>
                     </div>
-
-                    <div className="flex items-center gap-2">
+                    <div className="flex gap-2">
                         <button
-                            type="button"
-                            className="px-3 py-1.5 text-sm rounded-lg border bg-white hover:bg-gray-100 cursor-pointer"
+                            className="
+                                px-3
+                                py-1.5
+                                text-sm
+                                rounded-lg
+                                border
+                                hover:bg-gray-100
+                            "
                             onClick={onReadAll}
                         >
-                            모두 읽음 처리
+                            모두 읽음
                         </button>
                         <button
-                            className="px-3 py-1.5 text-sm rounded-lg bg-gray-900 text-white hover:bg-gray-800 cursor-pointer"
+                            className="
+                                px-3
+                                py-1.5
+                                text-sm
+                                rounded-lg
+                                bg-gray-900
+                                text-white
+                            "
                             onClick={onClose}
-                            type="button"
                         >
                             닫기
                         </button>
                     </div>
                 </div>
 
-                {/* body */}
-                <div className="h-[calc(100%-56px)] grid grid-cols-[260px_1fr]">
-                    {/* left menu */}
-                    <aside className="border-r bg-gray-50">
+                <div className="
+                    h-[calc(100%-56px)]
+                    grid
+                    grid-cols-[260px_1fr]
+                ">
+                    {/* Sidebar */}
+                    <aside className="
+                        border-r
+                        bg-gray-50
+                    ">
                         <div className="p-4">
-                            <div className="rounded-2xl bg-white border p-4">
-                                <div className="text-sm text-gray-500">알림 요약</div>
-                                <div className="mt-2 text-2xl font-semibold">
+                            <div className="
+                                rounded-2xl
+                                bg-white
+                                border
+                                p-4
+                            ">
+                                <div className="text-sm text-gray-500">
+                                    전체 알림
+                                </div>
+                                <div className="
+                                    mt-2
+                                    text-2xl
+                                    font-semibold
+                                ">
                                     {notifications.length}
                                 </div>
-                                <div className="text-sm text-gray-600">전체 알림</div>
-
-                                <div className="mt-3 flex items-center gap-2 text-xs text-gray-500">
-                                    <span className="px-2 py-1 rounded-full bg-gray-100 border">
+                                <div className="mt-3 flex gap-2 text-xs">
+                                    <span className="
+                                        px-2
+                                        py-1
+                                        rounded-full
+                                        bg-gray-100
+                                    ">
                                         안 읽음 {unreadCount}
                                     </span>
-                                    <span className="px-2 py-1 rounded-full bg-gray-100 border">
+                                    <span className="
+                                        px-2
+                                        py-1
+                                        rounded-full
+                                        bg-gray-100
+                                    ">
                                         읽음 {notifications.length - unreadCount}
                                     </span>
                                 </div>
                             </div>
-
                             <nav className="mt-4 space-y-1">
-                                {MENU.map((m) => {
-                                    const isActive = m.key === active;
-
-                                    return (
-                                        <button
-                                            key={m.key}
-                                            type="button"
-                                            onClick={() => setActive(m.key)}
-                                            className={[
-                                                "w-full text-left rounded-xl px-3 py-2 border transition",
-                                                isActive
-                                                    ? "bg-white border-gray-900 shadow-sm"
-                                                    : "bg-transparent border-transparent hover:bg-white hover:border-gray-200",
-                                            ].join(" ")}
-                                        >
-                                            <div className="font-medium">{m.label}</div>
-                                        </button>
-                                    );
-                                })}
+                                {MENU.map((m) => (
+                                    <button
+                                        key={m.key}
+                                        onClick={() => setActive(m.key)}
+                                        className={`
+                                            w-full
+                                            text-left
+                                            px-3
+                                            py-2
+                                            rounded-xl
+                                            ${active === m.key
+                                                ? "bg-white border shadow-sm"
+                                                : "hover:bg-white"
+                                            }
+                                        `}
+                                    >
+                                        {m.label}
+                                    </button>
+                                ))}
                             </nav>
                         </div>
                     </aside>
 
-                    {/* right content */}
+                    {/* Content */}
                     <main className="p-6 overflow-auto">
-                        <section className="space-y-4">
-                            <div className="flex items-center justify-between gap-3">
-                                <div className="text-lg font-semibold">{title}</div>
-
-                                <div className="w-[280px]">
-                                    <input
-                                        value={query}
-                                        onChange={(e) => setQuery(e.target.value)}
-                                        placeholder="프로젝트명, 제목, 내용 검색"
-                                        className="w-full rounded-xl border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-gray-200"
-                                    />
-                                </div>
+                        <div className="
+                            flex
+                            justify-between
+                            mb-4
+                        ">
+                            <h2 className="font-semibold text-lg">
+                                {title}
+                            </h2>
+                            <input
+                                value={query}
+                                onChange={(e) => setQuery(e.target.value)}
+                                placeholder="프로젝트 검색"
+                                className="
+                                    border
+                                    rounded-xl
+                                    px-3
+                                    py-2
+                                    text-sm
+                                "
+                            />
+                        </div>
+                        {filteredNotifications.length === 0 ? (
+                            <div className="
+                                rounded-2xl
+                                border
+                                p-10
+                                text-center
+                                text-gray-500
+                            ">
+                                표시할 알림이 없습니다.
                             </div>
-
-                            {filteredNotifications.length === 0 ? (
-                                <div className="rounded-2xl border bg-gray-50 px-4 py-10 text-center text-gray-500">
-                                    표시할 알림이 없습니다.
-                                </div>
-                            ) : (
-                                <div className="space-y-3">
-                                    {filteredNotifications.map((notification) => (
-                                        <NotificationCard
-                                            key={notification.id}
-                                            item={notification}
-                                            onClick={() => {
-                                                if (!notification.isRead) {
-                                                    onRead?.(notification.id);
-                                                }
-
-                                                if (notification.projectId) {
-                                                    navigate(`/project/${notification.projectId}`);
-                                                    onClose();
-                                                }
-                                            }}
-                                            onRead={() => onRead?.(notification.id)}
-                                        />
-                                    ))}
-                                </div>
-                            )}
-                        </section>
+                        ) : (
+                            <div className="space-y-3">
+                                {filteredNotifications.map((notification) => (
+                                    <NotificationCard
+                                        key={notification.id}
+                                        item={notification}
+                                        onClick={() => {
+                                            if (!notification.is_read) {
+                                                onRead?.(
+                                                    notification.id
+                                                );
+                                            }
+                                            navigate(
+                                                `/project/${notification.project_id}`
+                                            );
+                                            onClose();
+                                        }}
+                                        onRead={() => (
+                                            onRead?.(
+                                                notification.id
+                                            )
+                                        )}
+                                    />
+                                ))}
+                            </div>
+                        )}
                     </main>
                 </div>
             </div>
@@ -237,43 +322,100 @@ function NotificationCard({
     onClick: () => void;
     onRead: () => void;
 }) {
+
+    const config =
+        NOTIFICATION_CONFIG[
+        item.code as keyof typeof NOTIFICATION_CONFIG
+        ] ?? {
+            icon: "🔔",
+            title: "알림",
+            color: "bg-gray-50"
+        };
+
     return (
         <div
-            className={[
-                "rounded-2xl border p-4 transition cursor-pointer",
-                item.isRead
-                    ? "bg-white hover:bg-gray-50"
-                    : "bg-gray-50 border-gray-300 hover:bg-gray-100",
-            ].join(" ")}
             onClick={onClick}
+            className={`
+                rounded-2xl
+                border
+                p-4
+                cursor-pointer
+                transition
+
+                ${item.is_read
+                    ? "bg-white hover:bg-gray-50"
+                    : `${config.color} border-gray-300`
+                }
+            `}
         >
-            <div className="flex items-start justify-between gap-4">
-                <div className="min-w-0 flex-1">
+            <div className="flex justify-between gap-4">
+                <div className="flex-1">
                     <div className="flex items-center gap-2">
-                        {!item.isRead && (
-                            <span className="inline-block w-2 h-2 rounded-full bg-red-500 shrink-0" />
+                        <span>
+                            {config.icon}
+                        </span>
+                        <span className="font-semibold">
+                            {config.title}
+                        </span>
+                        {!item.is_read && (
+                            <span className="
+                                w-2
+                                h-2
+                                rounded-full
+                                bg-red-500
+                            "/>
+                        )}
+                    </div>
+                    <div className="flex gap-5 items-center">
+                        <div className="
+                        font-medium
+                        ">
+                            {item.project_title}
+                        </div>
+
+                        {item.project_stage_name && (
+                            <div className="
+                            text-sm
+                            text-gray-500
+                        ">
+                                {item.project_stage_name}
+                            </div>
                         )}
                     </div>
 
-                    <div className="mt-2 font-semibold text-gray-900 break-words">
-                        {item.title}
+                    <div className="
+                        mt-2
+                        text-sm
+                        text-gray-600
+                    ">
+                        {getNotificationMessage(item)}
                     </div>
 
-                    <div className="mt-1 text-sm text-gray-600 break-words">
-                        {item.message}
+                    <div className="
+                        mt-2
+                        text-xs
+                        text-gray-400
+                    ">
+                        {formatDate(item.triggered_at)}
                     </div>
                 </div>
-
-                {!item.isRead && (
+                {!item.is_read && (
                     <button
-                        type="button"
-                        className="shrink-0 px-3 py-1.5 text-sm rounded-lg border bg-white hover:bg-gray-100"
                         onClick={(e) => {
                             e.stopPropagation();
                             onRead();
                         }}
+                        className="
+                            h-fit
+                            px-3
+                            py-1.5
+                            text-sm
+                            rounded-lg
+                            border
+                            bg-white
+                        "
                     >
-                        읽음 처리
+                        읽음
                     </button>
                 )}
             </div>
@@ -281,35 +423,38 @@ function NotificationCard({
     );
 }
 
-function notificationTypeLabel(type: NotificationItem["type"]) {
-    switch (type) {
+
+function getNotificationMessage(item: NotificationOut) {
+    switch (item.code) {
         case "NOTICE_DEADLINE":
-            return "마감 예정";
-        case "NOTICE_REASON_MISSING":
-            return "사유 미입력";
-        case "NOTICE_OVERDUE":
-            return "지연 초과";
-        case "NOTICE_DELAY":
-            return "지연";
-        case "NOTICE_NORMALIZED":
-            return "정상화";
+            return `${item.project_stage_name} 단계의 마감일이 다가왔습니다.`;
         case "NOTICE_SCHEDULE_UPDATED":
-            return "일정 변경";
+            return `${item.project_stage_name} 일정이 변경되었습니다.`;
+        case "NOTICE_DELAY":
+            return `${item.project_stage_name} 단계가 지연되었습니다.`;
+        case "NOTICE_OVERDUE":
+            return `${item.project_stage_name} 지연이 초과되었습니다.`;
+        case "NOTICE_REASON_MISSING":
+            return `지연 사유를 입력해주세요.`;
+        case "NOTICE_NORMALIZED":
+            return `${item.project_stage_name} 단계가 정상화되었습니다.`;
         default:
-            return "알림";
+            return "프로젝트 알림이 있습니다.";
     }
 }
 
 function formatDate(value: string) {
     const date = new Date(value);
-
-    if (Number.isNaN(date.getTime())) return value;
-
-    return new Intl.DateTimeFormat("ko-KR", {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-        hour: "2-digit",
-        minute: "2-digit",
-    }).format(date);
+    if (Number.isNaN(date.getTime())) {
+        return value;
+    }
+    return new Intl.DateTimeFormat(
+        "ko-KR",
+        {
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+        }
+    ).format(date);
 }
