@@ -6,7 +6,6 @@ import MyPageModal from "@/features/user/components/MyPageModal";
 import NotificationModal from "@/features/notification/components/notificationModal";
 import { useUserStore } from "@/features/user/store/user.store";
 import { useAuthStore } from "@/features/auth/store/auth.store";
-import { useNotificationStore } from "@/features/notification/store/notifications.store";
 
 export default function Header() {
 
@@ -15,9 +14,7 @@ export default function Header() {
 
     const currentPath = location.pathname;
     const fetchMe = useUserStore((s) => s.fetchMe);
-    const fetchNoti = useNotificationStore((s) => s.fetch);
     const me = useUserStore((s) => s.me);
-    const myNoti = useNotificationStore((s) => s.items);
     const logout = useAuthStore((s) => s.logout);
 
     const [openMyModal, setOpenMyModal] = useState(false);
@@ -25,7 +22,6 @@ export default function Header() {
 
     useEffect(() => {
         fetchMe();
-        fetchNoti();
     }, []);
 
     return (
@@ -98,7 +94,6 @@ export default function Header() {
             <NotificationModal
                 open={openNotiModal}
                 onClose={() => setOpenNotiModal(false)}
-                notifications={myNoti}
             />
         </div>
     );

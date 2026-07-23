@@ -14,6 +14,7 @@ type State = {
     fetch: () => Promise<void>;
     // create: 
     // update: 
+    fetchReadNoti: (id: number) => Promise<void>;
 
     clearError: () => void;
 }
@@ -34,6 +35,30 @@ export const useNotificationStore = create<State>((set) => ({
             const data = await notificationApi.myNotifications();
             set({ items: data });
             log("[API] fetch", data);
+        } catch (e: any) {
+            set({ error: e?.message ?? String(e) });
+        } finally {
+            set({ loading: false })
+        }
+    },
+
+    // update
+    fetchReadNoti: async (notification_id) => {
+        set({ loading: true, error: null });
+        try {
+            //
+            const data = await notificationApi.fetchReadNoti(notification_id);
+            log("[API] fetchReadNoti", data);
+            set((state) => ({
+                items: state.items.map((notification) =>
+                    notification.notification_id === notification_id
+                        ? {
+                            ...notification,
+                            is_read: true,
+                        }
+                        : notification
+                ),
+            }));
         } catch (e: any) {
             set({ error: e?.message ?? String(e) });
         } finally {

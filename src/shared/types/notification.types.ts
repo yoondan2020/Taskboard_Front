@@ -1,5 +1,6 @@
 export type NotificationOut = {
     id: number;
+    notification_id: number;
     project_id: number;
     project_stage_id?: number;
     code: string;

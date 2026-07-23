@@ -2,11 +2,12 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import type { NotificationOut } from "@/shared/types/notification.types";
+import { useNotificationStore } from "../store/notifications.store";
+
 
 type Props = {
     open: boolean;
     onClose: () => void;
-    notifications: NotificationOut[];
     onRead?: (notificationId: number) => void;
     onReadAll?: () => void;
 };
@@ -57,7 +58,6 @@ const NOTIFICATION_CONFIG = {
 export default function NotificationModal({
     open,
     onClose,
-    notifications,
     onRead,
     onReadAll,
 }: Props) {
@@ -65,12 +65,16 @@ export default function NotificationModal({
 
     const [active, setActive] = useState<MenuKey>("all");
     const [query, setQuery] = useState("");
+    const fetchReadNoti = useNotificationStore((s) => s.fetchReadNoti);
+    const fetch = useNotificationStore((s) => s.fetch);
+    const notifications = useNotificationStore((s) => s.items);
 
     useEffect(() => {
         if (!open) {
             setActive("all");
             setQuery("");
         }
+        fetch();
     }, [open]);
 
 
@@ -106,6 +110,12 @@ export default function NotificationModal({
         return base;
     }, [notifications, active, query]);
     if (!open) return null;
+
+    const handleRead = async (notification: NotificationOut) => {
+        console.log("notification:", notification);
+        await fetchReadNoti(notification.notification_id);
+        onRead?.(notification.notification_id);
+    }
 
     return (
         <div
@@ -286,22 +296,14 @@ export default function NotificationModal({
                                     <NotificationCard
                                         key={notification.id}
                                         item={notification}
-                                        onClick={() => {
+                                        onClick={async () => {
                                             if (!notification.is_read) {
-                                                onRead?.(
-                                                    notification.id
-                                                );
+                                                await handleRead(notification)
                                             }
-                                            navigate(
-                                                `/project/${notification.project_id}`
-                                            );
+                                            navigate(`/project/${notification.project_id}`);
                                             onClose();
                                         }}
-                                        onRead={() => (
-                                            onRead?.(
-                                                notification.id
-                                            )
-                                        )}
+                                        onRead={() => handleRead(notification)}
                                     />
                                 ))}
                             </div>

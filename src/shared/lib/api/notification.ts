@@ -13,4 +13,6 @@ export const notificationApi = {
         request<NotificationOut[]>(BASE),
 
     // Update
+    fetchReadNoti: (notification_id: number) =>
+        request<void>(`${BASE}/${notification_id}`, { method: "POST" })
 }
