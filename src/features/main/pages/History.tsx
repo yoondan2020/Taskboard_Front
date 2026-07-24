@@ -100,12 +100,12 @@ export default function History() {
     const fieldLabel = (field?: string) => {
         switch (field) {
             // 단계 필드
-            case "planned_date":
-                return "계획일";
-            case "act_date":
-                return "실행일";
+            case "due_date":
+                return "마감일";
             case "eta":
-                return "완료 예정일";
+                return "마감 예정일";
+            case "completed_date":
+                return "실제 완료일";
             case "state_id":
                 return "단계 상태";
             case "stage_name":

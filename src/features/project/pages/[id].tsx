@@ -10,7 +10,7 @@ import { useUserStore } from "@/features/user/store/user.store";
 import React from "react";
 import StageCreateModal from "@/features/project/components/StageCreateModal";
 import ContextMenu from "@/features/project/components/ContextMenu";
-import StageUpdateFrom from "@/features/project/components/StageUpdateFrom";
+import StageUpdateFrom from "@/features/project/components/StageUpdateForm";
 import type { StageFromData } from "@/shared/types/stageFromData.types";
 import type { CreateProjectStage, DetailProjectStage } from "@/shared/types/projectStage.types";
 
@@ -121,12 +121,12 @@ export default function ProjectDetailPage() {
     const normalizeFormData = (formData: StageFromData) => ({
         name: formData.name || undefined,
         state_id: formData.state_id ? Number(formData.state_id) : undefined,
-        planned_date: formData.planned_date || undefined,
-        act_date: formData.act_date || undefined,
+        due_date: formData.due_date || undefined,
         eta: formData.eta || undefined,
+        completed_date: formData.completed_date || undefined,
         note: formData.note === "" ? "" : (formData.note || undefined),
         remark: formData.remark === "" ? "" : (formData.remark || undefined),
-        eta_change_reason: formData.eta_change_reason || undefined,
+        change_reason: formData.change_reason || undefined,
     });
 
     // 단계 생성 폼 데이터 정규화
@@ -135,9 +135,9 @@ export default function ProjectDetailPage() {
             name: formData.name,
             state_id: formData.state_id === "" ? undefined : Number(formData.state_id),
 
-            planned_date: formData.planned_date || undefined,
-            act_date: formData.act_date || undefined,
+            due_date: formData.due_date || undefined,
             eta: formData.eta || undefined,
+            completed_date: formData.completed_date || undefined,
 
             stage_owner_id: formData.stage_owner_id === "" ? undefined : Number(formData.stage_owner_id),
 
@@ -278,9 +278,9 @@ export default function ProjectDetailPage() {
                                             </th>
                                             <th className="text-left py-3 px-2 text-sm font-medium text-gray-600">단계명</th>
                                             <th className="text-center py-3 px-4 text-sm font-medium text-gray-600">상태</th>
-                                            <th className="text-center py-3 px-2 text-sm font-medium text-gray-600">실행일</th>
                                             <th className="text-center py-3 px-2 text-sm font-medium text-gray-600">마감일</th>
-                                            <th className="text-center py-3 px-2 text-sm font-medium text-gray-600">예상 완료일</th>
+                                            <th className="text-center py-3 px-2 text-sm font-medium text-gray-600">예상 마감일</th>
+                                            <th className="text-center py-3 px-2 text-sm font-medium text-gray-600">실제 완료일</th>
                                             <th className="text-center py-3 px-2 text-sm font-medium text-gray-600">담당자</th>
                                             <th className="text-center py-3 px-2 text-sm font-medium text-gray-600"></th>
                                         </tr>
@@ -341,19 +341,19 @@ export default function ProjectDetailPage() {
                                                                 </div>
                                                             </td>
 
-                                                            {/* 실행일 */}
-                                                            <td className="py-4 px-2 text-center text-sm">
-                                                                {stage.act_date || "-"}
-                                                            </td>
-
                                                             {/* 마감일 */}
                                                             <td className="py-4 px-2 text-center text-sm">
-                                                                {stage.planned_date || "-"}
+                                                                {stage.due_date || "-"}
                                                             </td>
 
-                                                            {/* 예상 완료일 */}
+                                                            {/* 예상 마감일 */}
                                                             <td className="py-4 px-2 text-center text-sm">
                                                                 {stage.eta || "-"}
+                                                            </td>
+
+                                                            {/* 실제 완료일 */}
+                                                            <td className="py-4 px-2 text-center text-sm">
+                                                                {stage.completed_date || "-"}
                                                             </td>
 
                                                             {/* 담당자 */}

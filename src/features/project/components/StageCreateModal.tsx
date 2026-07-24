@@ -22,12 +22,12 @@ export default function StageCreateModal({
     const [formData, setFormData] = useState<StageFromData>({
         state_id: "",
         name: "",
-        planned_date: "",
-        act_date: "",
+        due_date: "",
         eta: "",
+        completed_date: "",
         note: "",
         remark: "",
-        eta_change_reason: "",
+        change_reason: "",
         stage_owner_id: "",
     });
 
@@ -79,30 +79,27 @@ export default function StageCreateModal({
                         </div>
 
                         <div className="flex-1 space-y-4">
-                            {/* 실행일 */}
-                            <Input
-                                label="실행일"
-                                type="date"
-                                value={formData.act_date}
-                                onChange={(value) => handleChange("act_date", value)}
-                            />
-
                             {/* 마감일 */}
                             <Input
                                 label="마감일"
                                 type="date"
-                                value={formData.planned_date}
-                                onChange={(value) => handleChange("planned_date", value)}
+                                value={formData.due_date}
+                                onChange={(value) => handleChange("due_date", value)}
                             />
-                            {/* 예상 완료일 */}
+                            {/* 예상 마감일 */}
                             <Input
                                 label="예상 완료일"
                                 type="date"
                                 value={formData.eta}
                                 onChange={(value) => handleChange("eta", value)}
                             />
-
-
+                            {/* 실제 완료일 */}
+                            <Input
+                                label="실제 완료일"
+                                type="date"
+                                value={formData.completed_date}
+                                onChange={(value) => handleChange("completed_date", value)}
+                            />
                         </div>
                     </div>
 

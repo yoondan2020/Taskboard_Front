@@ -14,7 +14,7 @@ type Props = {
     onSave: (data: StageFromData) => void | Promise<void>;
 };
 
-export default function StageUpdateFrom({
+export default function StageUpdateForm({
     stage,
     stateItems,
     userItems,
@@ -32,10 +32,10 @@ export default function StageUpdateFrom({
         stage_owner_id: stage.stage_owner_id ?? "",
         note: stage.note ?? "",
         remark: stage.remark ?? "",
-        planned_date: stage.planned_date ?? "",
-        act_date: stage.act_date ?? "",
+        due_date: stage.due_date ?? "",
         eta: stage.eta ?? "",
-        eta_change_reason: "",
+        completed_date: stage.completed_date ?? "",
+        change_reason: "",
     });
 
     // stage 변경 시 폼 초기화 (아코디언 전환 대응)
@@ -46,10 +46,10 @@ export default function StageUpdateFrom({
             stage_owner_id: stage.stage_owner_id ?? "",
             note: stage.note ?? "",
             remark: stage.remark ?? "",
-            planned_date: stage.planned_date ?? "",
-            act_date: stage.act_date ?? "",
+            due_date: stage.due_date ?? "",
             eta: stage.eta ?? "",
-            eta_change_reason: "",
+            completed_date: stage.completed_date ?? "",
+            change_reason: "",
         });
     }, [stage.id]);
 
@@ -60,11 +60,15 @@ export default function StageUpdateFrom({
 
     // 예상 완료일 변경 시 사유 입력
     const initialEta = stage.eta ?? "";
+    const initialDueDate = stage.due_date ?? "";
 
-    const isEtaChanged =
-        initialEta &&
-        formData.eta &&
-        initialEta !== formData.eta;
+    const isScheduleChanged =
+        (initialEta &&
+            formData.eta &&
+            initialEta !== formData.eta) ||
+        (initialDueDate &&
+            formData.due_date &&
+            initialDueDate !== formData.due_date);
 
     const handleChange = (
         key: keyof StageFromData,
@@ -87,8 +91,8 @@ export default function StageUpdateFrom({
     const handleSave = async () => {
         if (saving) return;
 
-        if (isEtaChanged && !formData.eta_change_reason?.trim()) {
-            alert("예상 완료일 변경 사유를 입력해주세요.");
+        if (isScheduleChanged && !formData.change_reason?.trim()) {
+            alert("변경 사유를 입력해주세요.");
             return;
         }
 
@@ -140,19 +144,11 @@ export default function StageUpdateFrom({
                         {/* RIGHT */}
                         <div className="flex-1 space-y-4">
                             <Input
-                                label="실행일"
-                                type="date"
-                                value={formData.act_date}
-                                onChange={(v) =>
-                                    handleChange("act_date", v)
-                                }
-                            />
-                            <Input
                                 label="마감일"
                                 type="date"
-                                value={formData.planned_date}
+                                value={formData.due_date}
                                 onChange={(v) =>
-                                    handleChange("planned_date", v)
+                                    handleChange("due_date", v)
                                 }
                             />
                             <Input
@@ -161,16 +157,24 @@ export default function StageUpdateFrom({
                                 value={formData.eta}
                                 onChange={(v) => handleChange("eta", v)}
                             />
+                            <Input
+                                label="실제 완료일"
+                                type="date"
+                                value={formData.completed_date}
+                                onChange={(v) =>
+                                    handleChange("completed_date", v)
+                                }
+                            />
                         </div>
                     </div>
 
-                    {isEtaChanged && (
+                    {isScheduleChanged && (
                         <Textarea
-                            label="완료 예정일 변경 사유"
+                            label="일정 변경 사유"
                             placeholder="예: 고객 요청으로 일정 조정"
-                            value={formData.eta_change_reason}
+                            value={formData.change_reason}
                             onChange={(v) =>
-                                handleChange("eta_change_reason", v)
+                                handleChange("change_reason", v)
                             }
                         />
                     )}

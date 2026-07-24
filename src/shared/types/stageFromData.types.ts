@@ -3,10 +3,11 @@ export type StageFromData = {
     name: string;
     note: string;
     remark: string;
-    planned_date: string;
-    act_date: string;
-    eta: string;
 
-    eta_change_reason: string;
+    due_date?: string;
+    eta?: string;
+    completed_date?: string;
+
+    change_reason: string;
     stage_owner_id: number | "";
 };
