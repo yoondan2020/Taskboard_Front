@@ -32,20 +32,10 @@ const NOTIFICATION_CONFIG = {
         title: "사유 미입력",
         color: "bg-yellow-50",
     },
-    NOTICE_OVERDUE: {
-        icon: "🚨",
-        title: "지연 초과",
-        color: "bg-red-50",
-    },
     NOTICE_DELAY: {
         icon: "⏱️",
         title: "지연",
         color: "bg-blue-50",
-    },
-    NOTICE_NORMALIZED: {
-        icon: "✅",
-        title: "정상화",
-        color: "bg-green-50",
     },
     NOTICE_SCHEDULE_UPDATED: {
         icon: "📅",
@@ -433,13 +423,9 @@ function getNotificationMessage(item: NotificationOut) {
         case "NOTICE_SCHEDULE_UPDATED":
             return `${item.project_stage_name} 일정이 변경되었습니다.`;
         case "NOTICE_DELAY":
-            return `${item.project_stage_name} 단계가 지연되었습니다.`;
-        case "NOTICE_OVERDUE":
-            return `${item.project_stage_name} 지연이 초과되었습니다.`;
+            return `${item.project_stage_name} 단계가 다음의 이유로 지연되었습니다: \n ${item.trigger_context}`;
         case "NOTICE_REASON_MISSING":
             return `지연 사유를 입력해주세요.`;
-        case "NOTICE_NORMALIZED":
-            return `${item.project_stage_name} 단계가 정상화되었습니다.`;
         default:
             return "프로젝트 알림이 있습니다.";
     }

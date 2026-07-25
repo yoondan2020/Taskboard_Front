@@ -6,6 +6,7 @@ export type NotificationOut = {
     code: string;
     channel: string;
     triggered_at: string;
+    trigger_context: string;
     is_read: boolean;
     project_title?: string;
     project_stage_name?: string;
