@@ -8,7 +8,7 @@ import type { DetailProjectStage } from "./projectStage.types";
 export type CreateProjectDTO = {
   product_group_id: number;
   title: string;
-  thumbnail_url?: string;
+  thumbnail?: File | null;
   state_id: number;
   owner_id?: number;
   goal_due_date: string | null;
@@ -19,7 +19,7 @@ export type UpdateProjectDTO = {
   id?: number;
   product_group_id?: number;
   title?: string;
-  thumbnail_url?: string;
+  thumbnail?: File | null;
   state_id?: number;
   goal_due_date?: string | null;
   remark?: string;
@@ -40,7 +40,7 @@ export type ProjectStageSummaryDTO = {
   id: number;
   stage_name: string;
   state_name?: string;
-  planned_date?: string;
+  due_date?: string;
   stage_owner_name?: string;
 };
 

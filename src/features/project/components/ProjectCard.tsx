@@ -12,9 +12,9 @@ export default function ProjectCard({ project }: ProjectCardProps) {
         progress_total > 0 ? Math.round((progress_completed / progress_total) * 100) : 0;
 
     // 날짜 포맷팅
-    const formattedDate = project.current_stage?.planned_date
+    const formattedDate = project.current_stage?.due_date
         ? (() => {
-            const d = new Date(project.current_stage.planned_date);
+            const d = new Date(project.current_stage.due_date);
             const y = d.getFullYear();
             const m = String(d.getMonth() + 1).padStart(2, "0");
             const day = String(d.getDate()).padStart(2, "0");

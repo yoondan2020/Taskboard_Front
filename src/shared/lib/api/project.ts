@@ -10,8 +10,29 @@ const BASE = "/project";
 
 export const projectApi = {
     //Create
-    create: (payload: CreateProjectDTO) =>
-        request<ProjectOut>(BASE, { method: "POST", body: payload }),
+    create: (
+        payload: CreateProjectDTO,
+        thumbnail?: File
+    ) => {
+        const formData = new FormData();
+
+        formData.append(
+            "payload",
+            JSON.stringify(payload)
+        );
+
+        if (thumbnail) {
+            formData.append(
+                "thumbnail",
+                thumbnail
+            );
+        }
+
+        return request<ProjectOut>(BASE, {
+            method: "POST",
+            body: formData,
+        });
+    },
 
     //Read
     projectList: () => request<SummaryProjectDTO[]>(BASE),

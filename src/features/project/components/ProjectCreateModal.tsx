@@ -8,7 +8,7 @@ import { useProjectStore } from "@/features/project/store/project.store";
 import { useStageStore } from "@/features/admin/store/stage.store";
 import { useUserStore } from "@/features/user/store/user.store";
 import { type CreateProjectDTO } from "@/shared/types/project.types";
-import { type ProjectFormData } from "@/shared/types/projectFromData.types";
+import { type ProjectFormData } from "@/shared/types/projectFormData.types";
 
 type Props = {
     open: boolean;
@@ -46,7 +46,6 @@ export default function ProjectCreateModal({ open, onClose }: Props) {
     const [formData, setFormData] = useState<ProjectFormData>({
         product_group_id: "",
         title: "",
-        thumbnail_url: "",
         state_id: "",
         owner_id: "",
         goal_due_date: "",
@@ -65,7 +64,6 @@ export default function ProjectCreateModal({ open, onClose }: Props) {
         return {
             product_group_id: Number(formData.product_group_id),
             title: formData.title.trim(),
-            thumbnail_url: formData.thumbnail_url || undefined,
             state_id: Number(formData.state_id),
             owner_id: formData.owner_id ? Number(formData.owner_id) : undefined,
             goal_due_date: formData.goal_due_date || null,
@@ -74,20 +72,16 @@ export default function ProjectCreateModal({ open, onClose }: Props) {
     };
 
     // 썸네일
-    const handleThumbnailChange = async (
+    const handleThumbnailChange = (
         e: React.ChangeEvent<HTMLInputElement>
     ) => {
         const file = e.target.files?.[0];
         if (!file) return;
 
-        // TODO: 실제 업로드 로직으로 교체
-        const uploadedUrl = await fakeUpload(file);
-
-        handleChange("thumbnail_url", uploadedUrl);
-    };
-
-    const fakeUpload = async (file: File): Promise<string> => {
-        return URL.createObjectURL(file); // 임시 preview URL
+        setFormData((prev) => ({
+            ...prev,
+            thumbnail: file,
+        }));
     };
 
     useEffect(() => {
@@ -114,9 +108,13 @@ export default function ProjectCreateModal({ open, onClose }: Props) {
         }
 
         const dto = toCreateProjectDTO(formData);
-        await create(dto);
+        await create({
+            dto,
+            thumbnail: formData.thumbnail,
+        });
+
         onClose();
-    };
+    }
 
     return (
         <>
@@ -189,9 +187,9 @@ export default function ProjectCreateModal({ open, onClose }: Props) {
                                         document.getElementById("thumbnail-upload")?.click()
                                     }
                                 >
-                                    {formData.thumbnail_url ? (
+                                    {formData.thumbnail instanceof File ? (
                                         <img
-                                            src={formData.thumbnail_url}
+                                            src={URL.createObjectURL(formData.thumbnail)}
                                             className="w-full h-full object-cover rounded-lg"
                                         />
                                     ) : (

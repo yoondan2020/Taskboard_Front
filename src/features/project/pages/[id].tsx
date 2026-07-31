@@ -210,7 +210,17 @@ export default function ProjectDetailPage() {
                                 {/* Thumbnail */}
                                 <div className="space-y-2">
                                     <div className="font-bold text-3xl">{project.title}</div>
-                                    <div className="bg-gray-200 h-64 rounded-lg border"></div>
+                                    <div className="bg-gray-200 h-64 rounded-lg border">
+                                        {project.thumbnail_url ? (
+                                            <img
+                                                src={project.thumbnail_url}
+                                                alt={project.title}
+                                                className="w-full h-full object-contain"
+                                            />
+                                        ) : (
+                                            <div className="w-full h-full bg-gray-200" />
+                                        )}
+                                    </div>
                                 </div>
 
                                 {/* Project Info */}

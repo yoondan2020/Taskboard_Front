@@ -8,20 +8,30 @@ function getAccessToken() {
 
 export async function request<T>(
   path: string,
-  options: { method?: HttpMethod; body?: unknown; headers?: Record<string, string> } = {}
+  options: {
+    method?: HttpMethod;
+    body?: unknown;
+    headers?: Record<string, string>
+  } = {}
 ): Promise<T> {
   const { method = "GET", body, headers = {} } = options;
 
   const token = getAccessToken();
 
+  const isFormData = body instanceof FormData;
+
   const res = await fetch(`${BASE_URL}${path}`, {
     method,
     headers: {
-      "Content-Type": "application/json",
+      ...(isFormData ? {} : { "Content-Type": "application/json" }),
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...headers, // 호출부에서 Authorization을 덮어쓸 수도 있게 뒤에 둠
     },
-    body: body ? JSON.stringify(body) : undefined,
+    body: body
+      ? isFormData
+        ? body
+        : JSON.stringify(body)
+      : undefined,
   });
 
   if (res.status === 401) {

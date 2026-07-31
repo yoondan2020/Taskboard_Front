@@ -46,7 +46,12 @@ type State = {
     setMyPageFilters: (patch: Partial<ProjectFilters>) => void;
     getMyPageFilteredProjectSummary: () => SummaryProjectDTO[];
 
-    create: (data: CreateProjectDTO) => Promise<void>;
+    create: (
+        data: {
+            dto: CreateProjectDTO;
+            thumbnail?: File;
+        }
+    ) => Promise<void>;
 
     fetchProjectSummary: () => Promise<void>;
     fetchDetail: (id: number) => Promise<void>; // 디테일
@@ -178,11 +183,15 @@ export const useProjectStore = create<State>((set, get) => ({
         return list;
     },
 
-    create: async (data) => {
-        log("[API] createProject payload:", data);
+    create: async ({
+        dto,
+        thumbnail,
+    }) => {
+        log("[API] createProject payload:", dto);
         set({ loading: true, error: null });
         try {
-            await projectApi.create(data);
+            await projectApi.create(dto,
+                thumbnail);
             const projectSummary = await projectApi.projectList();
             set({ projectSummary });
         } catch (e: any) {
