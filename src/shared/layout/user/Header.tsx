@@ -3,7 +3,7 @@ import { BellIcon } from "@/shared/components/icons/BellIcon";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import MyPageModal from "@/features/user/components/MyPageModal";
-import NotificationModal from "@/features/notification/components/notificationModal";
+import NotificationModal from "@/features/notification/components/NotificationModal";
 import { useUserStore } from "@/features/user/store/user.store";
 import { useAuthStore } from "@/features/auth/store/auth.store";
 

@@ -20,6 +20,7 @@ export type UpdateProjectDTO = {
   product_group_id?: number;
   title?: string;
   thumbnail?: File | null;
+  thumbnail_url: string;
   state_id?: number;
   goal_due_date?: string | null;
   remark?: string;

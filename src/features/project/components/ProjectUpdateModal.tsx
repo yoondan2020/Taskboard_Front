@@ -17,6 +17,7 @@ type Props = {
 type FormData = {
     product_group_id: string;
     title: string;
+    thumbnail: File | null;
     thumbnail_url: string;
     state_id: string;
     goal_due_date: string;
@@ -41,6 +42,7 @@ export default function ProjectUpdateModal({ id, open, onClose }: Props) {
     const [formData, setFormData] = useState<FormData>({
         product_group_id: "",
         title: "",
+        thumbnail: null,
         thumbnail_url: "",
         state_id: "",
         goal_due_date: "",
@@ -62,6 +64,7 @@ export default function ProjectUpdateModal({ id, open, onClose }: Props) {
         setFormData({
             product_group_id: String(updateFormData.product_group_id ?? ""),
             title: updateFormData.title ?? "",
+            thumbnail: null,
             thumbnail_url: updateFormData.thumbnail_url ?? "",
             state_id: String(updateFormData.state_id ?? ""),
             goal_due_date: updateFormData.goal_due_date ?? "",
@@ -98,7 +101,8 @@ export default function ProjectUpdateModal({ id, open, onClose }: Props) {
         id: updateFormData?.id!,
         product_group_id: Number(data.product_group_id),
         title: data.title.trim(),
-        thumbnail_url: data.thumbnail_url || undefined,
+        thumbnail: data.thumbnail || undefined,
+        thumbnail_url: data.thumbnail_url,
         state_id: Number(data.state_id),
         goal_due_date: data.goal_due_date || null,
         remark: data.remark || undefined,
@@ -109,13 +113,14 @@ export default function ProjectUpdateModal({ id, open, onClose }: Props) {
         owner_id: data.owner_id === "" ? null : Number(data.owner_id),
     });
 
-    const fakeUpload = async (file: File): Promise<string> => URL.createObjectURL(file);
-
     const handleThumbnailChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
-        const uploadedUrl = await fakeUpload(file);
-        handleChange("thumbnail_url", uploadedUrl);
+
+        setFormData((prev) => ({
+            ...prev,
+            thumbnail: file,
+        }));
     };
 
     // 변경 여부 체크
@@ -178,7 +183,13 @@ export default function ProjectUpdateModal({ id, open, onClose }: Props) {
                                         border-black rounded-lg text-gray-400 mb-3 cursor-pointer"
                                 onClick={() => document.getElementById("thumbnail-upload")?.click()}
                             >
-                                {formData.thumbnail_url ? (
+                                {formData.thumbnail ? (
+                                    <img
+                                        src={URL.createObjectURL(formData.thumbnail)}
+                                        className="w-full h-full object-cover rounded-lg"
+                                        alt="thumbnail"
+                                    />
+                                ) : formData.thumbnail_url ? (
                                     <img
                                         src={formData.thumbnail_url}
                                         className="w-full h-full object-cover rounded-lg"
