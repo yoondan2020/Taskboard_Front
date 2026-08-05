@@ -37,28 +37,28 @@ export default function LoginPage({ onFindPassword }: Props) {
                     <div className="space-y-5 text-end px-10">
                         <div>
                             <p> <span className="font-bold"> 관리자</span> ID/PW </p>
-                            <p>admin@lab.com </p>
+                            <p>admin@example.com </p>
                             <p>admin1234 </p>
                         </div>
                         <div>
-                            <p> <span className="font-bold">LAB_HEAD </span> ID/PW</p>
-                            <p>head@lab.com</p>
-                            <p>head1234</p>
+                            <p> <span className="font-bold">김철수</span> ID/PW</p>
+                            <p>kim@example.com</p>
+                            <p>user1234</p>
                         </div>
                         <div>
-                            <p> <span className="font-bold">Member1</span> ID/PW</p>
-                            <p>member1@lab.com</p>
-                            <p>member1234</p>
+                            <p> <span className="font-bold">이영희</span> ID/PW</p>
+                            <p>lee@example.com</p>
+                            <p>user1234</p>
                         </div>
                         <div>
-                            <p> <span className="font-bold">Member2</span> ID/PW</p>
-                            <p>member2@lab.com</p>
-                            <p>member1234</p>
+                            <p> <span className="font-bold">박민수</span> ID/PW</p>
+                            <p>park@example.com</p>
+                            <p>user1234</p>
                         </div>
                         <div>
-                            <p> <span className="font-bold">Member3</span> ID/PW</p>
-                            <p>member3@lab.com</p>
-                            <p>member1234</p>
+                            <p> <span className="font-bold">최지우</span> ID/PW</p>
+                            <p>choi@example.com</p>
+                            <p>user1234</p>
                         </div>
                     </div>
                 </div>
