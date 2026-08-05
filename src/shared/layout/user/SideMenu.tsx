@@ -99,7 +99,7 @@ export default function SideMenu({ projectCount, urgentProjectCount }: Props) {
                 <div className="flex-shrink-0">
                     <Calendar
                         className="react-calendar"
-                        formatDay={(locale, date) => date.getDate().toString()}
+                        formatDay={(_, date) => date.getDate().toString()}
                         onChange={handleDateChange}
                         value={selectedDate}
                     />
