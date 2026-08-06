@@ -15,13 +15,13 @@ type Props = {
 };
 
 type FormData = {
-    product_group_id: string;
+    product_group_id: number;
     title: string;
-    thumbnail: File | null;
     thumbnail_url: string;
-    state_id: string;
+    thumbnail: File | null;
+    state_id: number;
     goal_due_date: string;
-    owner_id: string;
+    owner_id: number;
     remark: string;
 };
 
@@ -37,18 +37,7 @@ export default function ProjectUpdateModal({ id, open, onClose }: Props) {
     const updateProject = useProjectStore((s) => s.update);
     const changeOwner = useProjectStore((s) => s.changeOwner);
     const fetchUpdateForm = useProjectStore((s) => s.fetchUpdateForm);
-    const updateFormData = useProjectStore((s) => s.updateFormData);
-
-    const [formData, setFormData] = useState<FormData>({
-        product_group_id: "",
-        title: "",
-        thumbnail: null,
-        thumbnail_url: "",
-        state_id: "",
-        goal_due_date: "",
-        owner_id: "",
-        remark: "",
-    });
+    const projectData = useProjectStore((s) => s.projectData);
 
     useEffect(() => {
         if (!open) return;
@@ -58,23 +47,42 @@ export default function ProjectUpdateModal({ id, open, onClose }: Props) {
         fetchUpdateForm(id);
     }, [open, id, fetchProjectGroup, fetchState, fetchUser, fetchUpdateForm]);
 
+    // 폼 데이터
+    const [formData, setFormData] = useState<FormData>({
+        product_group_id: 0,
+        title: "",
+        state_id: 0,
+        thumbnail_url: "",
+        thumbnail: null,
+        goal_due_date: "",
+        owner_id: 0,
+        remark: "",
+    });
+
+    // 화면 렌더링 -> 변화 시 사용자의 데이터로
     useEffect(() => {
-        if (!updateFormData) return;
-
+        if (!projectData) return;
         setFormData({
-            product_group_id: String(updateFormData.product_group_id ?? ""),
-            title: updateFormData.title ?? "",
-            thumbnail: null,
-            thumbnail_url: updateFormData.thumbnail_url ?? "",
-            state_id: String(updateFormData.state_id ?? ""),
-            goal_due_date: updateFormData.goal_due_date ?? "",
-            owner_id: String(updateFormData.owner_id ?? ""),
-            remark: updateFormData.remark ?? "",
+            product_group_id: Number(projectData.product_group_id ?? ""),
+            title: projectData.title ?? "",
+            state_id: Number(projectData.state_id ?? ""),
+            goal_due_date: projectData.goal_due_date ?? "",
+            thumbnail_url: String(projectData.thumbnail_url),
+            thumbnail: formData.thumbnail,
+            owner_id: Number(projectData.owner_id ?? ""),
+            remark: projectData.remark ?? "",
         });
-    }, [updateFormData]);
+        console.log("[useEffect setFormData]", formData);
+    }, [projectData]);
 
-    const handleChange = (key: keyof FormData, value: string) => {
-        setFormData((prev) => ({ ...prev, [key]: value }));
+    const handleChange = <K extends keyof FormData>(
+        key: K,
+        value: FormData[K]
+    ) => {
+        setFormData((prev) => ({
+            ...prev,
+            [key]: value,
+        }));
     };
 
     const productGroupItems = useMemo(
@@ -96,24 +104,20 @@ export default function ProjectUpdateModal({ id, open, onClose }: Props) {
         [users]
     );
 
-    // DTO 변환 
-    const toUpdateProjectDTO = (data: FormData): UpdateProjectDTO => ({
-        id: updateFormData?.id!,
-        product_group_id: Number(data.product_group_id),
-        title: data.title.trim(),
-        thumbnail: data.thumbnail || undefined,
-        thumbnail_url: data.thumbnail_url,
-        state_id: Number(data.state_id),
-        goal_due_date: data.goal_due_date || null,
-        remark: data.remark || undefined,
-    });
 
     // 담당자 변경 DTO
     const toUpdateOwnerDTO = (data: FormData) => ({
-        owner_id: data.owner_id === "" ? null : Number(data.owner_id),
+        owner_id: data.owner_id,
     });
 
-    const handleThumbnailChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    // 변경 여부 체크
+    const ownerChanged =
+        Number(projectData?.owner_id ?? "") !== formData.owner_id;
+
+    // 썸네일 
+    const handleThumbnailChange = async (
+        e: React.ChangeEvent<HTMLInputElement>
+    ) => {
         const file = e.target.files?.[0];
         if (!file) return;
 
@@ -123,129 +127,156 @@ export default function ProjectUpdateModal({ id, open, onClose }: Props) {
         }));
     };
 
-    // 변경 여부 체크
-    const ownerChanged =
-        String(updateFormData?.owner_id ?? "") !== formData.owner_id;
+    // DTO 변환 
+    const toUpdateProjectDTO = (data: FormData): UpdateProjectDTO => ({
+        product_group_id: Number(data.product_group_id),
+        title: data.title.trim(),
+        state_id: Number(data.state_id),
+        goal_due_date: data.goal_due_date || null,
+        remark: data.remark || undefined,
+    });
+
+    // 수정 버튼 클릭 핸들어
+    const handelUpdate = async () => {
+        // 담당자 수정
+        if (ownerChanged) {
+            await changeOwner(Number(projectData?.id), toUpdateOwnerDTO(formData));
+        }
+        // 일반
+        const dto = toUpdateProjectDTO(formData);
+        await updateProject(Number(projectData?.id), {
+            dto,
+            thumbnail: formData.thumbnail ?? undefined,
+        });
+    }
 
     if (!open) return null;
+    if (!projectData) return null;
+
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
-            <div className="absolute inset-0 bg-black/40" onClick={onClose} />
+        <>
+            <div className="fixed inset-0 z-50 flex items-center justify-center">
+                <div className="absolute inset-0 bg-black/40" onClick={onClose} />
 
-            <div className="relative w-[900px] max-h-[80vh] bg-white shadow-lg rounded-lg overflow-hidden">
-                <div className="w-full flex items-center justify-between px-6 py-3 text-black border-b">
-                    <h1 className="text-xl">프로젝트 수정</h1>
-                    <button className="cursor-pointer" onClick={onClose}>✕</button>
-                </div>
-
-                <div className="px-10 py-6 flex flex-col gap-5 overflow-y-auto max-h-[65vh]">
-                    <div className="flex gap-10">
-                        <div className="flex-1 flex flex-col gap-3">
-                            <Input
-                                label="프로젝트명"
-                                placeholder="프로젝트명"
-                                value={formData.title}
-                                type="text"
-                                onChange={(value) => handleChange("title", value)}
-                            />
-                            <Select
-                                label="프로젝트 구분"
-                                items={productGroupItems}
-                                value={formData.product_group_id}
-                                onChange={(value) => handleChange("product_group_id", value)}
-                            />
-                            <Select
-                                label="진행 상태"
-                                items={stateItems}
-                                value={formData.state_id}
-                                onChange={(value) => handleChange("state_id", value)}
-                            />
-                            <Input
-                                label="목표일"
-                                type="date"
-                                value={formData.goal_due_date}
-                                onChange={(value) => handleChange("goal_due_date", value)}
-                            />
-                        </div>
-
-                        <div className="flex flex-col flex-1">
-                            <label className="block mb-2">프로젝트 대표 이미지</label>
-                            <input
-                                type="file"
-                                accept="image/*"
-                                className="hidden"
-                                id="thumbnail-upload"
-                                onChange={handleThumbnailChange}
-                            />
-                            <div
-                                className="flex flex-1 items-center justify-center border-1 
-                                        border-black rounded-lg text-gray-400 mb-3 cursor-pointer"
-                                onClick={() => document.getElementById("thumbnail-upload")?.click()}
-                            >
-                                {formData.thumbnail ? (
-                                    <img
-                                        src={URL.createObjectURL(formData.thumbnail)}
-                                        className="w-full h-full object-cover rounded-lg"
-                                        alt="thumbnail"
-                                    />
-                                ) : formData.thumbnail_url ? (
-                                    <img
-                                        src={formData.thumbnail_url}
-                                        className="w-full h-full object-cover rounded-lg"
-                                        alt="thumbnail"
-                                    />
-                                ) : (
-                                    <span>클릭 또는 드래그하여 업로드</span>
-                                )}
-                            </div>
-
-                            <Select
-                                label="담당자"
-                                items={userItems}
-                                value={formData.owner_id}
-                                onChange={(value) => handleChange("owner_id", value)}
-                            />
-                        </div>
+                <div className="relative w-[900px] max-h-[80vh] bg-white shadow-lg rounded-lg overflow-hidden">
+                    <div className="w-full flex items-center justify-between px-6 py-3 text-black border-b">
+                        <h1 className="text-xl">프로젝트 수정</h1>
+                        <button className="cursor-pointer" onClick={onClose}>✕</button>
                     </div>
 
-                    <Textarea
-                        label="프로젝트 개요, 상세 내용, 비고란"
-                        value={formData.remark}
-                        onChange={(value) => handleChange("remark", value)}
-                    />
+                    <div className="px-10 py-6 flex flex-col gap-5 overflow-y-auto max-h-[65vh]">
+                        <div className="flex gap-10">
+                            <div className="flex-1 flex flex-col gap-3">
+                                <Input
+                                    label="프로젝트명"
+                                    placeholder="프로젝트명"
+                                    value={formData.title}
+                                    type="text"
+                                    onChange={(value) => handleChange("title", value)}
+                                />
+                                <Select
+                                    label="프로젝트 구분"
+                                    items={productGroupItems}
+                                    value={String(formData.product_group_id)}
+                                    onChange={(value) => handleChange("product_group_id", Number(value))}
+                                />
+                                <Select
+                                    label="진행 상태"
+                                    items={stateItems}
+                                    value={String(formData.state_id)}
+                                    onChange={(value) => handleChange("state_id", Number(value))}
+                                />
+                                <Input
+                                    label="목표일"
+                                    type="date"
+                                    value={String(formData.goal_due_date)}
+                                    onChange={(value) => handleChange("goal_due_date", value)}
+                                />
+                            </div>
 
-                    <div className="flex items-center justify-end">
-                        <div className="flex gap-2">
-                            <button onClick={onClose} className="px-7 py-1 rounded-xl border-1 hover:bg-gray-800 hover:text-white cursor-pointer">
-                                취소
-                            </button>
+                            <div className="flex flex-col flex-1">
+                                <label className="block mb-2">프로젝트 대표 이미지</label>
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    className="hidden"
+                                    id="thumbnail-upload"
+                                    onChange={handleThumbnailChange}
+                                />
+                                {/* <div
+                                    className="flex flex-1 items-center justify-center border-1 
+                                        border-black rounded-lg text-gray-400 mb-3 cursor-pointer"
+                                    onClick={() => document.getElementById("thumbnail-upload")?.click()}
+                                >
+                                    {formData.thumbnail_url ? (
+                                        <img
+                                            src={formData.thumbnail_url}
+                                            className="w-full h-full object-cover rounded-lg"
+                                            alt="thumbnail"
+                                        />
+                                    ) : (
+                                        <span>클릭 또는 드래그하여 업로드</span>
+                                    )}
+                                </div> */}
+                                <div
+                                    className="flex flex-1 items-center justify-center border-1 
+                                        border-black rounded-lg text-gray-400 mb-3 cursor-pointer"
+                                    onClick={() => document.getElementById("thumbnail-upload")?.click()}
+                                >
+                                    {formData.thumbnail instanceof File ? (
+                                        <img
+                                            src={URL.createObjectURL(formData.thumbnail)}
+                                            className="w-full h-full object-cover rounded-lg"
+                                            alt="thumbnail"
+                                        />
+                                    ) : formData.thumbnail_url ? (
+                                        <img
+                                            src={formData.thumbnail_url}
+                                            className="w-full h-full object-cover rounded-lg"
+                                            alt="thumbnail"
+                                        />
+                                    ) : (
+                                        <span>클릭 또는 드래그하여 업로드</span>
+                                    )}
+                                </div>
 
-                            <button
-                                className="px-7 rounded-xl border-1 border-primary text-white bg-primary hover:bg-primary-dark hover:text-white cursor-pointer"
-                                onClick={async () => {
-                                    if (!updateFormData?.id) return;
+                                <Select
+                                    label="담당자"
+                                    items={userItems}
+                                    value={String(projectData.owner_id)}
+                                    onChange={(value) => handleChange("owner_id", Number(value))}
+                                />
+                            </div>
+                        </div>
 
-                                    const projectId = updateFormData.id;
+                        <Textarea
+                            label="프로젝트 개요, 상세 내용, 비고란"
+                            value={String(projectData.remark)}
+                            onChange={(value) => handleChange("remark", value)}
+                        />
 
-                                    // 1) 일반 수정
-                                    const dto = toUpdateProjectDTO(formData);
-                                    await updateProject(projectId, dto);
+                        <div className="flex items-center justify-end">
+                            <div className="flex gap-2">
+                                <button onClick={onClose} className="px-7 py-1 rounded-xl border-1 hover:bg-gray-800 hover:text-white cursor-pointer">
+                                    취소
+                                </button>
 
-                                    // 2) 담당자 수정(분리 엔드포인트) — 변경된 경우만
-                                    if (ownerChanged) {
-                                        await changeOwner(projectId, toUpdateOwnerDTO(formData));
-                                    }
-
-                                    onClose();
-                                }}
-                            >
-                                수정
-                            </button>
+                                <button
+                                    className="px-7 rounded-xl border-1 border-primary text-white bg-primary hover:bg-primary-dark hover:text-white cursor-pointer"
+                                    onClick={async () => {
+                                        if (!projectData?.id) return;
+                                        handelUpdate();
+                                        onClose();
+                                    }}
+                                >
+                                    수정
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 }

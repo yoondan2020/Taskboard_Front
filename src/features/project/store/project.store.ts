@@ -5,6 +5,7 @@ import { projectApi, } from "@/shared/lib/api/project";
 import type {
     CreateProjectDTO,
     UpdateProjectDTO,
+    ProjectDTO,
     ProjectOut,
     DetailProject,
     SummaryProjectDTO,
@@ -35,7 +36,7 @@ type State = {
     deadlineProjects: SummaryProjectDTO[];  // 특정 날짜 마감 프로젝트
     selectedDate: Date;  // 선택된 날짜
 
-    updateFormData: UpdateProjectDTO | null;
+    projectData: ProjectDTO | null;
     loading: boolean;
     error: string | null;
     filters: ProjectFilters;
@@ -66,7 +67,11 @@ type State = {
     fetchUrgentProjectsCount: () => Promise<void>;
     fetchUrgentProjects: () => Promise<void>;
 
-    update: (id: number, data: UpdateProjectDTO) => Promise<void>;
+    update: (id: number, data: {
+        dto: UpdateProjectDTO;
+        thumbnail?: File;
+    }) => Promise<void>;
+
     changeOwner: (id: number, data: ChangeProjectOwnerDTO) => Promise<void>;
     delete: (id: number) => Promise<void>;
 
@@ -83,7 +88,7 @@ export const useProjectStore = create<State>((set, get) => ({
     urgentProjects: [],
     deadlineProjects: [],
     selectedDate: new Date(),
-    updateFormData: null,
+    projectData: null,
     loading: false,
     error: null,
 
@@ -255,12 +260,13 @@ export const useProjectStore = create<State>((set, get) => ({
         }
     },
 
+    // 수정 모달 정보 가져오기
     fetchUpdateForm: async (id) => {
         set({ loading: true, error: null });
         try {
             const data = await projectApi.fetchUpdateForm(id);
             log("[API] fetchUpdateForm data:", data);
-            set({ updateFormData: data });
+            set({ projectData: data });
         } catch (e: any) {
             set({ error: e?.message ?? String(e) });
         } finally {
@@ -312,11 +318,11 @@ export const useProjectStore = create<State>((set, get) => ({
         }
     },
 
-    update: async (id, data) => {
-        log("[API] updateProject payload:", data);
+    update: async (id, { dto, thumbnail }) => {
+        log("[API] updateProject payload:", dto);
         set({ loading: true, error: null });
         try {
-            await projectApi.update(id, data);
+            await projectApi.update(id, dto, thumbnail);
             const projectSummary = await projectApi.projectList();
             set({ projectSummary });
         } catch (e: any) {

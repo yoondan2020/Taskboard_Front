@@ -4,6 +4,16 @@ import type { DetailProjectStage } from "./projectStage.types";
 /* =========================
  * Create / Update
  * ========================= */
+export type ProjectDTO = {
+  id?: number;
+  title?: string;
+  thumbnail_url?: string;
+  goal_due_date?: string | null;
+  remark?: string;
+  owner_id?: number | null;
+  product_group_id?: number;
+  state_id?: number;
+}
 
 export type CreateProjectDTO = {
   product_group_id: number;
@@ -16,11 +26,8 @@ export type CreateProjectDTO = {
 };
 
 export type UpdateProjectDTO = {
-  id?: number;
-  product_group_id?: number;
   title?: string;
-  thumbnail?: File | null;
-  thumbnail_url: string;
+  product_group_id?: number;
   state_id?: number;
   goal_due_date?: string | null;
   remark?: string;

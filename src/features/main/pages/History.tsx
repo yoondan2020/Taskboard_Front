@@ -174,13 +174,13 @@ export default function History() {
                     <table className="w-full border-collapse">
                         <thead className="bg-gray-50 border-b border-gray-400">
                             <tr className="text-xs font-medium text-gray-500">
-                                <th className="pl-5 pr-2 py-3 text-left">이벤트</th>
-                                <th className="px-2 py-3 text-left">변경 항목</th>
-                                <th className="px-2 py-3 text-left">변경 전</th>
-                                <th className="px-2 py-3 text-left">변경 후</th>
-                                <th className="px-2 py-3 text-left">변경 사유</th>
-                                <th className="px-2 py-3 text-left">변경자</th>
-                                <th className="pl-2 pr-5 py-3 text-right"></th>
+                                <th className="pl-5 pr-2 py-3 text-left whitespace-nowrap">이벤트</th>
+                                <th className="px-2 py-3 text-left whitespace-nowrap">변경 항목</th>
+                                <th className="px-2 py-3 text-left whitespace-nowrap">변경 전</th>
+                                <th className="px-2 py-3 text-left whitespace-nowrap">변경 후</th>
+                                <th className="px-2 py-3 text-left whitespace-nowrap">변경 사유</th>
+                                <th className="px-2 py-3 text-left whitespace-nowrap">변경자</th>
+                                <th className="pl-2 pr-5 py-3 text-left whitespace-nowrap">변경 시간</th>
                             </tr>
                         </thead>
 
@@ -207,13 +207,13 @@ export default function History() {
                                     </td>
 
                                     {/* 변경 전 */}
-                                    <td className="px-2 py-3 text-xs text-left whitespace-nowrap">
+                                    <td className="px-2 py-3 text-xs text-left whitespace-wrap">
                                         <span className="mr-1">
                                             {history.old_value ?? "-"}
                                         </span>
                                     </td>
                                     {/* 변경 후 */}
-                                    <td className="px-2 py-3 text-xs text-left whitespace-nowrap">
+                                    <td className="px-2 py-3 text-xs text-left whitespace-wrap">
                                         <span className=" mr-1">
                                             {history.new_value ?? "-"}
                                         </span>

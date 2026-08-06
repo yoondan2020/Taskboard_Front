@@ -57,8 +57,22 @@ export const projectApi = {
         request<SummaryProjectDTO[]>(`${BASE}/deadline?date=${date}`, { method: "GET" }),
 
     //Update
-    update: (id: number, payload: UpdateProjectDTO) =>
-        request<ProjectOut>(`${BASE}/${id}`, { method: "PATCH", body: payload }),
+    update: (id: number, payload: UpdateProjectDTO, thumbnail?: File) => {
+        const formData = new FormData();
+
+        formData.append(
+            "payload",
+            JSON.stringify(payload)
+        );
+
+        if (thumbnail) {
+            formData.append(
+                "thumbnail",
+                thumbnail
+            );
+        }
+        return request<ProjectOut>(`${BASE}/${id}`, { method: "PATCH", body: formData });
+    },
 
     fetchUpdateForm: (id: number) =>
         request<UpdateProjectDTO>(`${BASE}/${id}/update`, { method: "GET" }),
