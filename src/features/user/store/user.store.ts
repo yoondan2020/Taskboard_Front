@@ -1,7 +1,8 @@
 import { create } from "zustand";
 import { userApi } from "@/shared/lib/api/user";
 import type { Me } from "@/shared/types/user.types";
-import { log } from "@/shared/lib/log"; 
+import { log } from "@/shared/lib/log";
+import { useAuthStore } from "@/features/auth/store/auth.store";
 
 type State = {
     items: Me[];
@@ -28,6 +29,7 @@ export const useUserStore = create<State>((set) => ({
             const data = await userApi.me();
             log("user store - fetchMe", data);
             set({ me: data });
+            useAuthStore.getState().setUser(data);
         } catch (e: any) {
             set({ error: e?.message ?? String(e) });
         } finally {
