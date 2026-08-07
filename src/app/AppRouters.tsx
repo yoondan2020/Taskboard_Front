@@ -35,15 +35,11 @@ function ProtectedLayout({ children }: ProtectedLayoutProps) {
 }
 
 export default function AppRoutes() {
-    console.log("AppRoutes render");
     const user = useAuthStore((state) => state.user);
     const accessToken = localStorage.getItem("access_token");
     const navigation = useNavigate()
     const fetchMe = useUserStore((s) => s.fetchMe);
     const location = useLocation();
-
-    console.log("user", user);
-    console.log("path", location.pathname);
 
     useEffect(() => {
         if (accessToken && !user) {
