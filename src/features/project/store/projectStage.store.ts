@@ -12,6 +12,7 @@ import { log } from "@/shared/lib/log";
 
 type State = {
   items: DetailProjectStage[];
+  item: UpdateProjectStage | null;
   loading: boolean;
   error: string | null;
 
@@ -34,6 +35,7 @@ type State = {
 
 export const useProjectStageStore = create<State>((set) => ({
   items: [],
+  item: null,
   loading: false,
   error: null,
 
@@ -56,22 +58,22 @@ export const useProjectStageStore = create<State>((set) => ({
   fetchDetail: async (projectId, stageId) => {
     set({ loading: true, error: null });
     try {
-        const detail = await projectStageApi.projectStageDetail(
-            projectId,
-            stageId
-        );
-
-        set((state) => ({
-            items: [
-            ...state.items.filter((item) => item.id !== stageId),
-            detail,
-            ],
-        }));
-        log("[API] fetchDetasil", detail);
+      const detail = await projectStageApi.projectStageDetail(
+        projectId,
+        stageId
+      );
+      set((state) => ({
+        items: [
+          ...state.items.filter((item) => item.id !== stageId),
+          detail,
+        ],
+      }));
+      set({ item: detail });
+      log("[API] fetchDetail", detail);
     } catch (e: any) {
-        set({ error: e.message ?? "Fetch failed" });
+      set({ error: e.message ?? "Fetch failed" });
     } finally {
-        set({ loading: false });
+      set({ loading: false });
     }
   },
 
@@ -79,27 +81,27 @@ export const useProjectStageStore = create<State>((set) => ({
     set({ loading: true, error: null });
     try {
       log("[API] update", data);
-        await projectStageApi.update(projectId, stageId, data);
-        await useProjectStore.getState().fetchDetail(projectId);
+      await projectStageApi.update(projectId, stageId, data);
+      await useProjectStore.getState().fetchDetail(projectId);
     } catch (e: any) {
-        set({ error: e.message ?? "Update failed" });
+      set({ error: e.message ?? "Update failed" });
     } finally {
-        set({ loading: false });
+      set({ loading: false });
     }
   },
-  
+
   changeOwner: async (projectId, stageId, ownerId) => {
     set({ loading: true, error: null });
     try {
       log("[API] changeOwner", ownerId);
-        await projectStageApi.changeOwner(projectId, stageId, {
-            stage_owner_id: ownerId,
-        });
-        await useProjectStore.getState().fetchDetail(projectId);
+      await projectStageApi.changeOwner(projectId, stageId, {
+        stage_owner_id: ownerId,
+      });
+      await useProjectStore.getState().fetchDetail(projectId);
     } catch (e: any) {
-        set({ error: e.message ?? "Change owner failed" });
+      set({ error: e.message ?? "Change owner failed" });
     } finally {
-        set({ loading: false });
+      set({ loading: false });
     }
   },
 
@@ -107,12 +109,12 @@ export const useProjectStageStore = create<State>((set) => ({
     set({ loading: true, error: null });
     try {
       log("[API] delete projectId/stageId", projectId, stageId);
-        await projectStageApi.delete(projectId, stageId);
-        await useProjectStore.getState().fetchDetail(projectId);
+      await projectStageApi.delete(projectId, stageId);
+      await useProjectStore.getState().fetchDetail(projectId);
     } catch (e: any) {
-        set({ error: e.message ?? "Delete failed" });
+      set({ error: e.message ?? "Delete failed" });
     } finally {
-        set({ loading: false });
+      set({ loading: false });
     }
   },
 }));

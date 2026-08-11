@@ -12,3 +12,8 @@ export type NotificationOut = {
     project_stage_name?: string;
     message?: string;
 }
+
+export type NotiData = {
+    projectId: number;
+    stageId?: number;
+}

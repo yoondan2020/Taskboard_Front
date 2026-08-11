@@ -31,6 +31,7 @@ export interface ProjectStageOut {
 }
 
 export interface UpdateProjectStage {
+  name?: string;
   stage_id?: number;
   state_id?: number;
 
@@ -41,7 +42,7 @@ export interface UpdateProjectStage {
   note?: string;
   remark?: string;
 
-  eta_change_reason?: string;          // 변경 사유
+  change_reason?: string;          // 변경 사유
 }
 
 export interface ChangeProjectStageOwner {

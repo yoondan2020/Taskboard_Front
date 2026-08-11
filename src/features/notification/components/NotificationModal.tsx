@@ -1,9 +1,10 @@
 // src/features/notification/components/NotificationModal.tsx
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import type { NotificationOut } from "@/shared/types/notification.types";
+import type { NotificationOut, NotiData } from "@/shared/types/notification.types";
 import { useNotificationStore } from "../store/notifications.store";
-
+import { log } from "@/shared/lib/log";
+import MissingReasonModal from "@/features/notification/components/MissingReasonModal";
 
 type Props = {
     open: boolean;
@@ -59,10 +60,28 @@ export default function NotificationModal({
     const fetch = useNotificationStore((s) => s.fetch);
     const notifications = useNotificationStore((s) => s.items);
 
+    // 사유 입력 모달
+    const [openReasonModal, setOpenReasonModal] = useState(false);
+    const [notiData, setNotiData] = useState<NotiData | null>(null);
+
+    const handleReasonModal = (noti: NotificationOut) => {
+        if (noti.code === "NOTICE_REASON_MISSING") {
+
+            setNotiData({
+                projectId: noti.project_id,
+                stageId: noti.project_stage_id,
+            });
+            log("[handleReasonModal], 노티 확인", notiData);
+            setOpenReasonModal(true);
+        }
+    };
+
+    ////
     useEffect(() => {
         if (!open) {
             setActive("all");
             setQuery("");
+            setOpenReasonModal(false);
         }
         fetch();
     }, [open]);
@@ -99,7 +118,6 @@ export default function NotificationModal({
         }
         return base;
     }, [notifications, active, query]);
-    if (!open) return null;
 
     const handleRead = async (notification: NotificationOut) => {
         console.log("notification:", notification);
@@ -107,6 +125,7 @@ export default function NotificationModal({
         onRead?.(notification.notification_id);
     }
 
+    if (!open) return null;
     return (
         <div
             className="fixed inset-0 z-50 flex items-center justify-center"
@@ -116,6 +135,12 @@ export default function NotificationModal({
                 }
             }}
         >
+            <div className="relative z-[70]">
+                <MissingReasonModal
+                    open={openReasonModal}
+                    onClose={() => setOpenReasonModal(false)}
+                    notiData={notiData} />
+            </div>
             <div className="absolute inset-0 bg-black/40" />
             <div className="
                 relative
@@ -281,7 +306,7 @@ export default function NotificationModal({
                                 표시할 알림이 없습니다.
                             </div>
                         ) : (
-                            <div className="space-y-3">
+                            <div className="space-y-3 pointer">
                                 {filteredNotifications.map((notification) => (
                                     <NotificationCard
                                         key={notification.id}
@@ -290,8 +315,12 @@ export default function NotificationModal({
                                             if (!notification.is_read) {
                                                 await handleRead(notification)
                                             }
-                                            navigate(`/project/${notification.project_id}`);
-                                            onClose();
+                                            if (notification.code == 'NOTICE_REASON_MISSING') {
+                                                handleReasonModal(notification);
+                                            } else {
+                                                navigate(`/project/${notification.project_id}`);
+                                                onClose();
+                                            }
                                         }}
                                         onRead={() => handleRead(notification)}
                                     />
@@ -419,11 +448,11 @@ function NotificationCard({
 function getNotificationMessage(item: NotificationOut) {
     switch (item.code) {
         case "NOTICE_DEADLINE":
-            return `${item.project_stage_name} 단계의 마감일이 다가왔습니다.`;
+            return `[${item.project_stage_name}] 단계의 마감일이 다가왔습니다.`;
         case "NOTICE_SCHEDULE_UPDATED":
-            return `${item.project_stage_name} 일정이 변경되었습니다.`;
+            return `[${item.project_stage_name}] 일정이 변경되었습니다.`;
         case "NOTICE_DELAY":
-            return `${item.project_stage_name} 단계가 다음의 이유로 지연되었습니다: \n ${item.trigger_context}`;
+            return `[${item.project_stage_name}] 단계가 다음의 이유로 지연되었습니다: \n ${item.trigger_context}`;
         case "NOTICE_REASON_MISSING":
             return `지연 사유를 입력해주세요.`;
         default:
