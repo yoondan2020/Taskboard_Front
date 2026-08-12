@@ -17,7 +17,7 @@ export default function Select({
     onChange,
 }: SelectProps) {
     return (
-        <label className="w-full flex text-md items-center gap-3 h-8">
+        <label className="w-full flex text-md items-center gap-2 h-8">
             <div className="w-1/3 whitespace-nowrap">{label}</div>
 
             <select

@@ -9,6 +9,8 @@ export const PROJECT_HISTORY_EVENT_TYPE = {
   PROJECT_FIELD_CHANGED: "PROJECT_FIELD_CHANGED",
 } as const;
 
+export type HistoryEventRangeType = "7d" | "1m" | "all" | "";
+
 export type ProjectHistoryEventType =
   typeof PROJECT_HISTORY_EVENT_TYPE[keyof typeof PROJECT_HISTORY_EVENT_TYPE];
 
@@ -16,6 +18,7 @@ export type ProjectHistoryEventType =
 export interface CreateProjectHistory {
   project_stage_id?: number;
   event_type: ProjectHistoryEventType;
+  event_range: HistoryEventRangeType;
   field?: string;
 
   old_value?: string;
@@ -39,7 +42,7 @@ export interface ProjectHistoryOut {
   new_value?: string;
 
   content?: string;
-  changed_at: string; 
+  changed_at: string;
 
   changed_by_id?: number;
   changed_by_name?: string;

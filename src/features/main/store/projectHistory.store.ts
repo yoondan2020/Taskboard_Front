@@ -5,6 +5,7 @@ import type {
   CreateProjectHistory,
   ProjectHistoryOut,
   ProjectHistoryEventType,
+  HistoryEventRangeType,
 } from "@/shared/types/project_history.types";
 import { log } from "@/shared/lib/log";
 
@@ -17,7 +18,8 @@ type State = {
   fetchList: (
     projectId: number,
     projectStageId?: number,
-    eventType?: ProjectHistoryEventType
+    eventType?: ProjectHistoryEventType,
+    envet_range?: HistoryEventRangeType
   ) => Promise<void>;
   fetchOne: (projectId: number, historyId: number) => Promise<void>;
 
@@ -46,10 +48,10 @@ export const useProjectHistoryStore = create<State>((set) => ({
     }
   },
 
-  fetchList: async (projectId, projectStageId, eventType) => {
+  fetchList: async (projectId, projectStageId, eventType, envet_range) => {
     set({ loading: true, error: null });
     try {
-      const data = await projectHistoryApi.list(projectId, projectStageId, eventType);
+      const data = await projectHistoryApi.list(projectId, projectStageId, eventType, envet_range);
       log("[API] fetch project history list", data);
       set({ items: data });
     } catch (e: any) {

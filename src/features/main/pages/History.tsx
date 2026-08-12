@@ -1,16 +1,18 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useProjectHistoryStore } from "../store/projectHistory.store";
 import {
     PROJECT_HISTORY_EVENT_TYPE,
     type ProjectHistoryEventType,
+    type HistoryEventRangeType,
 } from "@/shared/types/project_history.types";
 import { useProjectStore } from "@/features/project/store/project.store";
-import Select from "@/shared/components/input/Select";
+import Select from "@/shared/components/input/HistorySelect";
 
 export default function History() {
     const { id } = useParams();
     const projects = useProjectStore((state) => state.projectSummary);
+    const navigate = useNavigate();
 
     // 유효한 프로젝트 ID 결정
     const validProjectId = id && !isNaN(Number(id)) ? Number(id) : projects[0]?.id;
@@ -22,12 +24,12 @@ export default function History() {
     const { items: histories, loading, error, fetchList } =
         useProjectHistoryStore();
 
-    const [eventTypeFilter, setEventTypeFilter] = useState<
-        ProjectHistoryEventType | ""
-    >("");
+    const [eventTypeFilter, setEventTypeFilter] = useState<ProjectHistoryEventType | "">("");
+
+    const [eventRangeFilter, setEventRangeFilter] = useState<HistoryEventRangeType>("7d");
 
     const eventTypeItems = [
-        { label: "전체", value: "" },
+        { label: "전체", value: "all" },
         {
             label: "단계 생성",
             value: PROJECT_HISTORY_EVENT_TYPE.STAGE_CREATED,
@@ -54,11 +56,18 @@ export default function History() {
         },
     ];
 
+    // 기간 설정
+    const eventRangeItems = [
+        { label: "Week", value: "7d", },
+        { label: "Month", value: "1m", },
+        { label: "전체", value: "all", },
+    ]
+
     useEffect(() => {
         if (selectedProjectId && selectedProjectId > 0) {
-            fetchList(selectedProjectId, undefined, eventTypeFilter || undefined);
+            fetchList(selectedProjectId, undefined, eventTypeFilter || undefined, eventRangeFilter || undefined);
         }
-    }, [selectedProjectId, eventTypeFilter, fetchList]);
+    }, [selectedProjectId, eventTypeFilter, eventRangeFilter, fetchList]);
 
     if (loading) return <div className="p-6 text-gray-500">로딩 중…</div>;
     if (error) return <div className="p-6 text-red-500">오류: {error}</div>;
@@ -166,6 +175,16 @@ export default function History() {
                                 }
                             />
                         </div>
+                        <div className="flex-1">
+                            <Select
+                                label="기간"
+                                items={eventRangeItems}
+                                value={eventRangeFilter}
+                                onChange={(value) =>
+                                    setEventRangeFilter(value as HistoryEventRangeType | "")
+                                }
+                            />
+                        </div>
                     </div>
                 </div>
 
@@ -189,6 +208,9 @@ export default function History() {
                                 <tr
                                     key={history.id}
                                     className="hover:bg-gray-50 transition border-b border-gray-200"
+                                    onClick={async () => {
+                                        navigate(`/project/${history.project_id}`);
+                                    }}
                                 >
                                     {/* 이벤트 */}
                                     <td className="pl-5 pr-2 py-3 whitespace-nowrap">

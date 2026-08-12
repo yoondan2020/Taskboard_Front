@@ -8,7 +8,7 @@ import type {
 } from "@/shared/types/project_history.types";
 
 const BASE = (
-    projectId: number,
+  projectId: number,
 ) => `/project/${projectId}/history`;
 
 export const projectHistoryApi = {
@@ -23,7 +23,8 @@ export const projectHistoryApi = {
   list: (
     projectId: number,
     projectStageId?: number,
-    eventType?: string
+    eventType?: string,
+    eventRange?: string,
   ) => {
     const params = new URLSearchParams();
     if (projectStageId !== undefined) {
@@ -31,6 +32,9 @@ export const projectHistoryApi = {
     }
     if (eventType) {
       params.append("event_type", eventType);
+    }
+    if (eventRange) {
+      params.append("event_range", eventRange);
     }
     const query = params.toString();
     const url = query ? `${BASE(projectId)}?${query}` : `${BASE(projectId)}`;
