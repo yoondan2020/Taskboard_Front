@@ -47,7 +47,7 @@ export default function Header() {
                             대시보드
                         </button>
                     </div>
-                    <div
+                    {/* <div
                         className={`${currentPath === "/meeting" ? "bg-primary text-white" : "bg-white text-gray-800"} 
                         border rounded-full px-4 py-1
                         hover:bg-primary hover:text-white
@@ -59,7 +59,7 @@ export default function Header() {
                         >
                             회의 자료실
                         </button>
-                    </div>
+                    </div> */}
                     <div className={`${currentPath === "/history" ? "bg-primary text-white" : "bg-white text-gray-800"} 
                     border rounded-full px-4 py-1
                     hover:bg-primary hover:text-white
