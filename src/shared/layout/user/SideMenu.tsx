@@ -44,87 +44,91 @@ export default function SideMenu({ projectCount, urgentProjectCount }: Props) {
     };
 
     return (
-        <div className="w-full h-full flex flex-col">
-            {/* 프로젝트 관리 */}
-            <div className="space-y-3 border-b border-gray-200 p-3 flex-shrink-0">
-                <div className="font-semibold">
-                    프로젝트 관리
-                </div>
-                <PlusButton
-                    buttonLabel={"프로젝트"}
-                    onClick={() => setIsProjectModalOpen(true)}
-                />
-                {isProjectModalOpen &&
-                    <ProjectCreateModal
-                        open={isProjectModalOpen}
-                        onClose={() => setIsProjectModalOpen(false)}
-                    />}
-                <button className="w-full flex gap-1 bg-white text-primary border border-black items-center text-center justify-center px-5 py-2 rounded-xl text-base cursor-pointer">
+        <div className="w-full h-full flex flex-col p-3">
+            <div className="overflow-y-auto custom-scrollbar">
+
+                {/* 프로젝트 관리 */}
+                <div className="space-y-3 border-b border-gray-200 p-3 flex-shrink-0 ">
+                    <div className="font-semibold">
+                        프로젝트 관리
+                    </div>
+                    <PlusButton
+                        buttonLabel={"프로젝트"}
+                        onClick={() => setIsProjectModalOpen(true)}
+                    />
+                    {isProjectModalOpen &&
+                        <ProjectCreateModal
+                            open={isProjectModalOpen}
+                            onClose={() => setIsProjectModalOpen(false)}
+                        />}
+                    {/* <button className="w-full flex gap-1 bg-white text-primary border border-black items-center text-center justify-center px-5 py-2 rounded-xl text-base cursor-pointer">
                     새 연구회의 자료 등록
-                </button>
-            </div>
-
-            {/* 통계 / 일정 */}
-            <div className="py-4 px-4 flex-1 flex flex-col space-y-3 min-h-0">
-                <div className="font-semibold flex-shrink-0">
-                    통계 / 일정
+                </button> */}
                 </div>
-                <div className="flex gap-3 flex-shrink-0">
-                    <div className="flex-1">
-                        <InsightCard
-                            label={"총 프로젝트"}
-                            value={projectCount}
-                            color={"black"}
-                        />
+
+                {/* 통계 / 일정 */}
+                <div className="py-4 px-4 flex-1 flex flex-col space-y-3 min-h-0">
+                    <div className="font-semibold flex-shrink-0">
+                        통계 / 일정
                     </div>
-                    <div
-                        onClick={() => setIsUrgentModalOpen(true)}
-                        className="cursor-pointer flex-1"
-                    >
-                        <InsightCard
-                            label={"마감임박 프로젝트"}
-                            value={urgentProjectCount}
-                            color={"red"}
-                        />
-                    </div>
-                </div>
-
-                {isUrgentModalOpen && (
-                    <UrgentProjectsModal
-                        open={isUrgentModalOpen}
-                        onClose={() => setIsUrgentModalOpen(false)}
-                    />
-                )}
-
-                <div className="flex-shrink-0">
-                    <Calendar
-                        className="react-calendar"
-                        formatDay={(_, date) => date.getDate().toString()}
-                        onChange={handleDateChange}
-                        value={selectedDate}
-                    />
-                </div>
-
-                {deadlineProjects.length > 0 && (
-                    <div className="flex-1 flex flex-col min-h-0 space-y-2">
-                        <div className="text-sm font-semibold text-gray-600 flex-shrink-0">
-                            {formatDate(selectedDate)} 마감
+                    <div className="flex gap-3 flex-shrink-0">
+                        <div className="flex-1">
+                            <InsightCard
+                                label={"총 프로젝트"}
+                                value={projectCount}
+                                color={"black"}
+                            />
                         </div>
-                        <div className="flex-1 overflow-y-auto custom-scrollbar pr-3 min-h-0">
-                            <div className="space-y-2 pb-6">
-                                {deadlineProjects.map((project: SummaryProjectDTO) => (
-                                    <div
-                                        key={project.id}
-                                        onClick={() => navigate(`/project/${project.id}`)}
-                                        className="cursor-pointer"
-                                    >
-                                        <UrgentProjectSummaryCard project={project} />
-                                    </div>
-                                ))}
+                        <div
+                            onClick={() => setIsUrgentModalOpen(true)}
+                            className="cursor-pointer flex-1"
+                        >
+                            <InsightCard
+                                label={"마감임박 프로젝트"}
+                                value={urgentProjectCount}
+                                color={"red"}
+                            />
+                        </div>
+                    </div>
+
+                    {isUrgentModalOpen && (
+                        <UrgentProjectsModal
+                            open={isUrgentModalOpen}
+                            onClose={() => setIsUrgentModalOpen(false)}
+                        />
+                    )}
+
+                    <div className="flex-shrink-0">
+                        <Calendar
+                            className="react-calendar text-sm"
+                            formatDay={(_, date) => date.getDate().toString()}
+                            onChange={handleDateChange}
+                            value={selectedDate}
+                        />
+                    </div>
+
+                    {deadlineProjects.length > 0 && (
+                        <div className="flex-1 flex flex-col min-h-0 space-y-2">
+                            <div className="text-sm font-semibold text-gray-600 flex-shrink-0">
+                                {formatDate(selectedDate)} 마감
+                            </div>
+                            <div className="flex-1 overflow-y-auto custom-scrollbar pr-3 min-h-0">
+                                <div className="space-y-2 pb-6">
+                                    {deadlineProjects.map((project: SummaryProjectDTO) => (
+                                        <div
+                                            key={project.id}
+                                            onClick={() => navigate(`/project/${project.id}`)}
+                                            className="cursor-pointer"
+                                        >
+                                            <UrgentProjectSummaryCard project={project} />
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
                         </div>
-                    </div>
-                )}
+                    )}
+                </div>
+
             </div>
         </div>
     )

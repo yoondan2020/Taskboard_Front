@@ -12,7 +12,6 @@ export default function Layout() {
     const projectList = useProjectStore((s) => s.projectSummary);
     const projectCount = projectList.length;
     const urgentProjectCount = useProjectStore((s) => s.urgentProjectsCount)
-    console.log('Layout urgentProjectCount:', urgentProjectCount);
 
     useEffect(() => {
         fetchProjectSummary();

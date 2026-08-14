@@ -96,7 +96,7 @@ export default function MyPageModal({
                     </div>
 
                     <div className="flex items-center gap-2">
-                        {me?.role == "ADMIN" &&
+                        {/* {me?.role == "ADMIN" &&
                             <button
                                 className="px-3 py-1.5 text-sm rounded-lg border bg-white hover:bg-gray-300 cursor-pointer"
                                 onClick={() => navigator("/admin")}
@@ -104,7 +104,7 @@ export default function MyPageModal({
                             >
                                 관리자 페이지로 이동
                             </button>
-                        }
+                        } */}
                         <button
                             className="px-3 py-1.5 text-sm rounded-lg bg-gray-900 text-white hover:bg-gray-800 cursor-pointer"
                             onClick={onClose}

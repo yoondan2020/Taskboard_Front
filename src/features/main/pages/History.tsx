@@ -8,6 +8,7 @@ import {
 } from "@/shared/types/project_history.types";
 import { useProjectStore } from "@/features/project/store/project.store";
 import Select from "@/shared/components/input/HistorySelect";
+import "@/shared/lib/styles/Scrollbar.css";
 
 export default function History() {
     const { id } = useParams();
@@ -144,8 +145,8 @@ export default function History() {
     };
 
     return (
-        <div className="min-h-screen w-full px-1">
-            <div className="mx-auto w-full">
+        <div className="h-full overflow-y-auto custom-scrollbar pr-5">
+            <div className="mx-auto w-full ">
                 {/* 필터 */}
                 <div className="mb-6 flex justify-end">
                     <div className="flex gap-5">

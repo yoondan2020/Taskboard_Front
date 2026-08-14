@@ -35,8 +35,8 @@ export default function UrgentProjectSummaryCard({ project }: ProjectCardProps) 
                 <div className="flex-[2] space-y-4">
                     <div className="flex items-center justify-between">
                         <div className="flex-1 text-sm text-gray-900">{project.title || "-"}</div>
-                        <div className="flex-1 text-md font-bold">{project.current_stage?.stage_name || "-"}</div>
-                        <div className="flex-1 text-md">
+                        <div className="flex-1 text-sm font-bold">{project.current_stage?.stage_name || "-"}</div>
+                        <div className="flex-1 text-xs">
                             {project.current_stage?.stage_owner_name || "-"}
                         </div>
                     </div>
