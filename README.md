@@ -82,7 +82,6 @@ useNotificationStore((state) => state.fetch)(); // 내 알림 목록 조회
 - **사용자 관리** - 사용자 프로필 및 정보 관리
 - **관리자 패널** - 제품군/단계/상태/사용자 관리
 - **알림** - 내 알림 목록 조회 (`NotificationModal`, `useNotificationStore`)
-  - ⚠️ 현재는 조회(fetch)만 지원되며, 읽음 처리 기능은 스토어에 자리만 마련되어 있고(주석 처리) 아직 미구현 상태입니다. 백엔드에도 읽음 처리 API가 아직 없습니다.
 
 ## 개발 명령어
 
@@ -92,12 +91,6 @@ npm run dev
 
 # 프로덕션 빌드
 npm run build
-
-# 빌드 결과 미리보기
-npm run preview
-
-# 린팅
-npm run lint
 ```
 
 ## 환경 설정
@@ -117,12 +110,5 @@ Axios를 통해 FastAPI 백엔드와 통신합니다. 기본 API 설정은 `shar
 
 Vercel을 통한 자동 배포가 설정되어 있습니다 (`vercel.json` 참조).
 
-## 📌 알려진 이슈 / TODO
-- ~~`package.json`의 `name`이 구 프로젝트명(`lab`)으로 남아있음~~ → `"taskboard"`로 수정 완료 (2026-07-21)
-- ~~`shared/lib/api/notifiaction.ts` 파일명 오타(`notifiaction` → `notification`) — 리팩터링 시 정리 권장~~ -> 수정 완료 (2026-07-21)
-- 알림 읽음 처리 UI/스토어 액션 미구현 (백엔드 API 준비 후 진행 필요)
-- Redux Toolkit과 Zustand가 함께 쓰이고 있어 상태 관리 방식이 이원화되어 있음 — 신규 기능 추가 시 어느 쪽을 쓸지 컨벤션 정리 권장
 
----
-
-**최종 수정**: 2026-07-21
+**최종 수정**: 2026-11-09
