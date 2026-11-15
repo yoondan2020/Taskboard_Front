@@ -3,19 +3,19 @@
     width: 3px;
 }
 
-/* 스크롤바 트랙 (배경) */
+/* 스크롤바 트랙 (배경) — canvas-parchment */
 .custom-scrollbar::-webkit-scrollbar-track {
-    background: #f1f5f9;
-    border-radius: 10px;
+    background: #f5f5f7;
+    border-radius: 9999px;
 }
 
-/* 스크롤바 썸 (움직이는 부분) */
+/* 스크롤바 썸 (움직이는 부분) — surface-chip (UI 크롬은 뒤로 물러난다) */
 .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: #005D73;
-    border-radius: 10px;
+    background: #d2d2d7;
+    border-radius: 9999px;
 }
 
-/* 호버 상태 */
+/* 호버 상태 — ink-muted-48 */
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: #94a3b8;
+    background: #7a7a7a;
 }

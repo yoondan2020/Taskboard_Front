@@ -10,17 +10,17 @@ type props = {
 export default function InsightCard({ label, value, color }: props) {
 
     const colorClasses: Record<ColorType, string> = {
-        black: 'text-black',
-        red: 'text-red-500',
-        blue: 'text-blue-500',
+        black: 'text-gray-900',
+        red: 'text-danger',
+        blue: 'text-primary',
     };
 
     return (
-        <div className="w-full border rounded-xl p-3 flex flex-col justify-between items-center bg-white whitespace-nowrap">
-            <div className="flex gap-2 items-center">
+        <div className="surface-card w-full h-full p-4 flex flex-col items-start gap-2 whitespace-nowrap hover:border-black/10 transition">
+            <div className="flex gap-2 items-center text-[13px] text-gray-500">
                 {label}
             </div>
-            <div className={`font-bold ${colorClasses[color]}`}>
+            <div className={`text-[28px] font-semibold leading-none tracking-tight ${colorClasses[color]}`}>
                 {value}
             </div>
         </div>

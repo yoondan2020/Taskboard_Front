@@ -24,7 +24,7 @@ export default function ContextMenu(
     if (!isEditable) {
         return (
             <div
-                className="fixed bg-white border border-1 rounded-lg shadow-lg z-50 overflow-hidden"
+                className="fixed z-50 min-w-[168px] p-1.5 bg-white/95 backdrop-blur-xl rounded-xl ring-1 ring-black/5 shadow-[0_12px_32px_rgba(0,0,0,0.14)] text-sm"
                 style={{
                     left: contextMenu.x,
                     top: contextMenu.y,
@@ -34,7 +34,7 @@ export default function ContextMenu(
                     onClose();
                 }}
             >
-                <div className="w-full px-4 py-2 text-left hover:bg-gray-100 flex items-center gap-3 ">
+                <div className="w-full px-3 py-2 text-left text-gray-500 flex items-center gap-2.5">
                     수정 권한이 없습니다.
                 </div>
             </div>
@@ -42,7 +42,7 @@ export default function ContextMenu(
     } else {
         return (
             <div
-                className="fixed bg-white border border-1 rounded-lg shadow-lg z-50 overflow-hidden"
+                className="fixed z-50 min-w-[168px] p-1.5 bg-white/95 backdrop-blur-xl rounded-xl ring-1 ring-black/5 shadow-[0_12px_32px_rgba(0,0,0,0.14)] text-sm"
                 style={{
                     left: contextMenu.x,
                     top: contextMenu.y,
@@ -57,7 +57,7 @@ export default function ContextMenu(
                         onEdit();
                         onClose();
                     }}
-                    className="w-full px-4 py-2 text-left hover:bg-gray-100 flex items-center gap-3 border-b"
+                    className="w-full px-3 py-2 text-left rounded-lg hover:bg-gray-100 flex items-center gap-2.5 cursor-pointer"
                 >
                     <div>✏️</div>
                     <div>수정</div>
@@ -67,7 +67,7 @@ export default function ContextMenu(
                         onDelete();
                         onClose();
                     }}
-                    className="w-full px-4 py-2 text-left hover:bg-gray-100 flex items-center gap-3 text-red-600"
+                    className="w-full px-3 py-2 text-left rounded-lg hover:bg-danger/10 flex items-center gap-2.5 text-danger cursor-pointer"
                 >
                     <div>🗑️</div>
                     <div>삭제</div>

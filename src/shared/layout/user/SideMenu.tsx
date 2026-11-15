@@ -44,12 +44,12 @@ export default function SideMenu({ projectCount, urgentProjectCount }: Props) {
     };
 
     return (
-        <div className="w-full h-full flex flex-col p-3">
-            <div className="overflow-y-auto custom-scrollbar">
+        <div className="w-full flex flex-col pb-6">
+            <div className="flex flex-col gap-4">
 
                 {/* 프로젝트 관리 */}
-                <div className="space-y-3 border-b border-gray-200 p-3 flex-shrink-0 ">
-                    <div className="font-semibold">
+                <div className="surface-card p-5 space-y-4">
+                    <div className="text-[17px] font-semibold tracking-tight">
                         프로젝트 관리
                     </div>
                     <PlusButton
@@ -67,11 +67,11 @@ export default function SideMenu({ projectCount, urgentProjectCount }: Props) {
                 </div>
 
                 {/* 통계 / 일정 */}
-                <div className="py-4 px-4 flex-1 flex flex-col space-y-3 min-h-0">
-                    <div className="font-semibold flex-shrink-0">
+                <div className="flex flex-col gap-3">
+                    <div className="px-1 pt-2 text-[13px] font-semibold text-gray-500">
                         통계 / 일정
                     </div>
-                    <div className="flex gap-3 flex-shrink-0">
+                    <div className="grid grid-cols-2 gap-3">
                         <div className="flex-1">
                             <InsightCard
                                 label={"총 프로젝트"}
@@ -108,12 +108,12 @@ export default function SideMenu({ projectCount, urgentProjectCount }: Props) {
                     </div>
 
                     {deadlineProjects.length > 0 && (
-                        <div className="flex-1 flex flex-col min-h-0 space-y-2">
-                            <div className="text-sm font-semibold text-gray-600 flex-shrink-0">
+                        <div className="surface-card p-4 space-y-3">
+                            <div className="px-1 text-[13px] font-semibold text-gray-500">
                                 {formatDate(selectedDate)} 마감
                             </div>
-                            <div className="flex-1 overflow-y-auto custom-scrollbar pr-3 min-h-0">
-                                <div className="space-y-2 pb-6">
+                            <div className="max-h-[360px] overflow-y-auto custom-scrollbar -mr-2 pr-2">
+                                <div className="space-y-1">
                                     {deadlineProjects.map((project: SummaryProjectDTO) => (
                                         <div
                                             key={project.id}

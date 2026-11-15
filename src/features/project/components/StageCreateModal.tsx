@@ -49,13 +49,13 @@ export default function StageCreateModal({
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-            <div className="bg-white border rounded-2xl px-8 py-5 w-[800px] max-w-full shadow-lg">
-                <h2 className="text-xl font-semibold mb-6">새로운 단계 추가</h2>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-[4px]">
+            <div className="modal-panel w-[760px] max-w-[92vw] max-h-[88vh] overflow-y-auto custom-scrollbar px-7 py-6">
+                <h2 className="modal-title mb-6">새로운 단계 추가</h2>
 
-                <div className="space-y-4">
-                    <div className="flex gap-6">
-                        <div className="flex-1 space-y-4">
+                <div className="space-y-5">
+                    <div className="grid grid-cols-2 gap-6">
+                        <div className="space-y-4">
                             {/* 단계 */}
                             <Input
                                 label="단계 명 *"
@@ -78,7 +78,7 @@ export default function StageCreateModal({
                             />
                         </div>
 
-                        <div className="flex-1 space-y-4">
+                        <div className="space-y-4">
                             {/* 마감일 */}
                             <Input
                                 label="마감일"
@@ -118,10 +118,10 @@ export default function StageCreateModal({
                     />
 
                     {/* 버튼 */}
-                    <div className="flex justify-end gap-2 mt-4">
+                    <div className="flex justify-end gap-2 pt-2">
                         <button
                             onClick={onClose}
-                            className="px-6 py-1 rounded-full border-2 hover:bg-gray-800 hover:text-white cursor-pointer"
+                            className="btn-secondary min-w-[88px]"
                         >
                             취소
                         </button>
@@ -129,7 +129,7 @@ export default function StageCreateModal({
                             onClick={() => {
                                 handelCreate()
                             }}
-                            className="px-6 py-1 text-primary rounded-full border-2 border-primary bg-primary text-white hover:bg-primary-dark cursor-pointer"
+                            className="btn-primary min-w-[88px]"
                         >
                             저장
                         </button>

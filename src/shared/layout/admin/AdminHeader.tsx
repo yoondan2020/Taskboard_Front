@@ -5,14 +5,13 @@ export default function AdminHeader() {
     const navigator = useNavigate();
     return (
         <div className="
-            flex w-full content-center items-center justify-between px-3 py-5 mb-5 
-            border-b-[0.5px] border-b-[#005D73]/50
+            max-w-[1920px] mx-auto h-16 px-6 flex items-center justify-between
             ">
             <div />
             <div className="
             //border border-gray-300
             ">
-                <img src={logo} width={80} alt="KOAS 로고" onClick={() => navigator("/dashboard")} />
+                <img src={logo} width={80} alt="KOAS 로고" onClick={() => navigator("/dashboard")} className="h-8 w-auto cursor-pointer" />
             </div>
             <div />
         </div>

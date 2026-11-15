@@ -63,7 +63,7 @@ export default function MissingReasonModal({
     if (!stage) {
         return (
             <div className="fixed inset-0 z-[70] flex items-center justify-center">
-                <div className="rounded-xl bg-white p-6 shadow-xl">
+                <div className="modal-panel px-6 py-5 text-sm text-gray-500">
                     불러오는 중...
                 </div>
             </div>
@@ -129,11 +129,11 @@ export default function MissingReasonModal({
                 }
             }}
         >
-            <div className="bg-white rounded-2xl shadow-xl p-6 w-[700px]">
-                <div className="space-y-4 px-10">
-                    <div className="flex gap-10">
+            <div className="modal-panel px-7 py-6 w-[640px] max-w-[92vw]">
+                <div className="space-y-5">
+                    <div className="grid grid-cols-2 gap-6">
                         {/* LEFT */}
-                        <div className="flex-1 space-y-4">
+                        <div className="space-y-4">
                             <Input
                                 label="마감일"
                                 type="date"
@@ -145,7 +145,7 @@ export default function MissingReasonModal({
                         </div>
 
                         {/* RIGHT */}
-                        <div className="flex-1 space-y-4">
+                        <div className="space-y-4">
 
                             <Input
                                 label="예상 완료일"
@@ -169,11 +169,11 @@ export default function MissingReasonModal({
                         />
                     )}
 
-                    <div className="flex justify-end gap-2 mt-4">
+                    <div className="flex justify-end gap-2 pt-2">
                         <button
                             type="button"
                             onClick={onClose}
-                            className="px-6 py-1 border rounded-full hover:bg-gray-700 hover:text-white cursor-pointer"
+                            className="btn-secondary min-w-[88px]"
                         >
                             취소
                         </button>
@@ -181,7 +181,7 @@ export default function MissingReasonModal({
                         <button
                             type="button"
                             onClick={handleSave}
-                            className="px-6 py-1 text-white rounded-full bg-primary hover:bg-primary-dark cursor-pointer"
+                            className="btn-primary min-w-[88px]"
                         >
                             저장
                         </button>

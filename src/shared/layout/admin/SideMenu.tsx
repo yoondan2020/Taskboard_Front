@@ -9,11 +9,12 @@ export default function SideMenu({
     onSelect: (m: MenuKey) => void;
 }) {
     const itemClass = (key: MenuKey) =>
-        key === selected ? "font-semibold" : "text-gray-400";
+        key === selected
+            ? "px-4 py-2.5 rounded-xl bg-primary/10 text-primary font-semibold"
+            : "px-4 py-2.5 rounded-xl text-gray-700 hover:bg-gray-100";
 
     return (
-        <div className="flex flex-col text-right px-3 py-5 gap-3 cursor-pointer mt-11
-        2xl:text-xl xl:text-lg lg:text-lg md:text-lg sm:text-lg text-lg
+        <div className="surface-card p-2 flex flex-col gap-1 cursor-pointer text-[15px]
         //border border-gray-300 rounded-lg
         ">
             <div className={itemClass("productGroup")} onClick={() => onSelect("productGroup")}>

@@ -5,9 +5,9 @@ import { Outlet } from "react-router-dom";
 export default function AdminLayout() {
 
     return (
-        <div className="w-full max-w-[1920px] min-w-[950px] mx-auto">
+        <div className="min-h-screen min-w-[1280px] bg-gray-100">
             {/* 헤더 */}
-            <header>
+            <header className="sticky top-0 z-40 bg-white border-b border-black/5">
                 <AdminHeader />
             </header>
             {/* 메인 */}

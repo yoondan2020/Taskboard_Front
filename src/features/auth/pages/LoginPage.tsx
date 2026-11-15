@@ -30,11 +30,11 @@ export default function LoginPage({ onFindPassword }: Props) {
     };
 
     return (
-        <div className="min-h-screen w-full bg-white">
+        <div className="min-h-screen w-full bg-white min-w-[1024px]">
             <div className="min-h-screen flex">
                 {/* Left panel */}
-                <div className="w-1/2 bg-primary rounded-r-2xl flex flex-col items-end justify-center text-white">
-                    <div className="space-y-5 text-end px-10">
+                <div className="w-1/2 bg-gray-800 rounded-none flex flex-col items-center justify-center text-white">
+                    <div className="w-full max-w-sm px-6 space-y-3 text-sm leading-relaxed text-gray-400 [&>div]:rounded-2xl [&>div]:bg-white/5 [&>div]:px-5 [&>div]:py-4 [&>div]:ring-1 [&>div]:ring-white/10 [&_span]:text-white [&_span]:font-semibold">
                         <div>
                             <p> <span className="font-bold"> 관리자</span> ID/PW </p>
                             <p>admin@example.com </p>
@@ -64,21 +64,21 @@ export default function LoginPage({ onFindPassword }: Props) {
                 </div>
 
                 {/* Right panel */}
-                <div className="w-1/2 flex items-center justify-center px-40">
-                    <div className="w-full">
+                <div className="w-1/2 flex items-center justify-center px-12">
+                    <div className="w-full max-w-[380px]">
                         {/* Title */}
-                        <div className="mb-14 text-center">
-                            <h1 className="text-5xl font-extrabold tracking-wide text-black">TaskBoard</h1>
-                            <p className="mt-2 text-sm text-gray-500">프로젝트 관리 시스템</p>
+                        <div className="mb-12 text-center">
+                            <h1 className="text-5xl font-semibold text-gray-900">TaskBoard</h1>
+                            <p className="mt-3 text-[17px] text-gray-500">프로젝트 관리 시스템</p>
                         </div>
 
                         {/* Form */}
-                        <form onSubmit={handleSubmit} className="space-y-4">
+                        <form onSubmit={handleSubmit} className="space-y-3">
                             <input
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 placeholder="이메일을 입력하세요."
-                                className="h-11 w-full rounded-md border-gray-400 px-4 text-sm outline-none placeholder:text-gray-400 focus:border-primary"
+                                className="field-control h-12"
                                 autoComplete="email"
                             />
 
@@ -87,40 +87,37 @@ export default function LoginPage({ onFindPassword }: Props) {
                                 onChange={(e) => setPassword(e.target.value)}
                                 placeholder="비밀번호를 입력하세요."
                                 type="password"
-                                className="h-11 w-full rounded-md border-gray-400 px-4 text-sm outline-none placeholder:text-gray-400 focus:border-primary"
+                                className="field-control h-12"
                                 autoComplete="current-password"
                             />
 
                             {error ? (
-                                <p className="text-sm text-red-600">{error}</p>
+                                <p className="px-1 text-sm text-danger">{error}</p>
                             ) : null}
 
                             <button
                                 type="submit"
                                 disabled={loading}
-                                className="
-                                    mt-2 h-11 w-full rounded-full border border-primary bg-white text-sm font-semibold 
-                                    text-primary transition hover:bg-primary hover:text-white active:scale-[0.99] disabled:opacity-60
-                                "
+                                className="btn-primary mt-3 h-12 w-full text-[17px]"
                             >
                                 {loading ? "로그인 중..." : "로그인"}
                             </button>
 
-                            <div className="mt-6 flex items-center justify-between text-sm">
-                                <label className="flex items-center gap-2 text-gray-600">
+                            <div className="pt-4 flex items-center justify-between text-sm">
+                                <label className="flex items-center gap-2 text-gray-700 cursor-pointer">
                                     <input
                                         type="checkbox"
                                         checked={remember}
                                         onChange={(e) => setRemember(e.target.checked)}
-                                        className="h-4 w-4 accent-[#0F6A62]"
+                                        className="h-4 w-4 accent-primary"
                                     />
-                                    <span className="underline underline-offset-4">자동으로 로그인</span>
+                                    <span>자동으로 로그인</span>
                                 </label>
 
                                 <button
                                     type="button"
                                     onClick={onFindPassword}
-                                    className="text-gray-600 underline underline-offset-4 hover:text-gray-800"
+                                    className="text-primary hover:underline underline-offset-4 cursor-pointer"
                                 >
                                     비밀번호 찾기
                                 </button>
@@ -128,7 +125,7 @@ export default function LoginPage({ onFindPassword }: Props) {
                         </form>
 
                         <div className="mt-10 md:hidden">
-                            <div className="h-3 w-full rounded-full bg-[#0F6A62]" />
+                            <div className="h-3 w-full rounded-full bg-primary" />
                         </div>
                     </div>
                 </div>

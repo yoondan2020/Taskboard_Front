@@ -157,17 +157,17 @@ export default function ProjectUpdateModal({ id, open, onClose }: Props) {
     return (
         <>
             <div className="fixed inset-0 z-50 flex items-center justify-center">
-                <div className="absolute inset-0 bg-black/40" onClick={onClose} />
+                <div className="modal-overlay" onClick={onClose} />
 
-                <div className="relative w-[900px] max-h-[80vh] bg-white shadow-lg rounded-lg overflow-hidden">
-                    <div className="w-full flex items-center justify-between px-6 py-3 text-black border-b">
-                        <h1 className="text-xl">프로젝트 수정</h1>
-                        <button className="cursor-pointer" onClick={onClose}>✕</button>
+                <div className="modal-panel w-[860px] max-w-[92vw] max-h-[88vh] flex flex-col overflow-hidden">
+                    <div className="w-full flex items-center justify-between px-7 pt-6 pb-4">
+                        <h1 className="modal-title">프로젝트 수정</h1>
+                        <button className="btn-icon size-8 text-sm text-gray-600" onClick={onClose}>✕</button>
                     </div>
 
-                    <div className="px-10 py-6 flex flex-col gap-5 overflow-y-auto max-h-[65vh]">
-                        <div className="flex gap-10">
-                            <div className="flex-1 flex flex-col gap-3">
+                    <div className="flex-1 px-7 pb-6 flex flex-col gap-5 overflow-y-auto custom-scrollbar">
+                        <div className="grid grid-cols-2 gap-6">
+                            <div className="flex flex-col gap-4">
                                 <Input
                                     label="프로젝트명"
                                     placeholder="프로젝트명"
@@ -195,8 +195,8 @@ export default function ProjectUpdateModal({ id, open, onClose }: Props) {
                                 />
                             </div>
 
-                            <div className="flex flex-col flex-1">
-                                <label className="block mb-2">프로젝트 대표 이미지</label>
+                            <div className="flex flex-col">
+                                <label className="field-label block mb-1.5">프로젝트 대표 이미지</label>
                                 <input
                                     type="file"
                                     accept="image/*"
@@ -205,14 +205,14 @@ export default function ProjectUpdateModal({ id, open, onClose }: Props) {
                                     onChange={handleThumbnailChange}
                                 />
                                 {/* <div
-                                    className="flex flex-1 items-center justify-center border-1 
-                                        border-black rounded-lg text-gray-400 mb-3 cursor-pointer"
+                                    className="flex flex-1 min-h-[180px] items-center justify-center overflow-hidden rounded-2xl
+                                        border-2 border-dashed border-gray-200 bg-gray-50 text-sm text-gray-500 mb-3 cursor-pointer transition hover:border-primary/50 hover:bg-primary/5"
                                     onClick={() => document.getElementById("thumbnail-upload")?.click()}
                                 >
                                     {formData.thumbnail_url ? (
                                         <img
                                             src={formData.thumbnail_url}
-                                            className="w-full h-full object-cover rounded-lg"
+                                            className="w-full h-full object-cover"
                                             alt="thumbnail"
                                         />
                                     ) : (
@@ -220,20 +220,20 @@ export default function ProjectUpdateModal({ id, open, onClose }: Props) {
                                     )}
                                 </div> */}
                                 <div
-                                    className="flex flex-1 items-center justify-center border-1 
-                                        border-black rounded-lg text-gray-400 mb-3 cursor-pointer"
+                                    className="flex flex-1 min-h-[180px] items-center justify-center overflow-hidden rounded-2xl
+                                        border-2 border-dashed border-gray-200 bg-gray-50 text-sm text-gray-500 mb-3 cursor-pointer transition hover:border-primary/50 hover:bg-primary/5"
                                     onClick={() => document.getElementById("thumbnail-upload")?.click()}
                                 >
                                     {formData.thumbnail instanceof File ? (
                                         <img
                                             src={URL.createObjectURL(formData.thumbnail)}
-                                            className="w-full h-full object-cover rounded-lg"
+                                            className="w-full h-full object-cover"
                                             alt="thumbnail"
                                         />
                                     ) : formData.thumbnail_url ? (
                                         <img
                                             src={formData.thumbnail_url}
-                                            className="w-full h-full object-cover rounded-lg"
+                                            className="w-full h-full object-cover"
                                             alt="thumbnail"
                                         />
                                     ) : (
@@ -256,14 +256,14 @@ export default function ProjectUpdateModal({ id, open, onClose }: Props) {
                             onChange={(value) => handleChange("remark", value)}
                         />
 
-                        <div className="flex items-center justify-end">
+                        <div className="flex items-center justify-end pt-2">
                             <div className="flex gap-2">
-                                <button onClick={onClose} className="px-7 py-1 rounded-xl border-1 hover:bg-gray-800 hover:text-white cursor-pointer">
+                                <button onClick={onClose} className="btn-secondary min-w-[88px]">
                                     취소
                                 </button>
 
                                 <button
-                                    className="px-7 rounded-xl border-1 border-primary text-white bg-primary hover:bg-primary-dark hover:text-white cursor-pointer"
+                                    className="btn-primary min-w-[88px]"
                                     onClick={async () => {
                                         if (!projectData?.id) return;
                                         handelUpdate();

@@ -1,8 +1,8 @@
-@import "tailwindcss";
+@reference "../../../index.css";
 
 @layer components {
     .container {
-        @apply w-full p-10 m-auto;
+        @apply w-full;
     }
 
     .header {
@@ -10,23 +10,23 @@
     }
 
     .input {
-        @apply px-2 py-1 rounded;
+        @apply field-control h-10;
     }
 
     .refreshButton {
-        @apply px-3 py-1 cursor-pointer rounded hover:bg-gray-50;
+        @apply btn-secondary h-9 px-4;
     }
 
     .table {
-        @apply w-full border-gray-300;
+        @apply w-full border-collapse;
     }
 
     .thead {
-        @apply bg-gray-100;
+        @apply bg-gray-50;
     }
 
     .th {
-        @apply px-3 py-2 font-medium;
+        @apply px-5 py-3 text-xs font-semibold text-gray-500;
     }
 
     .thCenter {
@@ -34,7 +34,7 @@
     }
 
     .td {
-        @apply px-3 py-3;
+        @apply px-5 py-3.5 text-[15px] border-t border-gray-100;
     }
 
     .tdCenter {
@@ -46,10 +46,10 @@
     }
 
     .empty {
-        @apply text-center text-gray-400 py-4;
+        @apply text-center text-gray-500 py-12;
     }
 
     .error {
-        @apply text-red-500;
+        @apply text-danger;
     }
 }

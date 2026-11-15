@@ -64,14 +64,16 @@
 }
 
 :root {
-  font-family: 'Pretendard', system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
+  /* DESIGN.md(Apple): SF Pro(system-ui) 우선, 한글은 Apple SD Gothic Neo → Pretendard 폴백 */
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Apple SD Gothic Neo', 'Pretendard', 'Helvetica Neue', Arial, sans-serif;
+  line-height: 1.47;
   font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgb(0, 0, 0);
+  /* 라이트(데이타임) 테마만 적용 — 네이티브 폼 컨트롤도 라이트로 고정 */
+  color-scheme: light;
+  color: var(--color-ink);
   /* background-color: #fcfcfc; */
-  background-color: #f0f2f5;
+  background-color: var(--color-canvas-parchment);
 
   margin: 0;
   padding: 0;
@@ -82,14 +84,18 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* text-link */
 a {
-  font-weight: 500;
-  color: #646cff;
+  font-weight: 400;
+  color: var(--color-primary);
   text-decoration: inherit;
 }
 
-a:hover {
-  color: #535bf2;
+/* 포커스 링: 2px solid Focus Blue.
+   레이어 밖(unlayered) 규칙이라 유틸리티 outline-none 보다 우선한다. */
+:focus-visible:not(input):not(select):not(textarea) {
+  outline: 2px solid var(--color-primary-focus);
+  outline-offset: 2px;
 }
 
 html,
@@ -109,6 +115,26 @@ body {
   margin: auto;
 }
 
+@layer base {
+  /* Tailwind v4 기본 border 색(currentColor)을 hairline 으로 고정 */
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-hairline);
+  }
+
+  /* 시스템 공통 마이크로 인터랙션: 누름 상태 scale(0.95) */
+  button {
+    transition: transform 0.15s ease, background-color 0.2s ease, color 0.2s ease;
+  }
+
+  button:not(:disabled):active {
+    transform: scale(0.95);
+  }
+}
+
 @layer components {
   h1 {
     @apply 2xl:text-3xl xl:text-3xl lg:text-3xl md:text-2xl sm:text-2xl text-xl font-semibold;
@@ -116,13 +142,294 @@ body {
 }
 
 @theme {
-  /* Primary */
-  --color-primary: #005D73;
-  --color-primary-dark: #003F52;
+  /* ===== DESIGN.md(Apple) 디자인 토큰 — 라이트 테마 ===== */
 
-  /* Status – Tailwind 400 */
-  --color-planned: #9CA3AF;     /* gray-400 */
-  --color-inProgress: #60A5FA;  /* blue-400 */
-  --color-delayed: #F87171;     /* red-400 */
-  --color-completed: #2DD4BF;   /* teal-400 */
+  /* Brand & Accent — 인터랙티브 색은 Action Blue 하나 */
+  --color-primary: #0066cc;          /* Action Blue */
+  --color-primary-focus: #0071e3;    /* Focus Blue */
+  --color-primary-on-dark: #2997ff;  /* Sky Link Blue (다크 면 전용) */
+  /* hover 변형: 스펙은 hex 변화 대신 scale 을 쓰므로 Focus Blue 로 대체 */
+  --color-primary-dark: #0071e3;
+
+  /* Text */
+  --color-ink: #1d1d1f;
+  --color-ink-muted-80: #333333;
+  --color-ink-muted-48: #7a7a7a;
+  --color-body-muted: #cccccc;
+
+  /* Surface */
+  --color-canvas: #ffffff;
+  --color-canvas-parchment: #f5f5f7;
+  --color-surface-pearl: #fafafc;
+  --color-surface-tile-1: #272729;
+  --color-surface-tile-2: #2a2a2c;
+  --color-surface-tile-3: #252527;
+  --color-surface-black: #000000;
+  --color-surface-chip: #d2d2d7;
+
+  /* Hairlines */
+  --color-divider-soft: #f0f0f0;
+  --color-hairline: #e0e0e0;
+
+  /* 회색 팔레트를 Apple 무채색 계열로 재매핑 */
+  --color-gray-50: #fafafc;   /* surface-pearl */
+  --color-gray-100: #f5f5f7;  /* canvas-parchment */
+  --color-gray-200: #e0e0e0;  /* hairline */
+  --color-gray-300: #d2d2d7;  /* surface-chip */
+  --color-gray-400: #cccccc;  /* body-muted */
+  --color-gray-500: #7a7a7a;  /* ink-muted-48 */
+  --color-gray-600: #7a7a7a;  /* ink-muted-48 */
+  --color-gray-700: #333333;  /* ink-muted-80 */
+  --color-gray-800: #272729;  /* surface-tile-1 */
+  --color-gray-900: #1d1d1f;  /* ink */
+
+  /* 굵기 사다리 300 / 400 / 600 / 700 — 500 없음, 헤드라인은 600 */
+  --font-weight-medium: 600;
+  --font-weight-bold: 600;
+  --font-weight-extrabold: 600;
+
+  /* Rounded — xs 5 · sm 8 · md 11 · lg 18 · pill */
+  --radius-xs: 5px;
+  --radius-sm: 8px;
+  --radius-md: 8px;    /* 컴팩트 유틸리티 */
+  --radius-lg: 8px;    /* 입력·유틸리티 버튼 (rounded.sm) */
+  --radius-xl: 18px;   /* 카드 (rounded.lg) */
+  --radius-2xl: 18px;  /* 모달 (rounded.lg) */
+
+  /* Elevation — 카드·버튼에는 그림자 없음. 떠 있는 레이어는 soft hairline 만 */
+  --shadow-sm: 0 0 #0000;
+  --shadow-md: 0 0 #0000;
+  --shadow-lg: 0 0 0 1px rgb(0 0 0 / 0.08);
+  --shadow-xl: 0 0 0 1px rgb(0 0 0 / 0.08);
+  --shadow-2xl: 0 0 0 1px rgb(0 0 0 / 0.08);
+
+  /* Typography */
+  --text-xs: 12px;                          /* fine-print */
+  --text-xs--line-height: 1.33;
+  --text-xs--letter-spacing: -0.12px;
+  --text-sm: 14px;                          /* caption / button-utility */
+  --text-sm--line-height: 1.43;
+  --text-sm--letter-spacing: -0.224px;
+  --text-base: 17px;                        /* body */
+  --text-base--line-height: 1.47;
+  --text-base--letter-spacing: -0.374px;
+  --text-lg--line-height: 1.33;
+  --text-lg--letter-spacing: -0.374px;
+  --text-xl: 21px;                          /* tagline */
+  --text-xl--line-height: 1.19;
+  --text-xl--letter-spacing: 0.231px;
+  --text-2xl: 24px;
+  --text-2xl--line-height: 1.33;
+  --text-3xl: 34px;                         /* display-md */
+  --text-3xl--line-height: 1.24;
+  --text-3xl--letter-spacing: -0.374px;
+  --text-5xl: 56px;                         /* hero-display */
+  --text-5xl--line-height: 1.07;
+  --text-5xl--letter-spacing: -0.28px;
+
+  /* Status — 스펙에 시맨틱 상태색이 없어 최소한으로 정의 */
+  --color-planned: #8e8e93;     /* 중립 회색 */
+  --color-inProgress: #0066cc;  /* Action Blue */
+  --color-delayed: #e30000;     /* 스펙 외: 지연 */
+  --color-completed: #1f9d55;   /* 스펙 외: 완료 */
+  --color-danger: #e30000;      /* 스펙 외: 오류 텍스트·주말 */
+}
+
+/* ===== 공통 컴포넌트 유틸리티 ===== */
+
+/* 흰 카드 — rounded.lg(18px) + soft hairline */
+@utility surface-card {
+  background-color: var(--color-white);
+  border: 1px solid rgb(0 0 0 / 0.06);
+  border-radius: 18px;
+}
+
+/* 버튼 — 기본 알약 */
+@utility btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 40px;
+  padding-inline: 20px;
+  border-radius: 9999px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.224px;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+/* button-primary */
+@utility btn-primary {
+  @apply btn;
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  &:hover {
+    background-color: var(--color-primary-dark);
+  }
+}
+
+/* button-pearl-capsule 계열 보조 버튼 */
+@utility btn-secondary {
+  @apply btn;
+  background-color: var(--color-gray-100);
+  color: var(--color-ink);
+  &:hover {
+    background-color: var(--color-gray-200);
+  }
+}
+
+/* button-dark-utility */
+@utility btn-dark {
+  @apply btn;
+  height: 36px;
+  padding-inline: 16px;
+  border-radius: 8px;
+  font-weight: 400;
+  background-color: var(--color-ink);
+  color: var(--color-white);
+  &:hover {
+    background-color: var(--color-gray-800);
+  }
+}
+
+/* button-icon-circular */
+@utility btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 9999px;
+  background-color: rgb(210 210 215 / 0.64);
+  color: var(--color-ink);
+  cursor: pointer;
+  &:hover {
+    background-color: var(--color-surface-chip);
+  }
+}
+
+/* 폼 */
+@utility field-label {
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.08px;
+  color: var(--color-ink-muted-80);
+}
+
+@utility field-control {
+  width: 100%;
+  height: 44px;
+  padding-inline: 14px;
+  border-radius: 12px;
+  border: 1px solid var(--color-hairline);
+  background-color: var(--color-white);
+  color: var(--color-ink);
+  font-size: 15px;
+  letter-spacing: -0.24px;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  &::placeholder {
+    color: var(--color-ink-muted-48);
+  }
+  &:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 4px rgb(0 102 204 / 0.15);
+  }
+}
+
+/* 커스텀 셀렉트 화살표 */
+@utility select-chevron {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none'%3E%3Cpath d='M3 4.5 6 7.5 9 4.5' stroke='%237a7a7a' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 12px;
+  padding-right: 36px;
+  cursor: pointer;
+}
+
+/* 모달 */
+@utility modal-overlay {
+  position: absolute;
+  inset: 0;
+  background-color: rgb(0 0 0 / 0.4);
+  backdrop-filter: blur(4px);
+}
+
+@utility modal-panel {
+  position: relative;
+  background-color: var(--color-white);
+  border-radius: 22px;
+  box-shadow: 0 0 0 1px rgb(0 0 0 / 0.06), 0 24px 60px rgb(0 0 0 / 0.18);
+}
+
+@utility modal-title {
+  font-size: 21px;
+  font-weight: 600;
+  line-height: 1.19;
+  letter-spacing: -0.2px;
+  color: var(--color-ink);
+}
+
+/* 태그 (작품 라벨 같은 회색 알약) */
+@utility tag {
+  display: inline-flex;
+  align-items: center;
+  height: 24px;
+  padding-inline: 10px;
+  border-radius: 9999px;
+  background-color: var(--color-gray-100);
+  color: var(--color-ink-muted-80);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+/* 상태 색 — status-* 로 색을 고르고 status-badge / status-solid 로 칠한다 */
+@utility status-planned {
+  --status: var(--color-planned);
+}
+@utility status-inProgress {
+  --status: var(--color-inProgress);
+}
+@utility status-delayed {
+  --status: var(--color-delayed);
+}
+@utility status-completed {
+  --status: var(--color-completed);
+}
+
+@utility status-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 26px;
+  padding-inline: 10px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+  color: var(--status);
+  background-color: color-mix(in srgb, var(--status) 12%, white);
+  &::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 9999px;
+    background-color: currentColor;
+  }
+}
+
+@utility status-solid {
+  background-color: var(--status);
 }

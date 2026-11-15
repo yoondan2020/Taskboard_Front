@@ -78,14 +78,14 @@ export default function MyPageModal({
             }}
         >
             {/* overlay */}
-            <div className="absolute inset-0 bg-black/40" />
+            <div className="modal-overlay" />
 
             {/* modal */}
-            <div className="relative w-[980px] max-w-[92vw] h-[640px] max-h-[86vh] bg-white rounded-2xl shadow-xl overflow-hidden">
+            <div className="modal-panel w-[980px] max-w-[92vw] h-[640px] max-h-[86vh] overflow-hidden">
                 {/* header */}
-                <div className="h-14 px-5 flex items-center justify-between border-b">
+                <div className="h-16 px-6 flex items-center justify-between border-b border-gray-100">
                     <div className="flex items-center gap-3">
-                        <div className="text-lg font-semibold">{title}</div>
+                        <div className="modal-title">{title}</div>
                         {me?.name ? (
                             <div className="text-sm text-gray-500">
                                 {me.name} · {me.email}
@@ -98,7 +98,7 @@ export default function MyPageModal({
                     <div className="flex items-center gap-2">
                         {/* {me?.role == "ADMIN" &&
                             <button
-                                className="px-3 py-1.5 text-sm rounded-lg border bg-white hover:bg-gray-300 cursor-pointer"
+                                className="px-3 py-1.5 text-sm rounded-lg border bg-gray-50 text-gray-700 hover:bg-gray-100 cursor-pointer"
                                 onClick={() => navigator("/admin")}
                                 type="button"
                             >
@@ -106,7 +106,7 @@ export default function MyPageModal({
                             </button>
                         } */}
                         <button
-                            className="px-3 py-1.5 text-sm rounded-lg bg-gray-900 text-white hover:bg-gray-800 cursor-pointer"
+                            className="btn-dark"
                             onClick={onClose}
                             type="button"
                         >
@@ -116,19 +116,19 @@ export default function MyPageModal({
                 </div>
 
                 {/* body: left menu + right content */}
-                <div className="h-[calc(100%-56px)] grid grid-cols-[260px_1fr]">
+                <div className="h-[calc(100%-64px)] grid grid-cols-[260px_1fr]">
                     {/* left menu */}
-                    <aside className="border-r bg-gray-50">
+                    <aside className="border-r border-gray-100 bg-gray-50">
                         <div className="p-4">
-                            <div className="rounded-2xl bg-white border p-4">
+                            <div className="rounded-2xl bg-white ring-1 ring-black/5 p-4">
                                 <div className="text-sm text-gray-500">로그인 계정</div>
                                 <div className="mt-1 font-semibold">{me?.name ?? "—"}</div>
                                 <div className="text-sm text-gray-600">{me?.email ?? "—"}</div>
                                 <div className="mt-3 flex items-center gap-2 text-xs text-gray-500">
-                                    <span className="px-2 py-1 rounded-full bg-gray-100 border">
+                                    <span className="tag">
                                         {me?.role ?? "ROLE"}
                                     </span>
-                                    <span className="px-2 py-1 rounded-full bg-gray-100 border">
+                                    <span className="tag">
                                         {me?.is_active === false ? "비활성" : "활성"}
                                     </span>
                                 </div>
@@ -146,13 +146,13 @@ export default function MyPageModal({
                                                 setFilters({ q: "", productGroupId: undefined, stateId: 2 });
                                             }}
                                             className={[
-                                                "w-full text-left rounded-xl px-3 py-2 border transition",
+                                                "w-full text-left rounded-xl px-3 py-2 text-[15px] transition cursor-pointer",
                                                 isActive
-                                                    ? "bg-white border-gray-900 shadow-sm"
-                                                    : "bg-transparent border-transparent hover:bg-white hover:border-gray-200",
+                                                    ? "bg-white text-primary ring-1 ring-black/5"
+                                                    : "text-gray-700 hover:bg-white",
                                             ].join(" ")}
                                         >
-                                            <div className="font-medium">{m.label}</div>
+                                            <div className="font-semibold">{m.label}</div>
                                         </button>
                                     );
                                 })}
@@ -168,9 +168,9 @@ export default function MyPageModal({
 
                         {active === "owned" && (
                             <div className="space-y-4">
-                                <div className="text-lg font-semibold">담당 프로젝트</div>
+                                <div className="text-[17px] font-semibold tracking-tight">담당 프로젝트</div>
                                 {myProjects.length === 0 ? (
-                                    <div className="text-center text-gray-500">담당 프로젝트가 아직 없어요.</div>
+                                    <div className="rounded-2xl bg-gray-50 p-12 text-center text-[15px] text-gray-500">담당 프로젝트가 아직 없어요.</div>
                                 ) : (
                                     <div className="space-y-3">
                                         <div>
@@ -194,9 +194,9 @@ export default function MyPageModal({
 
                         {active === "related" && (
                             <div className="space-y-4">
-                                <div className="text-lg font-semibold">참여 프로젝트</div>
+                                <div className="text-[17px] font-semibold tracking-tight">참여 프로젝트</div>
                                 {relatedProject.length === 0 ? (
-                                    <div className="text-center text-gray-500">참여 중인 프로젝트가 아직 없어요.</div>
+                                    <div className="rounded-2xl bg-gray-50 p-12 text-center text-[15px] text-gray-500">참여 중인 프로젝트가 아직 없어요.</div>
                                 ) : (
                                     <div className="space-y-3">
                                         <div>
@@ -235,12 +235,12 @@ function ProfilePanel({
         <section className="space-y-4">
             <div className="flex items-start justify-between gap-4">
                 <div>
-                    <div className="text-xl font-semibold">내 정보</div>
+                    <div className="text-[21px] font-semibold tracking-tight">내 정보</div>
                 </div>
 
                 <button
                     type="button"
-                    className="px-4 py-1 rounded-full border hover:bg-gray-50 cursor-pointer"
+                    className="btn-secondary h-9 px-4"
                     onClick={logout}
                 >
                     로그아웃
@@ -261,9 +261,9 @@ function ProfilePanel({
 
 function InfoCard({ label, value }: { label: string; value: string }) {
     return (
-        <div className="rounded-2xl border p-4 bg-white">
+        <div className="rounded-2xl bg-gray-50 p-4">
             <div className="text-xs text-gray-500">{label}</div>
-            <div className="mt-1 font-semibold break-all">{value}</div>
+            <div className="mt-1 text-[15px] font-semibold text-gray-900 break-all">{value}</div>
         </div>
     );
 }

@@ -70,21 +70,21 @@ export default function History() {
         }
     }, [selectedProjectId, eventTypeFilter, eventRangeFilter, fetchList]);
 
-    if (loading) return <div className="p-6 text-gray-500">로딩 중…</div>;
-    if (error) return <div className="p-6 text-red-500">오류: {error}</div>;
+    if (loading) return <div className="surface-card p-12 text-center text-[15px] text-gray-500">로딩 중…</div>;
+    if (error) return <div className="surface-card p-12 text-center text-[15px] text-danger">오류: {error}</div>;
 
     const eventBadgeStyle = (type: string) => {
         switch (type) {
             case PROJECT_HISTORY_EVENT_TYPE.STAGE_CREATED:
-                return "bg-green-50 text-green-700 border-green-200";
+                return "bg-completed/10 text-completed border-transparent";
             case PROJECT_HISTORY_EVENT_TYPE.STAGE_DELETED:
-                return "bg-red-50 text-red-700 border-red-200";
+                return "bg-danger/10 text-danger border-transparent";
             case PROJECT_HISTORY_EVENT_TYPE.STAGE_FIELD_CHANGED:
-                return "bg-blue-50 text-blue-700 border-blue-200";
+                return "bg-primary/10 text-primary border-transparent";
             case PROJECT_HISTORY_EVENT_TYPE.PROJECT_FIELD_CHANGED:
-                return "bg-yellow-50 text-yellow-700 border-yellow-200";
+                return "bg-amber-50 text-amber-700 border-transparent";
             default:
-                return "bg-gray-50 text-gray-600 border-gray-200";
+                return "bg-gray-100 text-gray-700 border-transparent";
         }
     };
 
@@ -145,12 +145,12 @@ export default function History() {
     };
 
     return (
-        <div className="h-full overflow-y-auto custom-scrollbar pr-5">
+        <div className="pb-6">
             <div className="mx-auto w-full ">
                 {/* 필터 */}
-                <div className="mb-6 flex justify-end">
-                    <div className="flex gap-5">
-                        <div className="flex-1">
+                <div className="surface-card mb-4 p-5">
+                    <div className="grid grid-cols-3 gap-4">
+                        <div>
                             <Select
                                 items={projects.map((project) => ({
                                     label: project.title,
@@ -166,7 +166,7 @@ export default function History() {
                                 }}
                             />
                         </div>
-                        <div className="flex-1">
+                        <div>
                             <Select
                                 label="이벤트"
                                 items={eventTypeItems}
@@ -176,7 +176,7 @@ export default function History() {
                                 }
                             />
                         </div>
-                        <div className="flex-1">
+                        <div>
                             <Select
                                 label="기간"
                                 items={eventRangeItems}
@@ -190,10 +190,10 @@ export default function History() {
                 </div>
 
                 {/* 이력 테이블 */}
-                <div className="bg-white rounded-lg border overflow-hidden w-full">
+                <div className="surface-card overflow-hidden w-full">
                     <table className="w-full border-collapse">
-                        <thead className="bg-gray-50 border-b border-gray-400">
-                            <tr className="text-xs font-medium text-gray-500">
+                        <thead className="bg-gray-50 border-b border-gray-100">
+                            <tr className="text-xs font-semibold text-gray-500">
                                 <th className="pl-5 pr-2 py-3 text-left whitespace-nowrap">이벤트</th>
                                 <th className="px-2 py-3 text-left whitespace-nowrap">변경 항목</th>
                                 <th className="px-2 py-3 text-left whitespace-nowrap">변경 전</th>
@@ -204,19 +204,19 @@ export default function History() {
                             </tr>
                         </thead>
 
-                        <tbody className="divide-y">
+                        <tbody className="divide-y divide-gray-100">
                             {histories.map((history) => (
                                 <tr
                                     key={history.id}
-                                    className="hover:bg-gray-50 transition border-b border-gray-200"
+                                    className="hover:bg-gray-50 transition cursor-pointer"
                                     onClick={async () => {
                                         navigate(`/project/${history.project_id}`);
                                     }}
                                 >
                                     {/* 이벤트 */}
-                                    <td className="pl-5 pr-2 py-3 whitespace-nowrap">
+                                    <td className="pl-5 pr-2 py-3.5 whitespace-nowrap">
                                         <span
-                                            className={`inline-block text-xs px-2 py-0.5 rounded-full border ${eventBadgeStyle(
+                                            className={`inline-flex items-center h-6 text-xs font-semibold px-2.5 rounded-full border ${eventBadgeStyle(
                                                 history.event_type
                                             )}`}
                                         >
@@ -225,34 +225,34 @@ export default function History() {
                                     </td>
 
                                     {/* 변경 내용 */}
-                                    <td className="px-2 py-3 text-xs text-gray-700 text-left whitespace-nowrap">
+                                    <td className="px-2 py-3.5 text-[13px] font-semibold text-gray-900 text-left whitespace-nowrap">
                                         {fieldLabel(history.field) ?? "-"}
                                     </td>
 
                                     {/* 변경 전 */}
-                                    <td className="px-2 py-3 text-xs text-left whitespace-wrap">
+                                    <td className="px-2 py-3.5 text-[13px] text-gray-700 text-left whitespace-wrap">
                                         <span className="mr-1">
                                             {history.old_value ?? "-"}
                                         </span>
                                     </td>
                                     {/* 변경 후 */}
-                                    <td className="px-2 py-3 text-xs text-left whitespace-wrap">
+                                    <td className="px-2 py-3.5 text-[13px] text-gray-700 text-left whitespace-wrap">
                                         <span className=" mr-1">
                                             {history.new_value ?? "-"}
                                         </span>
                                     </td>
 
                                     {/* 변경 사유 */}
-                                    <td className="px-2 py-3 text-xs text-gray-600">
+                                    <td className="px-2 py-3.5 text-[13px] text-gray-700">
                                         {history.content ?? "-"}
                                     </td>
                                     {/* 변경 사유 */}
-                                    <td className="px-2 py-3 text-xs text-left text-gray-600 whitespace-nowrap">
+                                    <td className="px-2 py-3.5 text-[13px] text-left text-gray-700 whitespace-nowrap">
                                         {history.changed_by_name ?? " -"}
                                     </td>
 
                                     {/* 변경 시각 */}
-                                    <td className="pl-2 pr-5 py-3 text-right text-xs text-gray-400 whitespace-nowrap">
+                                    <td className="pl-2 pr-5 py-3.5 text-right text-xs text-gray-500 whitespace-nowrap tabular-nums">
                                         {new Date(history.changed_at).toLocaleString()}
                                     </td>
                                 </tr>
@@ -262,7 +262,7 @@ export default function History() {
                                 <tr>
                                     <td
                                         colSpan={7}
-                                        className="px-4 py-10 text-center text-sm text-gray-400"
+                                        className="px-4 py-16 text-center text-[15px] text-gray-500"
                                     >
                                         변경 이력이 없습니다.
                                     </td>

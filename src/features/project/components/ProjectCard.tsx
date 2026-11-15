@@ -26,15 +26,15 @@ export default function ProjectCard({ project }: ProjectCardProps) {
     const getStateInfo = (state_name?: string) => {
         switch (state_name) {
             case "PLANNED":
-                return { label: "PLANNED", color: "bg-planned" };
+                return { label: "PLANNED", color: "status-planned" };
             case "IN_PROGRESS":
-                return { label: "IN_PROGRESS", color: "bg-inProgress" };
+                return { label: "IN_PROGRESS", color: "status-inProgress" };
             case "DELAYED":
-                return { label: "DELAYED", color: "bg-delayed" };
+                return { label: "DELAYED", color: "status-delayed" };
             case "DONE":
-                return { label: "DONE", color: "bg-completed" };
+                return { label: "DONE", color: "status-completed" };
             default:
-                return { label: "-", color: "bg-planned" };
+                return { label: "-", color: "status-planned" };
         }
     };
 
@@ -42,75 +42,61 @@ export default function ProjectCard({ project }: ProjectCardProps) {
     const projectStateInfo = getStateInfo(project?.state_name);
 
     return (
-        <div className="relative flex items-center p-3 bg-white rounded-xl border hover:shadow-md transition-shadow overflow-hidden">
-            {/* 좌측 컬러 스트립 */}
-            <div className={`absolute left-0 top-0 h-full w-2 border-r ${projectStateInfo.color}`} />
+        <div className="surface-card group flex items-center gap-5 p-4 transition hover:border-primary/40 hover:ring-4 hover:ring-primary/10">
+            {/* 썸네일 이미지 */}
+            <div className="flex-shrink-0 size-20 rounded-2xl bg-gray-100 overflow-hidden">
+                {project.thumbnail_url ? (
+                    <img
+                        src={project.thumbnail_url}
+                        alt={project.title}
+                        className="w-full h-full object-cover"
+                    />
+                ) : (
+                    <div className="w-full h-full flex items-center justify-center text-2xl font-semibold text-gray-400">
+                        {project.title ? project.title.slice(0, 1) : ""}
+                    </div>
+                )}
+            </div>
 
-            {/* 내용이 스트립에 붙어보이지 않게 padding-left 확보 */}
-            <div className="flex w-full items-center gap-6 pl-3">
-                {/* 썸네일 이미지 */}
-                <div className="flex-shrink-0 size-22 bg-gray-200 rounded-lg overflow-hidden border">
-                    {project.thumbnail_url ? (
-                        <img
-                            src={project.thumbnail_url}
-                            alt={project.title}
-                            className="w-full h-full object-cover"
+            {/* 프로젝트 정보 */}
+            <div className="flex-1 min-w-0 space-y-3">
+                <div className="flex items-center gap-2 min-w-0">
+                    <div className="truncate text-[19px] font-semibold tracking-tight text-gray-900">{project.title || "-"}</div>
+                    <span className={`status-badge shrink-0 ${projectStateInfo.color}`}>{projectStateInfo.label}</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                    <span className="tag">{project.product_group_name || "-"}</span>
+                    <span className="tag">{project.owner_name || "-"}</span>
+                </div>
+
+                {/* 진행률 바 */}
+                <div className="flex items-center gap-3 max-w-[520px]">
+                    <div className="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                        <div
+                            className="h-full bg-primary rounded-full transition-all duration-300"
+                            style={{ width: `${progressPercentage}%` }}
                         />
-                    ) : (
-                        <div className="w-full h-full bg-gray-200" />
-                    )}
-                </div>
-
-                {/* 프로젝트 정보 */}
-                <div className="w-1/2 space-y-4">
-                    <div className="flex items-center gap-3">
-                        <div className="text-xl font-bold text-gray-900">{project.title || "-"}</div>
-                        <span className="px-3 py-1 text-xs bg-gray-100 text-gray-700 rounded">
-                            {project.product_group_name || "-"}
-                        </span>
-                        <span className="px-3 py-1 text-xs bg-gray-100 text-gray-700 rounded">
-                            {project.owner_name || "-"}
-                        </span>
                     </div>
-
-                    {/* 진행률 바 */}
-                    <div className="space-y-1">
-                        <div className="w-full h-2 bg-gray-200 rounded-full border overflow-hidden">
-                            <div
-                                className="h-full bg-gray-700 transition-all duration-300"
-                                style={{ width: `${progressPercentage}%` }}
-                            />
-                        </div>
-                        <div className="text-sm mt-1">
-                            {project.progress.completed}/{project.progress.total} 단계 <span className="text-gray-400">({progressPercentage}%)</span>
-                        </div>
+                    <div className="shrink-0 text-[13px] text-gray-500 tabular-nums">
+                        {project.progress.completed}/{project.progress.total} 단계 <span className="text-gray-400">({progressPercentage}%)</span>
                     </div>
                 </div>
+            </div>
 
-
-                {/* 우측 정보 */}
-                <div className="flex-1 h-full flex items-center justify-center gap-10">
-                    <div className="w-px self-stretch bg-gray-300" />
-                    <div className="flex flex-col items-center justify-center gap-3">
-                        <div className="text-md font-bold">{project.current_stage?.stage_name || "-"}</div>
-
-                        <div className={`text-center items-center justify-center`}>
-                            <div
-                                className={`w-24 h-8 px-2 flex items-center justify-center rounded-full border border-black text-xs font-medium text-white ${stateInfo.color}`}
-                            >
-                                <div>
-                                    {stateInfo.label}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="flex flex-col items-center justify-center gap-3">
-                        <div className="w-full text-md">{formattedDate || "-"}</div>
-                        <div className="w-full text-md">
-                            <span className="text-sm text-gray-500">담당자: </span> {project.current_stage?.stage_owner_name || "-"}</div>
+            {/* 우측 정보 */}
+            <div className="shrink-0 self-stretch flex items-center gap-8 pl-8 border-l border-gray-100">
+                <div className="w-40 space-y-2">
+                    <div className="text-xs text-gray-500">현재 단계</div>
+                    <div className="truncate text-[15px] font-semibold text-gray-900">{project.current_stage?.stage_name || "-"}</div>
+                    <span className={`status-badge ${stateInfo.color}`}>{stateInfo.label}</span>
+                </div>
+                <div className="w-36 space-y-2">
+                    <div className="text-xs text-gray-500">마감</div>
+                    <div className="text-[15px] font-semibold text-gray-900 tabular-nums">{formattedDate || "-"}</div>
+                    <div className="truncate text-[13px] text-gray-500">
+                        담당자 <span className="text-gray-900">{project.current_stage?.stage_owner_name || "-"}</span>
                     </div>
                 </div>
-
             </div>
         </div>
     );

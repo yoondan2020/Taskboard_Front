@@ -116,11 +116,11 @@ export default function StageUpdateForm({
 
     return (
         <tr>
-            <td colSpan={8} className="bg-gray-50 p-6">
-                <div className="space-y-4 px-10">
-                    <div className="flex gap-10">
+            <td colSpan={8} className="bg-gray-50 px-6 py-6 whitespace-normal">
+                <div className="space-y-5 rounded-2xl bg-white p-6 ring-1 ring-black/5">
+                    <div className="grid grid-cols-2 gap-6">
                         {/* LEFT */}
-                        <div className="flex-1 space-y-4">
+                        <div className="space-y-4">
                             <Input
                                 label="현재 단계"
                                 value={formData.name}
@@ -142,7 +142,7 @@ export default function StageUpdateForm({
                         </div>
 
                         {/* RIGHT */}
-                        <div className="flex-1 space-y-4">
+                        <div className="space-y-4">
                             <Input
                                 label="마감일"
                                 type="date"
@@ -192,18 +192,18 @@ export default function StageUpdateForm({
                     />
 
                     {/* 버튼 */}
-                    <div className="flex justify-end gap-2 mt-4">
+                    <div className="flex justify-end gap-2 pt-2">
                         <button
                             type="button"
                             onClick={onCancel}
-                            className="px-6 py-1 border rounded-full hover:bg-gray-700 hover:text-white cursor-pointer"
+                            className="btn-secondary min-w-[88px]"
                         >
                             취소
                         </button>
                         <button
                             type="button"
                             onClick={handleSave}
-                            className="px-6 py-1 text-white rounded-full bg-primary hover:bg-primary-dark cursor-pointer"
+                            className="btn-primary min-w-[88px]"
                         >
                             저장
                         </button>

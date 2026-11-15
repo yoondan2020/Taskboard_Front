@@ -15,13 +15,13 @@ export default function Textarea({
     onChange,
 }: TextareaProps) {
     return (
-        <label className="w-full flex flex-col items-start">
-            <div className="block mb-1">{label}</div>
+        <label className="w-full flex flex-col items-start gap-1.5">
+            <div className="field-label">{label}</div>
             <textarea
                 rows={rows}
                 value={value}
                 onChange={(e) => onChange(e.target.value)}
-                className="w-full border rounded-md px-3 py-2 h-16"
+                className="field-control h-auto min-h-[96px] py-3 resize-y leading-relaxed"
                 placeholder={placeholder}
             />
         </label>

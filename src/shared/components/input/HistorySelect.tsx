@@ -17,11 +17,11 @@ export default function HistroySelect({
     onChange,
 }: SelectProps) {
     return (
-        <label className="w-full flex text-md items-center gap-2 h-8">
-            <div className="w-1/3 whitespace-nowrap text-right">{label}</div>
+        <label className="w-full flex items-center gap-3">
+            <div className="field-label whitespace-nowrap">{label}</div>
 
             <select
-                className="w-2/3 border border-black rounded-lg p-1 h-full"
+                className="field-control select-chevron h-10"
                 value={value}
                 onChange={(e) => onChange(e.target.value)}
             >

@@ -79,13 +79,13 @@ export default function SearchBox() {
 
     return (
         <div className="w-full">
-            <div className="w-full h-[54px] flex items-center gap-4 pl-5 bg-white overflow-hidden">
+            <div className="surface-card w-full h-16 flex items-center gap-3 px-3">
                 {/* 왼쪽 select들 */}
-                <div className="flex items-center gap-3 h-full">
+                <div className="flex items-center gap-2 h-full">
                     {/* 프로젝트 그룹 */}
-                    <div className="min-w-[140px] flex items-center h-full border-r pr-3">
+                    <div className="min-w-[180px] flex items-center h-full">
                         <select
-                            className="w-full h-10 px-3 bg-white text-sm outline-none items-center"
+                            className="select-chevron w-full h-10 pl-4 rounded-full bg-gray-100 hover:bg-gray-200 text-sm text-gray-900 outline-none transition"
                             value={filters.productGroupId ?? ""}
                             onChange={(e) =>
                                 setFilters({
@@ -102,9 +102,9 @@ export default function SearchBox() {
                     </div>
 
                     {/* 상태 */}
-                    <div className="min-w-[140px] flex items-center h-full border-r pr-3">
+                    <div className="min-w-[180px] flex items-center h-full">
                         <select
-                            className="w-full h-10 px-3 bg-white text-sm outline-none items-center"
+                            className="select-chevron w-full h-10 pl-4 rounded-full bg-gray-100 hover:bg-gray-200 text-sm text-gray-900 outline-none transition"
                             value={filters.stateId ?? ""}
                             onChange={(e) =>
                                 setFilters({
@@ -121,9 +121,9 @@ export default function SearchBox() {
                     </div>
 
                     {/* 담당자 */}
-                    <div className="min-w-[160px] flex items-center h-full">
+                    <div className="min-w-[180px] flex items-center h-full">
                         <select
-                            className="w-full h-10 px-3 bg-white text-sm outline-none items-center"
+                            className="select-chevron w-full h-10 pl-4 rounded-full bg-gray-100 hover:bg-gray-200 text-sm text-gray-900 outline-none transition"
                             value={filters.onwerId ?? ""}
                             onChange={(e) =>
                                 setFilters({
@@ -141,12 +141,16 @@ export default function SearchBox() {
                 </div>
 
                 {/* divider */}
-                <div className="h-full w-px bg-black" />
+                <div className="h-6 w-px bg-gray-200 mx-1" />
 
                 {/* 검색 input */}
-                <div className="flex-1 flex items-center">
+                <div className="flex-1 flex items-center gap-2 h-10 px-3 rounded-full hover:bg-gray-50 focus-within:bg-gray-50 transition">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="text-gray-500 shrink-0" aria-hidden="true">
+                        <path d="M11 19a8 8 0 1 1 0-16 8 8 0 0 1 0 16Z" stroke="currentColor" strokeWidth="2" />
+                        <path d="M21 21l-4.35-4.35" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                    </svg>
                     <input
-                        className="w-full bg-transparent outline-none text-sm placeholder:text-gray-400"
+                        className="w-full bg-transparent outline-none text-[15px] text-gray-900 placeholder:text-gray-500"
                         placeholder="검색어를 입력해주세요"
                         value={qLocal}
                         onChange={(e) => setQLocal(e.target.value)}
@@ -156,11 +160,11 @@ export default function SearchBox() {
                 {/* 돋보기 버튼 */}
                 <button
                     type="button"
-                    className="w-12 h-full bg-primary flex items-center justify-center shrink-0"
+                    className="btn-primary h-10 px-5 shrink-0"
                     onClick={() => setFilters({ q: qLocal })}
                     aria-label="search"
                 >
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" className="text-white">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="text-white">
                         <path
                             d="M11 19a8 8 0 1 1 0-16 8 8 0 0 1 0 16Z"
                             stroke="currentColor"

@@ -141,31 +141,14 @@ export default function NotificationModal({
                     onClose={() => setOpenReasonModal(false)}
                     notiData={notiData} />
             </div>
-            <div className="absolute inset-0 bg-black/40" />
-            <div className="
-                relative
-                w-[980px]
-                max-w-[92vw]
-                h-[640px]
-                max-h-[86vh]
-                bg-white
-                rounded-2xl
-                shadow-xl
-                overflow-hidden
-            ">
+            <div className="modal-overlay" />
+            <div className="modal-panel w-[980px] max-w-[92vw] h-[640px] max-h-[86vh] overflow-hidden">
 
                 {/* Header */}
-                <div className="
-                    h-14
-                    px-5
-                    flex
-                    items-center
-                    justify-between
-                    border-b
-                ">
+                <div className="h-16 px-6 flex items-center justify-between border-b border-gray-100">
 
                     <div className="flex items-center gap-3">
-                        <div className="text-lg font-semibold">
+                        <div className="modal-title">
                             {title}
                         </div>
                         <div className="text-sm text-gray-500">
@@ -174,27 +157,13 @@ export default function NotificationModal({
                     </div>
                     <div className="flex gap-2">
                         <button
-                            className="
-                                px-3
-                                py-1.5
-                                text-sm
-                                rounded-lg
-                                border
-                                hover:bg-gray-100
-                            "
+                            className="btn-secondary h-9 px-4"
                             onClick={onReadAll}
                         >
                             모두 읽음
                         </button>
                         <button
-                            className="
-                                px-3
-                                py-1.5
-                                text-sm
-                                rounded-lg
-                                bg-gray-900
-                                text-white
-                            "
+                            className="btn-dark"
                             onClick={onClose}
                         >
                             닫기
@@ -202,48 +171,22 @@ export default function NotificationModal({
                     </div>
                 </div>
 
-                <div className="
-                    h-[calc(100%-56px)]
-                    grid
-                    grid-cols-[260px_1fr]
-                ">
+                <div className="h-[calc(100%-64px)] grid grid-cols-[260px_1fr]">
                     {/* Sidebar */}
-                    <aside className="
-                        border-r
-                        bg-gray-50
-                    ">
+                    <aside className="border-r border-gray-100 bg-gray-50">
                         <div className="p-4">
-                            <div className="
-                                rounded-2xl
-                                bg-white
-                                border
-                                p-4
-                            ">
+                            <div className="rounded-2xl bg-white ring-1 ring-black/5 p-4">
                                 <div className="text-sm text-gray-500">
                                     전체 알림
                                 </div>
-                                <div className="
-                                    mt-2
-                                    text-2xl
-                                    font-semibold
-                                ">
+                                <div className="mt-1 text-[28px] font-semibold leading-tight tracking-tight">
                                     {notifications.length}
                                 </div>
                                 <div className="mt-3 flex gap-2 text-xs">
-                                    <span className="
-                                        px-2
-                                        py-1
-                                        rounded-full
-                                        bg-gray-100
-                                    ">
+                                    <span className="tag">
                                         안 읽음 {unreadCount}
                                     </span>
-                                    <span className="
-                                        px-2
-                                        py-1
-                                        rounded-full
-                                        bg-gray-100
-                                    ">
+                                    <span className="tag">
                                         읽음 {notifications.length - unreadCount}
                                     </span>
                                 </div>
@@ -259,9 +202,10 @@ export default function NotificationModal({
                                             px-3
                                             py-2
                                             rounded-xl
+                                            text-[15px]
                                             ${active === m.key
-                                                ? "bg-white border shadow-sm"
-                                                : "hover:bg-white"
+                                                ? "bg-white text-primary font-semibold ring-1 ring-black/5"
+                                                : "text-gray-700 hover:bg-white"
                                             }
                                         `}
                                     >
@@ -279,30 +223,18 @@ export default function NotificationModal({
                             justify-between
                             mb-4
                         ">
-                            <h2 className="font-semibold text-lg">
+                            <h2 className="text-[17px] font-semibold tracking-tight">
                                 {title}
                             </h2>
                             <input
                                 value={query}
                                 onChange={(e) => setQuery(e.target.value)}
                                 placeholder="프로젝트 검색"
-                                className="
-                                    border
-                                    rounded-xl
-                                    px-3
-                                    py-2
-                                    text-sm
-                                "
+                                className="field-control h-10 w-64 rounded-full text-sm"
                             />
                         </div>
                         {filteredNotifications.length === 0 ? (
-                            <div className="
-                                rounded-2xl
-                                border
-                                p-10
-                                text-center
-                                text-gray-500
-                            ">
+                            <div className="rounded-2xl bg-gray-50 p-12 text-center text-[15px] text-gray-500">
                                 표시할 알림이 없습니다.
                             </div>
                         ) : (
@@ -364,8 +296,8 @@ function NotificationCard({
                 transition
 
                 ${item.is_read
-                    ? "bg-white hover:bg-gray-50"
-                    : `${config.color} border-gray-300`
+                    ? "bg-white border-gray-100 hover:bg-gray-50"
+                    : `${config.color} border-transparent hover:brightness-[0.98]`
                 }
             `}
         >
@@ -383,7 +315,7 @@ function NotificationCard({
                                 w-2
                                 h-2
                                 rounded-full
-                                bg-red-500
+                                bg-primary
                             "/>
                         )}
                     </div>
@@ -404,19 +336,11 @@ function NotificationCard({
                         )}
                     </div>
 
-                    <div className="
-                        mt-2
-                        text-sm
-                        text-gray-600
-                    ">
+                    <div className="mt-2 text-sm text-gray-700 whitespace-pre-line">
                         {getNotificationMessage(item)}
                     </div>
 
-                    <div className="
-                        mt-2
-                        text-xs
-                        text-gray-400
-                    ">
+                    <div className="mt-2 text-xs text-gray-500 tabular-nums">
                         {formatDate(item.triggered_at)}
                     </div>
                 </div>
@@ -426,15 +350,7 @@ function NotificationCard({
                             e.stopPropagation();
                             onRead();
                         }}
-                        className="
-                            h-fit
-                            px-3
-                            py-1.5
-                            text-sm
-                            rounded-lg
-                            border
-                            bg-white
-                        "
+                        className="btn h-8 px-3 text-xs bg-white text-gray-900 ring-1 ring-black/10 hover:bg-gray-50"
                     >
                         읽음
                     </button>

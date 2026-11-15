@@ -60,9 +60,9 @@ export default function ProjectDetailPage() {
         stageId: number;
     } | null>(null);
 
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p className="text-red-500">Error: {error}</p>;
-    if (!project) return <p>Project not found</p>;
+    if (loading) return <p className="surface-card p-12 text-center text-[15px] text-gray-500">Loading...</p>;
+    if (error) return <p className="surface-card p-12 text-center text-[15px] text-danger">Error: {error}</p>;
+    if (!project) return <p className="surface-card p-12 text-center text-[15px] text-gray-500">Project not found</p>;
 
     const sortedStages = [...project.stages].sort((a, b) => {
         const aValue = a.sequence ?? 0;
@@ -74,15 +74,15 @@ export default function ProjectDetailPage() {
     const getStateInfo = (state_name?: string) => {
         switch (state_name) {
             case "PLANNED":
-                return { label: "PLANNED", color: "bg-planned" };
+                return { label: "PLANNED", color: "status-planned" };
             case "IN_PROGRESS":
-                return { label: "IN_PROGRESS", color: "bg-inProgress" };
+                return { label: "IN_PROGRESS", color: "status-inProgress" };
             case "DELAYED":
-                return { label: "DELAYED", color: "bg-delayed" };
+                return { label: "DELAYED", color: "status-delayed" };
             case "DONE":
-                return { label: "DONE", color: "bg-completed" };
+                return { label: "DONE", color: "status-completed" };
             default:
-                return { label: "-", color: "bg-planned" };
+                return { label: "-", color: "status-planned" };
         }
     };
 
@@ -169,15 +169,15 @@ export default function ProjectDetailPage() {
         >
             {/* Main Content */}
             <div className="">
-                <div className="flex justify-end items-center gap-5">
+                <div className="flex justify-end items-center gap-2">
                     {/* 정렬 */}
                     <button
                         type="button"
                         onClick={toggleStageSortOrder}
-                        className="px-3 py-2 border rounded-md hover:bg-gray-100 flex items-center gap-2 text-sm cursor-pointer"
+                        className="btn-secondary h-11 px-5"
                     >
-                        <span className="font-bold">{stageSortOrder === "asc" ? "오름차순" : "내림차순"}</span>
-                        <span className="text-xs">{stageSortOrder === "asc" ? "▲" : "▼"}</span>
+                        <span className="font-semibold">{stageSortOrder === "asc" ? "오름차순" : "내림차순"}</span>
+                        <span className="text-[10px] text-gray-500">{stageSortOrder === "asc" ? "▲" : "▼"}</span>
                     </button>
                     <div className="">
                         < PlusButton
@@ -202,15 +202,18 @@ export default function ProjectDetailPage() {
                 )}
 
                 <div className="flex flex-col py-5">
-                    <div className="flex gap-5">
+                    <div className="flex gap-6 items-start">
                         {/* Left Sidebar */}
-                        <div className={`flex-[1] h-fit border rounded-xl gap-0 overflow-hidden`} >
-                            <div className={`h-5 ${getStateInfo(project.state_name).color}`}></div>
-                            <div className="space-y-5 p-4 h-fit bg-white">
+                        <div className={`w-[360px] shrink-0 h-fit surface-card overflow-hidden`} >
+                            <div className={`h-1.5 status-solid ${getStateInfo(project.state_name).color}`}></div>
+                            <div className="space-y-6 p-6 h-fit">
                                 {/* Thumbnail */}
-                                <div className="space-y-2">
-                                    <div className="font-bold text-3xl">{project.title}</div>
-                                    <div className="bg-gray-200 h-64 rounded-lg border">
+                                <div className="space-y-4">
+                                    <div className="space-y-2">
+                                        <span className={`status-badge ${getStateInfo(project.state_name).color}`}>{getStateInfo(project.state_name).label}</span>
+                                        <div className="text-[28px] font-semibold leading-tight tracking-tight break-keep">{project.title}</div>
+                                    </div>
+                                    <div className="bg-gray-100 aspect-[4/3] rounded-2xl overflow-hidden">
                                         {project.thumbnail_url ? (
                                             <img
                                                 src={project.thumbnail_url}
@@ -218,30 +221,30 @@ export default function ProjectDetailPage() {
                                                 className="w-full h-full object-contain"
                                             />
                                         ) : (
-                                            <div className="w-full h-full bg-gray-200" />
+                                            <div className="w-full h-full bg-gray-100" />
                                         )}
                                     </div>
                                 </div>
 
                                 {/* Project Info */}
-                                <div className="border rounded-xl p-2 truncate whitespace-nowrap">
-                                    <table className="w-full table-auto border-collapse text-right">
+                                <div className="rounded-2xl bg-gray-50 px-4 py-3">
+                                    <table className="w-full table-fixed border-collapse text-left text-sm">
                                         <tbody>
                                             <tr>
-                                                <th className="font-medium">구분 :</th>
-                                                <td className="text-gray-900 pl-3 text-left">{project.product_group_name}</td>
+                                                <th className="w-20 py-1.5 font-normal text-gray-500 align-top">구분 :</th>
+                                                <td className="py-1.5 text-gray-900 break-keep">{project.product_group_name}</td>
                                             </tr>
                                             <tr>
-                                                <th className="font-medium">목표일 :</th>
-                                                <td className="text-gray-900 pl-3 text-left">{project.goal_due_date}</td>
+                                                <th className="w-20 py-1.5 font-normal text-gray-500 align-top">목표일 :</th>
+                                                <td className="py-1.5 text-gray-900 break-keep">{project.goal_due_date}</td>
                                             </tr>
                                             <tr>
-                                                <th className="font-medium">담당자 :</th>
-                                                <td className="text-gray-900 pl-3 text-left">{project.owner_name}</td>
+                                                <th className="w-20 py-1.5 font-normal text-gray-500 align-top">담당자 :</th>
+                                                <td className="py-1.5 text-gray-900 break-keep">{project.owner_name}</td>
                                             </tr>
                                             <tr>
-                                                <th className="font-medium">유관자 :</th>
-                                                <td className="text-gray-900 pl-3 text-left">{project.stage_owner_names.join(", ")}</td>
+                                                <th className="w-20 py-1.5 font-normal text-gray-500 align-top">유관자 :</th>
+                                                <td className="py-1.5 text-gray-900 break-keep">{project.stage_owner_names.join(", ")}</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -249,50 +252,52 @@ export default function ProjectDetailPage() {
 
                                 {/* Progress */}
                                 <div className="">
-                                    <div className="text-lg font-semibold mb-2">진행률</div>
-                                    <div className="relative w-full h-3 bg-gray-100 rounded-full overflow-hidden border">
+                                    <div className="flex items-baseline justify-between mb-2">
+                                        <div className="text-[15px] font-semibold">진행률</div>
+                                    </div>
+                                    <div className="relative w-full h-2 bg-gray-100 rounded-full overflow-hidden">
                                         <div
-                                            className="absolute h-full bg-gray-700"
+                                            className="absolute h-full bg-primary rounded-full"
                                             style={{
                                                 width: `${(project.progress.completed / project.progress.total) * 100}%`
                                             }}
                                         ></div>
                                     </div>
-                                    <p className="text-sm text-gray-600 mt-1">
+                                    <p className="text-[13px] text-gray-500 mt-2 tabular-nums">
                                         {project.progress.completed}/{project.progress.total} 단계 {project.progress.total > 0 ? Math.round((project.progress.completed / project.progress.total) * 100) : 0}%
                                     </p>
                                 </div>
 
                                 {/* Note or Remark */}
-                                <div className="border-gray-300">
-                                    <h3 className="text-lg font-semibold mb-2">비고</h3>
-                                    <p className="text-gray-700 whitespace-pre-wrap border rounded-lg p-3">
+                                <div>
+                                    <h3 className="text-[15px] font-semibold mb-2">비고</h3>
+                                    <p className="text-sm leading-relaxed text-gray-700 whitespace-pre-wrap rounded-2xl bg-gray-50 p-4">
                                         {project.remark || "-"}
                                     </p>
                                 </div>
                             </div>
                         </div>
                         {/* Right Content - Stages Table */}
-                        <div className="flex-[4] space-y-5">
+                        <div className="flex-1 min-w-0 space-y-5">
 
                             {/* Table */}
-                            <div className="border border-1 rounded-lg bg-white overflow-hidden truncate whitespace-nowrap">
+                            <div className="surface-card overflow-hidden whitespace-nowrap">
                                 <table className="w-full table-auto items-center">
                                     {/* Table Header */}
                                     <thead>
-                                        <tr className="border-b">
-                                            <th className="text-center py-3 px-2 text-sm font-medium text-gray-600">
+                                        <tr className="border-b border-gray-100 bg-gray-50">
+                                            <th className="text-center py-3 px-2 text-xs font-semibold text-gray-500">
                                                 <div className="flex items-center justify-center gap-2">
                                                     <span>Index</span>
                                                 </div>
                                             </th>
-                                            <th className="text-left py-3 px-2 text-sm font-medium text-gray-600">단계명</th>
-                                            <th className="text-center py-3 px-4 text-sm font-medium text-gray-600">상태</th>
-                                            <th className="text-center py-3 px-2 text-sm font-medium text-gray-600">마감일</th>
-                                            <th className="text-center py-3 px-2 text-sm font-medium text-gray-600">예상 마감일</th>
-                                            <th className="text-center py-3 px-2 text-sm font-medium text-gray-600">실제 완료일</th>
-                                            <th className="text-center py-3 px-2 text-sm font-medium text-gray-600">담당자</th>
-                                            <th className="text-center py-3 px-2 text-sm font-medium text-gray-600"></th>
+                                            <th className="text-left py-3 px-2 text-xs font-semibold text-gray-500">단계명</th>
+                                            <th className="text-center py-3 px-4 text-xs font-semibold text-gray-500">상태</th>
+                                            <th className="text-center py-3 px-2 text-xs font-semibold text-gray-500">마감일</th>
+                                            <th className="text-center py-3 px-2 text-xs font-semibold text-gray-500">예상 마감일</th>
+                                            <th className="text-center py-3 px-2 text-xs font-semibold text-gray-500">실제 완료일</th>
+                                            <th className="text-center py-3 px-2 text-xs font-semibold text-gray-500">담당자</th>
+                                            <th className="text-center py-3 px-2 text-xs font-semibold text-gray-500"></th>
                                         </tr>
                                     </thead>
 
@@ -303,7 +308,7 @@ export default function ProjectDetailPage() {
                                             <tr>
                                                 <td
                                                     colSpan={8}
-                                                    className="text-center py-20 text-gray-500"
+                                                    className="text-center py-20 text-[15px] text-gray-500"
                                                 >
                                                     프로젝트 상세 단계가 존재하지 않습니다.
                                                 </td>
@@ -321,13 +326,13 @@ export default function ProjectDetailPage() {
                                                             style={{
                                                                 borderBottom: (stage.note || stage.remark) ? "none" : undefined
                                                             }}
-                                                            className="last:border-b-0 border-b"
+                                                            className="border-b border-gray-100 last:border-b-0 hover:bg-gray-50/70 transition-colors"
                                                             onContextMenu={(e) => handleContextMenu(e, stage.id)}
                                                         >
                                                             {/* 인덱스 */}
                                                             <td className="py-4 px-2">
                                                                 <div className="flex justify-center">
-                                                                    <div className="w-8 h-8 rounded-md bg-white border-1 flex items-center justify-center font-medium text-sm">
+                                                                    <div className="size-7 rounded-full bg-gray-100 text-gray-600 flex items-center justify-center font-semibold text-xs tabular-nums">
                                                                         {displayIndex}
                                                                     </div>
                                                                 </div>
@@ -335,14 +340,14 @@ export default function ProjectDetailPage() {
 
                                                             {/* 상태 (단계명) */}
                                                             <td className="py-3 px-2 items-center">
-                                                                <div className="font-medium">{stage.name}</div>
+                                                                <div className="text-[15px] font-semibold text-gray-900">{stage.name}</div>
                                                             </td>
 
                                                             {/* State Badge (상태) */}
                                                             <td className="py-4 px-2 flex items-center justify-center">
                                                                 <div className={`text-center items-center justify-center`}>
                                                                     <div
-                                                                        className={`w-24 h-8 px-2 flex items-center justify-center rounded-full border-1 border-black text-xs font-medium text-white ${getStateInfo(stage.state_name).color}`}
+                                                                        className={`status-badge ${getStateInfo(stage.state_name).color}`}
                                                                     >
                                                                         <div>
                                                                             {getStateInfo(stage.state_name).label}
@@ -352,17 +357,17 @@ export default function ProjectDetailPage() {
                                                             </td>
 
                                                             {/* 마감일 */}
-                                                            <td className="py-4 px-2 text-center text-sm">
+                                                            <td className="py-4 px-2 text-center text-sm text-gray-700 tabular-nums">
                                                                 {stage.due_date || "-"}
                                                             </td>
 
                                                             {/* 예상 마감일 */}
-                                                            <td className="py-4 px-2 text-center text-sm">
+                                                            <td className="py-4 px-2 text-center text-sm text-gray-700 tabular-nums">
                                                                 {stage.eta || "-"}
                                                             </td>
 
                                                             {/* 실제 완료일 */}
-                                                            <td className="py-4 px-2 text-center text-sm">
+                                                            <td className="py-4 px-2 text-center text-sm text-gray-700 tabular-nums">
                                                                 {stage.completed_date || "-"}
                                                             </td>
 
@@ -376,7 +381,7 @@ export default function ProjectDetailPage() {
                                                             {isEditable(stage) && (
                                                                 <td
                                                                     onClick={() => handleToggleEdit(stage.id)}
-                                                                    className="cursor-pointer"
+                                                                    className="cursor-pointer pr-4 text-gray-500"
                                                                 >
                                                                     <ModifyIcon />
                                                                 </td>
@@ -385,11 +390,11 @@ export default function ProjectDetailPage() {
                                                         </tr>
                                                         {/* note / remark row */}
                                                         {(stage.note || stage.remark) && (
-                                                            <tr className="border-b last:border-b-0">
-                                                                <td colSpan={7} className="pb-2 px-10">
-                                                                    <div className="space-y-1 text-base rounded-xl py-2">
+                                                            <tr className="border-b border-gray-100 last:border-b-0">
+                                                                <td colSpan={7} className="pb-4 pl-16 pr-6 whitespace-normal">
+                                                                    <div className="space-y-1 text-sm leading-relaxed rounded-xl bg-gray-50 px-4 py-3">
                                                                         {stage.note && <p className="text-gray-700">{stage.note}</p>}
-                                                                        {stage.remark && <p className="text-red-500">{stage.remark}</p>}
+                                                                        {stage.remark && <p className="text-danger">{stage.remark}</p>}
                                                                     </div>
                                                                 </td>
                                                             </tr>

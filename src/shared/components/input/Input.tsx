@@ -14,14 +14,14 @@ export default function Input({
     onChange,
 }: InputProps) {
     return (
-        <label className="w-full flex text-md items-center gap-3 h-8">
-            <div className="w-1/3">{label}</div>
+        <label className="w-full flex flex-col gap-1.5">
+            <div className="field-label">{label}</div>
             <input
                 type={type}
                 value={value}
                 placeholder={placeholder}
                 onChange={(e) => onChange?.(e.target.value)}
-                className="w-2/3 p-1 border border-black rounded-lg h-full"
+                className="field-control"
             />
         </label>
     );
