@@ -63,13 +63,13 @@ export default function SearchMyBox() {
 
     return (
         <div className="w-full">
-            <div className="w-full h-11 flex items-center gap-1 px-1.5 rounded-lg bg-white border border-gray-200 shadow-sm">
+            <div className="w-full h-14 flex items-center gap-2 px-2.5 rounded-2xl bg-white ring-1 ring-black/5">
                 {/* 왼쪽 select들 */}
                 <div className="flex items-center gap-2 h-full">
                     {/* 프로젝트 그룹 */}
                     <div className="min-w-[150px] h-full flex items-center">
                         <select
-                            className="select-chevron w-full h-8 pl-2.5 rounded-md bg-transparent hover:bg-hover text-sm text-gray-700 outline-none transition"
+                            className="select-chevron w-full h-9 pl-4 rounded-full bg-gray-100 hover:bg-gray-200 text-sm text-gray-900 outline-none transition"
                             value={filters.productGroupId ?? ""}
                             onChange={(e) =>
                                 setFilters({
@@ -88,7 +88,7 @@ export default function SearchMyBox() {
                     {/* 상태 */}
                     <div className="min-w-[150px] h-full flex items-center">
                         <select
-                            className="select-chevron w-full h-8 pl-2.5 rounded-md bg-transparent hover:bg-hover text-sm text-gray-700 outline-none transition"
+                            className="select-chevron w-full h-9 pl-4 rounded-full bg-gray-100 hover:bg-gray-200 text-sm text-gray-900 outline-none transition"
                             value={filters.stateId ?? ""}
                             onChange={(e) =>
                                 setFilters({
@@ -118,7 +118,7 @@ export default function SearchMyBox() {
                 {/* 돋보기 버튼 */}
                 <button
                     type="button"
-                    className="btn-primary h-8 px-3 shrink-0"
+                    className="btn-primary h-9 px-4 shrink-0"
                     onClick={() => setFilters({ q: qLocal })}
                     aria-label="search"
                 >

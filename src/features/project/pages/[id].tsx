@@ -60,9 +60,9 @@ export default function ProjectDetailPage() {
         stageId: number;
     } | null>(null);
 
-    if (loading) return <p className="rounded-lg bg-callout-gray p-12 text-center text-sm text-gray-500">Loading...</p>;
-    if (error) return <p className="rounded-lg bg-callout-red p-12 text-center text-sm text-danger">Error: {error}</p>;
-    if (!project) return <p className="rounded-lg bg-callout-gray p-12 text-center text-sm text-gray-500">Project not found</p>;
+    if (loading) return <p className="surface-card p-12 text-center text-[15px] text-gray-500">Loading...</p>;
+    if (error) return <p className="surface-card p-12 text-center text-[15px] text-danger">Error: {error}</p>;
+    if (!project) return <p className="surface-card p-12 text-center text-[15px] text-gray-500">Project not found</p>;
 
     const sortedStages = [...project.stages].sort((a, b) => {
         const aValue = a.sequence ?? 0;
@@ -174,10 +174,10 @@ export default function ProjectDetailPage() {
                     <button
                         type="button"
                         onClick={toggleStageSortOrder}
-                        className="btn-secondary h-9"
+                        className="btn-secondary h-11 px-5"
                     >
                         <span className="font-semibold">{stageSortOrder === "asc" ? "오름차순" : "내림차순"}</span>
-                        <span className="text-[10px] text-gray-400">{stageSortOrder === "asc" ? "▲" : "▼"}</span>
+                        <span className="text-[10px] text-gray-500">{stageSortOrder === "asc" ? "▲" : "▼"}</span>
                     </button>
                     <div className="">
                         < PlusButton
@@ -202,18 +202,18 @@ export default function ProjectDetailPage() {
                 )}
 
                 <div className="flex flex-col py-5">
-                    <div className="flex gap-8 items-start">
+                    <div className="flex gap-6 items-start">
                         {/* Left Sidebar */}
-                        <div className={`w-[340px] shrink-0 h-fit surface-card overflow-hidden`} >
-                            <div className={`h-1 status-solid ${getStateInfo(project.state_name).color}`}></div>
-                            <div className="space-y-5 p-5 h-fit">
+                        <div className={`w-[360px] shrink-0 h-fit surface-card overflow-hidden`} >
+                            <div className={`h-1.5 status-solid ${getStateInfo(project.state_name).color}`}></div>
+                            <div className="space-y-6 p-6 h-fit">
                                 {/* Thumbnail */}
                                 <div className="space-y-4">
                                     <div className="space-y-2">
                                         <span className={`status-badge ${getStateInfo(project.state_name).color}`}>{getStateInfo(project.state_name).label}</span>
-                                        <div className="text-[26px] font-bold leading-tight break-keep text-gray-900">{project.title}</div>
+                                        <div className="text-[28px] font-semibold leading-tight tracking-tight break-keep">{project.title}</div>
                                     </div>
-                                    <div className="bg-callout-gray aspect-[4/3] rounded-md overflow-hidden">
+                                    <div className="bg-gray-100 aspect-[4/3] rounded-2xl overflow-hidden">
                                         {project.thumbnail_url ? (
                                             <img
                                                 src={project.thumbnail_url}
@@ -221,13 +221,13 @@ export default function ProjectDetailPage() {
                                                 className="w-full h-full object-contain"
                                             />
                                         ) : (
-                                            <div className="w-full h-full bg-callout-gray" />
+                                            <div className="w-full h-full bg-gray-100" />
                                         )}
                                     </div>
                                 </div>
 
                                 {/* Project Info */}
-                                <div className="border-y border-gray-200 py-2">
+                                <div className="rounded-2xl bg-gray-50 px-4 py-3">
                                     <table className="w-full table-fixed border-collapse text-left text-sm">
                                         <tbody>
                                             <tr>
@@ -253,9 +253,9 @@ export default function ProjectDetailPage() {
                                 {/* Progress */}
                                 <div className="">
                                     <div className="flex items-baseline justify-between mb-2">
-                                        <div className="text-sm font-semibold text-gray-700">진행률</div>
+                                        <div className="text-[15px] font-semibold">진행률</div>
                                     </div>
-                                    <div className="relative w-full h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                                    <div className="relative w-full h-2 bg-gray-100 rounded-full overflow-hidden">
                                         <div
                                             className="absolute h-full bg-primary rounded-full"
                                             style={{
@@ -263,15 +263,15 @@ export default function ProjectDetailPage() {
                                             }}
                                         ></div>
                                     </div>
-                                    <p className="text-xs text-gray-600 mt-1.5 tabular-nums">
+                                    <p className="text-[13px] text-gray-500 mt-2 tabular-nums">
                                         {project.progress.completed}/{project.progress.total} 단계 {project.progress.total > 0 ? Math.round((project.progress.completed / project.progress.total) * 100) : 0}%
                                     </p>
                                 </div>
 
                                 {/* Note or Remark */}
                                 <div>
-                                    <h3 className="text-sm font-semibold text-gray-700 mb-2">비고</h3>
-                                    <p className="text-sm leading-relaxed text-gray-800 whitespace-pre-wrap rounded-md bg-callout-yellow px-4 py-3">
+                                    <h3 className="text-[15px] font-semibold mb-2">비고</h3>
+                                    <p className="text-sm leading-relaxed text-gray-700 whitespace-pre-wrap rounded-2xl bg-gray-50 p-4">
                                         {project.remark || "-"}
                                     </p>
                                 </div>
@@ -281,23 +281,23 @@ export default function ProjectDetailPage() {
                         <div className="flex-1 min-w-0 space-y-5">
 
                             {/* Table */}
-                            <div className="rounded-lg border border-gray-200 bg-white overflow-hidden whitespace-nowrap">
+                            <div className="surface-card overflow-hidden whitespace-nowrap">
                                 <table className="w-full table-auto items-center">
                                     {/* Table Header */}
                                     <thead>
-                                        <tr className="border-b border-gray-200 bg-gray-100 [&>th]:border-r [&>th]:border-gray-200 [&>th:last-child]:border-r-0">
-                                            <th className="text-center py-3 px-2 text-xs font-medium text-gray-600">
+                                        <tr className="border-b border-gray-100 bg-gray-50">
+                                            <th className="text-center py-3 px-2 text-xs font-semibold text-gray-500">
                                                 <div className="flex items-center justify-center gap-2">
                                                     <span>Index</span>
                                                 </div>
                                             </th>
-                                            <th className="text-left py-3 px-2 text-xs font-medium text-gray-600">단계명</th>
-                                            <th className="text-center py-3 px-4 text-xs font-medium text-gray-600">상태</th>
-                                            <th className="text-center py-3 px-2 text-xs font-medium text-gray-600">마감일</th>
-                                            <th className="text-center py-3 px-2 text-xs font-medium text-gray-600">예상 마감일</th>
-                                            <th className="text-center py-3 px-2 text-xs font-medium text-gray-600">실제 완료일</th>
-                                            <th className="text-center py-3 px-2 text-xs font-medium text-gray-600">담당자</th>
-                                            <th className="text-center py-3 px-2 text-xs font-medium text-gray-600"></th>
+                                            <th className="text-left py-3 px-2 text-xs font-semibold text-gray-500">단계명</th>
+                                            <th className="text-center py-3 px-4 text-xs font-semibold text-gray-500">상태</th>
+                                            <th className="text-center py-3 px-2 text-xs font-semibold text-gray-500">마감일</th>
+                                            <th className="text-center py-3 px-2 text-xs font-semibold text-gray-500">예상 마감일</th>
+                                            <th className="text-center py-3 px-2 text-xs font-semibold text-gray-500">실제 완료일</th>
+                                            <th className="text-center py-3 px-2 text-xs font-semibold text-gray-500">담당자</th>
+                                            <th className="text-center py-3 px-2 text-xs font-semibold text-gray-500"></th>
                                         </tr>
                                     </thead>
 
@@ -308,7 +308,7 @@ export default function ProjectDetailPage() {
                                             <tr>
                                                 <td
                                                     colSpan={8}
-                                                    className="text-center py-20 text-sm text-gray-500"
+                                                    className="text-center py-20 text-[15px] text-gray-500"
                                                 >
                                                     프로젝트 상세 단계가 존재하지 않습니다.
                                                 </td>
@@ -326,13 +326,13 @@ export default function ProjectDetailPage() {
                                                             style={{
                                                                 borderBottom: (stage.note || stage.remark) ? "none" : undefined
                                                             }}
-                                                            className="border-b border-gray-200 last:border-b-0 hover:bg-gray-50 transition-colors [&>td]:border-r [&>td]:border-gray-200 [&>td:last-child]:border-r-0"
+                                                            className="border-b border-gray-100 last:border-b-0 hover:bg-gray-50/70 transition-colors"
                                                             onContextMenu={(e) => handleContextMenu(e, stage.id)}
                                                         >
                                                             {/* 인덱스 */}
                                                             <td className="py-4 px-2">
                                                                 <div className="flex justify-center">
-                                                                    <div className="size-6 rounded-[4px] bg-tag-gray text-tag-gray-text flex items-center justify-center font-semibold text-xs tabular-nums">
+                                                                    <div className="size-7 rounded-full bg-gray-100 text-gray-600 flex items-center justify-center font-semibold text-xs tabular-nums">
                                                                         {displayIndex}
                                                                     </div>
                                                                 </div>
@@ -340,7 +340,7 @@ export default function ProjectDetailPage() {
 
                                                             {/* 상태 (단계명) */}
                                                             <td className="py-3 px-2 items-center">
-                                                                <div className="text-sm font-semibold text-gray-900">{stage.name}</div>
+                                                                <div className="text-[15px] font-semibold text-gray-900">{stage.name}</div>
                                                             </td>
 
                                                             {/* State Badge (상태) */}
@@ -390,11 +390,11 @@ export default function ProjectDetailPage() {
                                                         </tr>
                                                         {/* note / remark row */}
                                                         {(stage.note || stage.remark) && (
-                                                            <tr className="border-b border-gray-200 last:border-b-0">
-                                                                <td colSpan={8} className="py-3 pl-14 pr-6 whitespace-normal bg-gray-50">
-                                                                    <div className="space-y-1.5 text-sm leading-relaxed">
-                                                                        {stage.note && <p className="rounded-md bg-callout-blue px-3 py-2 text-gray-800">{stage.note}</p>}
-                                                                        {stage.remark && <p className="rounded-md bg-callout-red px-3 py-2 text-tag-red-text">{stage.remark}</p>}
+                                                            <tr className="border-b border-gray-100 last:border-b-0">
+                                                                <td colSpan={7} className="pb-4 pl-16 pr-6 whitespace-normal">
+                                                                    <div className="space-y-1 text-sm leading-relaxed rounded-xl bg-gray-50 px-4 py-3">
+                                                                        {stage.note && <p className="text-gray-700">{stage.note}</p>}
+                                                                        {stage.remark && <p className="text-danger">{stage.remark}</p>}
                                                                     </div>
                                                                 </td>
                                                             </tr>

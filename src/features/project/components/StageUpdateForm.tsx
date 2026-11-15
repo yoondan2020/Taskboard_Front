@@ -116,8 +116,8 @@ export default function StageUpdateForm({
 
     return (
         <tr>
-            <td colSpan={8} className="bg-callout-blue/60 px-6 py-5 whitespace-normal">
-                <div className="space-y-5 rounded-lg bg-white p-6 border border-gray-200 shadow-sm">
+            <td colSpan={8} className="bg-gray-50 px-6 py-6 whitespace-normal">
+                <div className="space-y-5 rounded-2xl bg-white p-6 ring-1 ring-black/5">
                     <div className="grid grid-cols-2 gap-6">
                         {/* LEFT */}
                         <div className="space-y-4">

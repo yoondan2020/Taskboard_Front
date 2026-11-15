@@ -25,7 +25,7 @@ export default function UrgentProjectSummaryCard({ project }: ProjectCardProps) 
     const stateInfo = getStateInfo(project.current_stage?.state_name);
 
     return (
-        <div className="flex items-center gap-2.5 px-2 py-1.5 rounded-md hover:bg-hover transition">
+        <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-gray-100 transition">
             {/* 좌측 컬러 스트립 */}
             <div className={`shrink-0 size-2 rounded-full status-solid ${stateInfo.color}`} />
 
@@ -34,7 +34,7 @@ export default function UrgentProjectSummaryCard({ project }: ProjectCardProps) 
                 {/* 프로젝트 정보 */}
                 <div className="min-w-0">
                     <div className="flex items-center gap-2">
-                        <div className="flex-1 min-w-0 truncate text-sm font-medium text-gray-800">{project.title || "-"}</div>
+                        <div className="flex-1 min-w-0 truncate text-sm font-semibold text-gray-900">{project.title || "-"}</div>
                         <div className="shrink-0 max-w-[90px] truncate text-xs text-gray-500">{project.current_stage?.stage_name || "-"}</div>
                         <div className="shrink-0 max-w-[60px] truncate text-xs text-gray-500">
                             {project.current_stage?.stage_owner_name || "-"}

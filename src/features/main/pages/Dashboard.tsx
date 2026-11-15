@@ -109,7 +109,7 @@ export default function Dashboard() {
     // 렌더링: 프로젝트가 없을 때
     if (projects.length < 1) {
         return (
-            <div className="flex items-center justify-center min-h-[400px] rounded-lg bg-callout-gray text-sm text-gray-500">
+            <div className="surface-card flex items-center justify-center min-h-[400px] text-[15px] text-gray-500">
                 프로젝트가 없습니다.
             </div>
         );
@@ -117,7 +117,7 @@ export default function Dashboard() {
 
     return (
         <>
-            <div className="flex flex-col gap-2.5 pb-8">
+            <div className="flex flex-col gap-3 pb-6">
                 {projects.map((project) => (
                     <div key={project.id}>
                         <div

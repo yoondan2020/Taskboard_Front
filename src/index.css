@@ -64,14 +64,16 @@
 }
 
 :root {
-  /* Notion 스타일 — 시스템 산세리프, 한글은 Pretendard 폴백 */
-  font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Apple SD Gothic Neo', 'Pretendard', Helvetica, Arial, sans-serif;
-  line-height: 1.5;
+  /* DESIGN.md(Apple): SF Pro(system-ui) 우선, 한글은 Apple SD Gothic Neo → Pretendard 폴백 */
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Apple SD Gothic Neo', 'Pretendard', 'Helvetica Neue', Arial, sans-serif;
+  line-height: 1.47;
   font-weight: 400;
 
+  /* 라이트(데이타임) 테마만 적용 — 네이티브 폼 컨트롤도 라이트로 고정 */
   color-scheme: light;
   color: var(--color-ink);
-  background-color: var(--color-white);
+  /* background-color: #fcfcfc; */
+  background-color: var(--color-canvas-parchment);
 
   margin: 0;
   padding: 0;
@@ -82,15 +84,17 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* text-link */
 a {
-  font-weight: 500;
+  font-weight: 400;
   color: var(--color-primary);
   text-decoration: inherit;
 }
 
-/* 키보드 포커스 링 (입력 필드는 field-control 자체 링 사용) */
+/* 포커스 링: 2px solid Focus Blue.
+   레이어 밖(unlayered) 규칙이라 유틸리티 outline-none 보다 우선한다. */
 :focus-visible:not(input):not(select):not(textarea) {
-  outline: 2px solid rgb(35 131 226 / 0.6);
+  outline: 2px solid var(--color-primary-focus);
   outline-offset: 2px;
 }
 
@@ -112,135 +116,146 @@ body {
 }
 
 @layer base {
-  /* Tailwind v4 기본 border 색(currentColor)을 디바이더 색으로 고정 */
+  /* Tailwind v4 기본 border 색(currentColor)을 hairline 으로 고정 */
   *,
   ::after,
   ::before,
   ::backdrop,
   ::file-selector-button {
-    border-color: var(--color-divider);
+    border-color: var(--color-hairline);
   }
 
+  /* 시스템 공통 마이크로 인터랙션: 누름 상태 scale(0.95) */
   button {
-    transition: background-color 0.12s ease, color 0.12s ease, box-shadow 0.12s ease;
+    transition: transform 0.15s ease, background-color 0.2s ease, color 0.2s ease;
+  }
+
+  button:not(:disabled):active {
+    transform: scale(0.95);
   }
 }
 
 @layer components {
   h1 {
-    @apply 2xl:text-3xl xl:text-3xl lg:text-3xl md:text-2xl sm:text-2xl text-xl font-bold;
+    @apply 2xl:text-3xl xl:text-3xl lg:text-3xl md:text-2xl sm:text-2xl text-xl font-semibold;
   }
 }
 
 @theme {
-  /* ===== Notion 스타일 디자인 토큰 — 라이트 ===== */
+  /* ===== DESIGN.md(Apple) 디자인 토큰 — 라이트 테마 ===== */
 
-  /* Accent */
-  --color-primary: #2383e2;
-  --color-primary-dark: #0b6bcb;
+  /* Brand & Accent — 인터랙티브 색은 Action Blue 하나 */
+  --color-primary: #0066cc;          /* Action Blue */
+  --color-primary-focus: #0071e3;    /* Focus Blue */
+  --color-primary-on-dark: #2997ff;  /* Sky Link Blue (다크 면 전용) */
+  /* hover 변형: 스펙은 hex 변화 대신 scale 을 쓰므로 Focus Blue 로 대체 */
+  --color-primary-dark: #0071e3;
 
   /* Text */
-  --color-ink: #37352f;
-  --color-ink-secondary: #787774;
-  --color-ink-tertiary: #9b9a97;
+  --color-ink: #1d1d1f;
+  --color-ink-muted-80: #333333;
+  --color-ink-muted-48: #7a7a7a;
+  --color-body-muted: #cccccc;
 
-  /* Surface / Line */
-  --color-sidebar: #f7f7f5;
-  --color-hover: rgb(55 53 47 / 0.06);
-  --color-divider: #e9e9e7;
+  /* Surface */
+  --color-canvas: #ffffff;
+  --color-canvas-parchment: #f5f5f7;
+  --color-surface-pearl: #fafafc;
+  --color-surface-tile-1: #272729;
+  --color-surface-tile-2: #2a2a2c;
+  --color-surface-tile-3: #252527;
+  --color-surface-black: #000000;
+  --color-surface-chip: #d2d2d7;
 
-  /* 따뜻한 회색 팔레트 (Notion 계열) */
-  --color-gray-50: #fbfbfa;
-  --color-gray-100: #f7f7f5;
-  --color-gray-200: #e9e9e7;
-  --color-gray-300: #dfdfdc;
-  --color-gray-400: #b4b4b0;
-  --color-gray-500: #9b9a97;
-  --color-gray-600: #787774;
-  --color-gray-700: #5f5e5b;
-  --color-gray-800: #45443f;
-  --color-gray-900: #37352f;
+  /* Hairlines */
+  --color-divider-soft: #f0f0f0;
+  --color-hairline: #e0e0e0;
 
-  /* 태그(Select) 색 — 배경 / 글자 */
-  --color-tag-gray: #e3e2e0;
-  --color-tag-gray-text: #32302c;
-  --color-tag-brown: #eee0da;
-  --color-tag-brown-text: #442a1e;
-  --color-tag-orange: #fadec9;
-  --color-tag-orange-text: #49290e;
-  --color-tag-yellow: #fdecc8;
-  --color-tag-yellow-text: #402c1b;
-  --color-tag-green: #dbeddb;
-  --color-tag-green-text: #1c3829;
-  --color-tag-blue: #d3e5ef;
-  --color-tag-blue-text: #183347;
-  --color-tag-purple: #e8deee;
-  --color-tag-purple-text: #412454;
-  --color-tag-red: #ffe2dd;
-  --color-tag-red-text: #5d1715;
+  /* 회색 팔레트를 Apple 무채색 계열로 재매핑 */
+  --color-gray-50: #fafafc;   /* surface-pearl */
+  --color-gray-100: #f5f5f7;  /* canvas-parchment */
+  --color-gray-200: #e0e0e0;  /* hairline */
+  --color-gray-300: #d2d2d7;  /* surface-chip */
+  --color-gray-400: #cccccc;  /* body-muted */
+  --color-gray-500: #7a7a7a;  /* ink-muted-48 */
+  --color-gray-600: #7a7a7a;  /* ink-muted-48 */
+  --color-gray-700: #333333;  /* ink-muted-80 */
+  --color-gray-800: #272729;  /* surface-tile-1 */
+  --color-gray-900: #1d1d1f;  /* ink */
 
-  /* 콜아웃 배경 */
-  --color-callout-gray: #f1f1ef;
-  --color-callout-orange: #fbecdd;
-  --color-callout-yellow: #fbf3db;
-  --color-callout-green: #edf3ec;
-  --color-callout-blue: #e7f3f8;
-  --color-callout-purple: #f6f3f9;
-  --color-callout-red: #fdebec;
+  /* 굵기 사다리 300 / 400 / 600 / 700 — 500 없음, 헤드라인은 600 */
+  --font-weight-medium: 600;
+  --font-weight-bold: 600;
+  --font-weight-extrabold: 600;
 
-  /* 상태 점 색 / 의미 색 */
-  --color-planned: #9b9a97;
-  --color-inProgress: #337ea9;
-  --color-delayed: #d44c47;
-  --color-completed: #448361;
-  --color-danger: #d44c47;
+  /* Rounded — xs 5 · sm 8 · md 11 · lg 18 · pill */
+  --radius-xs: 5px;
+  --radius-sm: 8px;
+  --radius-md: 8px;    /* 컴팩트 유틸리티 */
+  --radius-lg: 8px;    /* 입력·유틸리티 버튼 (rounded.sm) */
+  --radius-xl: 18px;   /* 카드 (rounded.lg) */
+  --radius-2xl: 18px;  /* 모달 (rounded.lg) */
 
-  /* Rounded — Notion 은 작은 라운드 */
-  --radius-xs: 3px;
-  --radius-sm: 4px;
-  --radius-md: 4px;
-  --radius-lg: 6px;
-  --radius-xl: 6px;
-  --radius-2xl: 8px;
+  /* Elevation — 카드·버튼에는 그림자 없음. 떠 있는 레이어는 soft hairline 만 */
+  --shadow-sm: 0 0 #0000;
+  --shadow-md: 0 0 #0000;
+  --shadow-lg: 0 0 0 1px rgb(0 0 0 / 0.08);
+  --shadow-xl: 0 0 0 1px rgb(0 0 0 / 0.08);
+  --shadow-2xl: 0 0 0 1px rgb(0 0 0 / 0.08);
 
-  /* Elevation */
-  --shadow-sm: 0 1px 2px rgb(15 15 15 / 0.06);
-  --shadow-md: 0 0 0 1px rgb(15 15 15 / 0.05), 0 2px 4px rgb(15 15 15 / 0.08);
-  --shadow-lg: 0 0 0 1px rgb(15 15 15 / 0.05), 0 3px 6px rgb(15 15 15 / 0.1), 0 9px 24px rgb(15 15 15 / 0.2);
-  --shadow-xl: 0 0 0 1px rgb(15 15 15 / 0.05), 0 5px 10px rgb(15 15 15 / 0.1), 0 15px 40px rgb(15 15 15 / 0.2);
-  --shadow-2xl: 0 0 0 1px rgb(15 15 15 / 0.05), 0 5px 10px rgb(15 15 15 / 0.1), 0 15px 40px rgb(15 15 15 / 0.2);
+  /* Typography */
+  --text-xs: 12px;                          /* fine-print */
+  --text-xs--line-height: 1.33;
+  --text-xs--letter-spacing: -0.12px;
+  --text-sm: 14px;                          /* caption / button-utility */
+  --text-sm--line-height: 1.43;
+  --text-sm--letter-spacing: -0.224px;
+  --text-base: 17px;                        /* body */
+  --text-base--line-height: 1.47;
+  --text-base--letter-spacing: -0.374px;
+  --text-lg--line-height: 1.33;
+  --text-lg--letter-spacing: -0.374px;
+  --text-xl: 21px;                          /* tagline */
+  --text-xl--line-height: 1.19;
+  --text-xl--letter-spacing: 0.231px;
+  --text-2xl: 24px;
+  --text-2xl--line-height: 1.33;
+  --text-3xl: 34px;                         /* display-md */
+  --text-3xl--line-height: 1.24;
+  --text-3xl--letter-spacing: -0.374px;
+  --text-5xl: 56px;                         /* hero-display */
+  --text-5xl--line-height: 1.07;
+  --text-5xl--letter-spacing: -0.28px;
 
-  /* Typography — 행간 1.5 */
-  --text-xs--line-height: 1.5;
-  --text-sm--line-height: 1.5;
-  --text-base--line-height: 1.5;
-  --text-lg--line-height: 1.4;
-  --text-xl--line-height: 1.35;
-  --text-2xl--line-height: 1.3;
-  --text-3xl--line-height: 1.25;
+  /* Status — 스펙에 시맨틱 상태색이 없어 최소한으로 정의 */
+  --color-planned: #8e8e93;     /* 중립 회색 */
+  --color-inProgress: #0066cc;  /* Action Blue */
+  --color-delayed: #e30000;     /* 스펙 외: 지연 */
+  --color-completed: #1f9d55;   /* 스펙 외: 완료 */
+  --color-danger: #e30000;      /* 스펙 외: 오류 텍스트·주말 */
 }
 
-/* ===== 공통 컴포넌트 유틸리티 (Notion 스타일) ===== */
+/* ===== 공통 컴포넌트 유틸리티 ===== */
 
-/* 카드 — 1px 링 + 옅은 그림자 */
+/* 흰 카드 — rounded.lg(18px) + soft hairline */
 @utility surface-card {
   background-color: var(--color-white);
-  border: 1px solid var(--color-divider);
-  border-radius: 8px;
-  box-shadow: 0 1px 2px rgb(15 15 15 / 0.04);
+  border: 1px solid rgb(0 0 0 / 0.06);
+  border-radius: 18px;
 }
 
-/* 버튼 */
+/* 버튼 — 기본 알약 */
 @utility btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
-  height: 34px;
-  padding-inline: 14px;
-  border-radius: 6px;
+  height: 40px;
+  padding-inline: 20px;
+  border-radius: 9999px;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
+  letter-spacing: -0.224px;
   white-space: nowrap;
   cursor: pointer;
   user-select: none;
@@ -250,89 +265,95 @@ body {
   }
 }
 
+/* button-primary */
 @utility btn-primary {
   @apply btn;
   background-color: var(--color-primary);
   color: var(--color-white);
-  box-shadow: inset 0 0 0 1px rgb(15 15 15 / 0.1), 0 1px 2px rgb(15 15 15 / 0.1);
   &:hover {
     background-color: var(--color-primary-dark);
   }
 }
 
+/* button-pearl-capsule 계열 보조 버튼 */
 @utility btn-secondary {
   @apply btn;
-  background-color: var(--color-white);
+  background-color: var(--color-gray-100);
   color: var(--color-ink);
-  box-shadow: inset 0 0 0 1px rgb(55 53 47 / 0.16);
   &:hover {
-    background-color: var(--color-hover);
+    background-color: var(--color-gray-200);
   }
 }
 
+/* button-dark-utility */
 @utility btn-dark {
   @apply btn;
-  background-color: var(--color-white);
-  color: var(--color-ink);
-  box-shadow: inset 0 0 0 1px rgb(55 53 47 / 0.16);
+  height: 36px;
+  padding-inline: 16px;
+  border-radius: 8px;
+  font-weight: 400;
+  background-color: var(--color-ink);
+  color: var(--color-white);
   &:hover {
-    background-color: var(--color-hover);
+    background-color: var(--color-gray-800);
   }
 }
 
-/* 아이콘 버튼 — 투명 + hover 배경 */
+/* button-icon-circular */
 @utility btn-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  width: 32px;
-  height: 32px;
-  border-radius: 6px;
-  color: var(--color-ink-secondary);
+  width: 36px;
+  height: 36px;
+  border-radius: 9999px;
+  background-color: rgb(210 210 215 / 0.64);
+  color: var(--color-ink);
   cursor: pointer;
   &:hover {
-    background-color: var(--color-hover);
-    color: var(--color-ink);
+    background-color: var(--color-surface-chip);
   }
 }
 
 /* 폼 */
 @utility field-label {
   font-size: 13px;
-  font-weight: 500;
-  line-height: 1.4;
-  color: var(--color-ink-secondary);
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.08px;
+  color: var(--color-ink-muted-80);
 }
 
 @utility field-control {
   width: 100%;
-  height: 36px;
-  padding-inline: 10px;
-  border-radius: 6px;
-  border: 1px solid transparent;
-  background-color: var(--color-callout-gray);
+  height: 44px;
+  padding-inline: 14px;
+  border-radius: 12px;
+  border: 1px solid var(--color-hairline);
+  background-color: var(--color-white);
   color: var(--color-ink);
-  font-size: 14px;
+  font-size: 15px;
+  letter-spacing: -0.24px;
   outline: none;
-  box-shadow: inset 0 0 0 1px rgb(15 15 15 / 0.1);
-  transition: box-shadow 0.12s ease, background-color 0.12s ease;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
   &::placeholder {
-    color: var(--color-ink-tertiary);
+    color: var(--color-ink-muted-48);
   }
   &:focus {
-    background-color: var(--color-white);
-    box-shadow: inset 0 0 0 1px rgb(35 131 226 / 0.57), 0 0 0 3px rgb(35 131 226 / 0.25);
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 4px rgb(0 102 204 / 0.15);
   }
 }
 
+/* 커스텀 셀렉트 화살표 */
 @utility select-chevron {
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none'%3E%3Cpath d='M3 4.5 6 7.5 9 4.5' stroke='%239b9a97' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none'%3E%3Cpath d='M3 4.5 6 7.5 9 4.5' stroke='%237a7a7a' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right 10px center;
+  background-position: right 14px center;
   background-size: 12px;
-  padding-right: 30px;
+  padding-right: 36px;
   cursor: pointer;
 }
 
@@ -340,57 +361,50 @@ body {
 @utility modal-overlay {
   position: absolute;
   inset: 0;
-  background-color: rgb(15 15 15 / 0.6);
+  background-color: rgb(0 0 0 / 0.4);
+  backdrop-filter: blur(4px);
 }
 
 @utility modal-panel {
   position: relative;
   background-color: var(--color-white);
-  border-radius: 10px;
-  box-shadow: 0 0 0 1px rgb(15 15 15 / 0.05), 0 5px 10px rgb(15 15 15 / 0.1), 0 15px 40px rgb(15 15 15 / 0.2);
+  border-radius: 22px;
+  box-shadow: 0 0 0 1px rgb(0 0 0 / 0.06), 0 24px 60px rgb(0 0 0 / 0.18);
 }
 
 @utility modal-title {
-  font-size: 20px;
-  font-weight: 700;
-  line-height: 1.3;
+  font-size: 21px;
+  font-weight: 600;
+  line-height: 1.19;
+  letter-spacing: -0.2px;
   color: var(--color-ink);
 }
 
-/* 태그 (Select 속성 같은 회색 칩) */
+/* 태그 (작품 라벨 같은 회색 알약) */
 @utility tag {
   display: inline-flex;
   align-items: center;
-  height: 22px;
-  padding-inline: 7px;
-  border-radius: 4px;
-  background-color: var(--color-tag-gray);
-  color: var(--color-tag-gray-text);
+  height: 24px;
+  padding-inline: 10px;
+  border-radius: 9999px;
+  background-color: var(--color-gray-100);
+  color: var(--color-ink-muted-80);
   font-size: 12px;
-  font-weight: 500;
   white-space: nowrap;
 }
 
-/* 상태 — status-* 로 색을 고르고 status-badge / status-solid 로 칠한다 */
+/* 상태 색 — status-* 로 색을 고르고 status-badge / status-solid 로 칠한다 */
 @utility status-planned {
-  --status-bg: var(--color-tag-gray);
-  --status-fg: var(--color-tag-gray-text);
-  --status-dot: var(--color-planned);
+  --status: var(--color-planned);
 }
 @utility status-inProgress {
-  --status-bg: var(--color-tag-blue);
-  --status-fg: var(--color-tag-blue-text);
-  --status-dot: var(--color-inProgress);
+  --status: var(--color-inProgress);
 }
 @utility status-delayed {
-  --status-bg: var(--color-tag-red);
-  --status-fg: var(--color-tag-red-text);
-  --status-dot: var(--color-delayed);
+  --status: var(--color-delayed);
 }
 @utility status-completed {
-  --status-bg: var(--color-tag-green);
-  --status-fg: var(--color-tag-green-text);
-  --status-dot: var(--color-completed);
+  --status: var(--color-completed);
 }
 
 @utility status-badge {
@@ -398,31 +412,24 @@ body {
   align-items: center;
   justify-content: center;
   gap: 6px;
-  height: 22px;
-  padding-inline: 8px;
-  border-radius: 4px;
-  font-size: 12px;
-  font-weight: 500;
+  height: 26px;
+  padding-inline: 10px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
   white-space: nowrap;
-  color: var(--status-fg);
-  background-color: var(--status-bg);
+  color: var(--status);
+  background-color: color-mix(in srgb, var(--status) 12%, white);
   &::before {
     content: "";
-    width: 7px;
-    height: 7px;
+    width: 6px;
+    height: 6px;
     border-radius: 9999px;
-    background-color: var(--status-dot);
+    background-color: currentColor;
   }
 }
 
 @utility status-solid {
-  background-color: var(--status-dot);
-}
-
-/* 사이드바 섹션 제목 */
-@utility section-label {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--color-ink-tertiary);
-  padding-inline: 8px;
+  background-color: var(--status);
 }

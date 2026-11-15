@@ -2,7 +2,7 @@
 
 @layer components {
     .plus-modal-container {
-        @apply fixed inset-0 z-50 bg-black/60 flex items-center justify-center;
+        @apply fixed inset-0 z-50 bg-black/40 backdrop-blur-[4px] flex items-center justify-center;
     }
 
     .plus-modal-wrapper {
