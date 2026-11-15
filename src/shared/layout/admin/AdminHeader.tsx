@@ -1,4 +1,4 @@
-import logo from "@/assets/images/logo/logo.png";
+import logo from "@/assets/images/logo/logo.svg";
 import { useNavigate } from "react-router-dom";
 
 export default function AdminHeader() {

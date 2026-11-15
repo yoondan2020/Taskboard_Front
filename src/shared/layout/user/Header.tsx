@@ -1,4 +1,4 @@
-import logo from "@/assets/images/logo/logo.png";
+import logo from "@/assets/images/logo/logo.svg";
 import { BellIcon } from "@/shared/components/icons/BellIcon";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
