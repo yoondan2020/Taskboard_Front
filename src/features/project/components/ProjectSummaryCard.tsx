@@ -25,9 +25,9 @@ export default function ProjectSummaryCard({ project }: ProjectCardProps) {
     const projectStateInfo = getStateInfo(project?.state_name);
 
     return (
-        <div className="surface-card flex items-center gap-4 p-3 transition hover:border-primary/40 hover:ring-4 hover:ring-primary/10">
+        <div className="surface-card flex items-center gap-3 p-2.5 transition hover:bg-gray-50">
             {/* 썸네일 이미지 */}
-            <div className="flex-shrink-0 size-14 rounded-xl bg-gray-100 overflow-hidden">
+            <div className="flex-shrink-0 size-11 rounded-md bg-callout-gray overflow-hidden">
                 {project.thumbnail_url ? (
                     <img
                         src={project.thumbnail_url}
@@ -43,8 +43,8 @@ export default function ProjectSummaryCard({ project }: ProjectCardProps) {
 
             {/* 프로젝트 정보 */}
             <div className="flex-1 min-w-0 flex items-center gap-2">
-                <div className="truncate text-[17px] font-semibold tracking-tight text-gray-900">{project.title || "-"}</div>
-                <span className="tag">{project.product_group_name || "-"}</span>
+                <div className="truncate text-sm font-semibold text-gray-900">{project.title || "-"}</div>
+                <span className="tag bg-tag-orange text-tag-orange-text">{project.product_group_name || "-"}</span>
             </div>
             <span className={`status-badge shrink-0 ${projectStateInfo.color}`}>{projectStateInfo.label}</span>
         </div>

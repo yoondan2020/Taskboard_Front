@@ -49,7 +49,7 @@ export default function StageCreateModal({
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-[4px]">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
             <div className="modal-panel w-[760px] max-w-[92vw] max-h-[88vh] overflow-y-auto custom-scrollbar px-7 py-6">
                 <h2 className="modal-title mb-6">새로운 단계 추가</h2>
 

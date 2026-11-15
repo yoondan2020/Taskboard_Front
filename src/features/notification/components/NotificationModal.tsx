@@ -26,22 +26,22 @@ const NOTIFICATION_CONFIG = {
     NOTICE_DEADLINE: {
         icon: "⏰",
         title: "마감 예정",
-        color: "bg-orange-50",
+        color: "bg-callout-orange",
     },
     NOTICE_REASON_MISSING: {
         icon: "⚠️",
         title: "사유 미입력",
-        color: "bg-yellow-50",
+        color: "bg-callout-yellow",
     },
     NOTICE_DELAY: {
         icon: "⏱️",
         title: "지연",
-        color: "bg-blue-50",
+        color: "bg-callout-blue",
     },
     NOTICE_SCHEDULE_UPDATED: {
         icon: "📅",
         title: "일정 변경",
-        color: "bg-purple-50",
+        color: "bg-callout-purple",
     },
 } as const;
 
@@ -145,7 +145,7 @@ export default function NotificationModal({
             <div className="modal-panel w-[980px] max-w-[92vw] h-[640px] max-h-[86vh] overflow-hidden">
 
                 {/* Header */}
-                <div className="h-16 px-6 flex items-center justify-between border-b border-gray-100">
+                <div className="h-14 px-5 flex items-center justify-between border-b border-gray-200">
 
                     <div className="flex items-center gap-3">
                         <div className="modal-title">
@@ -173,13 +173,13 @@ export default function NotificationModal({
 
                 <div className="h-[calc(100%-64px)] grid grid-cols-[260px_1fr]">
                     {/* Sidebar */}
-                    <aside className="border-r border-gray-100 bg-gray-50">
+                    <aside className="border-r border-gray-200 bg-sidebar">
                         <div className="p-4">
-                            <div className="rounded-2xl bg-white ring-1 ring-black/5 p-4">
+                            <div className="rounded-lg bg-white border border-gray-200 shadow-sm p-4">
                                 <div className="text-sm text-gray-500">
                                     전체 알림
                                 </div>
-                                <div className="mt-1 text-[28px] font-semibold leading-tight tracking-tight">
+                                <div className="mt-1 text-2xl font-bold leading-tight">
                                     {notifications.length}
                                 </div>
                                 <div className="mt-3 flex gap-2 text-xs">
@@ -201,11 +201,11 @@ export default function NotificationModal({
                                             text-left
                                             px-3
                                             py-2
-                                            rounded-xl
-                                            text-[15px]
+                                            rounded-md
+                                            text-sm
                                             ${active === m.key
-                                                ? "bg-white text-primary font-semibold ring-1 ring-black/5"
-                                                : "text-gray-700 hover:bg-white"
+                                                ? "bg-hover text-gray-900 font-semibold"
+                                                : "text-gray-600 hover:bg-hover"
                                             }
                                         `}
                                     >
@@ -223,18 +223,18 @@ export default function NotificationModal({
                             justify-between
                             mb-4
                         ">
-                            <h2 className="text-[17px] font-semibold tracking-tight">
+                            <h2 className="text-base font-bold">
                                 {title}
                             </h2>
                             <input
                                 value={query}
                                 onChange={(e) => setQuery(e.target.value)}
                                 placeholder="프로젝트 검색"
-                                className="field-control h-10 w-64 rounded-full text-sm"
+                                className="field-control w-64"
                             />
                         </div>
                         {filteredNotifications.length === 0 ? (
-                            <div className="rounded-2xl bg-gray-50 p-12 text-center text-[15px] text-gray-500">
+                            <div className="rounded-lg bg-callout-gray p-12 text-center text-sm text-gray-500">
                                 표시할 알림이 없습니다.
                             </div>
                         ) : (
@@ -282,22 +282,22 @@ function NotificationCard({
         ] ?? {
             icon: "🔔",
             title: "알림",
-            color: "bg-gray-50"
+            color: "bg-callout-gray"
         };
 
     return (
         <div
             onClick={onClick}
             className={`
-                rounded-2xl
+                rounded-lg
                 border
                 p-4
                 cursor-pointer
                 transition
 
                 ${item.is_read
-                    ? "bg-white border-gray-100 hover:bg-gray-50"
-                    : `${config.color} border-transparent hover:brightness-[0.98]`
+                    ? "bg-white border-gray-200 hover:bg-gray-50"
+                    : `${config.color} border-transparent hover:brightness-[0.97]`
                 }
             `}
         >
@@ -350,7 +350,7 @@ function NotificationCard({
                             e.stopPropagation();
                             onRead();
                         }}
-                        className="btn h-8 px-3 text-xs bg-white text-gray-900 ring-1 ring-black/10 hover:bg-gray-50"
+                        className="btn-secondary h-7 px-2.5 text-xs"
                     >
                         읽음
                     </button>

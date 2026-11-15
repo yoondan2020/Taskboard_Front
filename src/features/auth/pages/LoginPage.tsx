@@ -33,8 +33,8 @@ export default function LoginPage({ onFindPassword }: Props) {
         <div className="min-h-screen w-full bg-white min-w-[1024px]">
             <div className="min-h-screen flex">
                 {/* Left panel */}
-                <div className="w-1/2 bg-gray-800 rounded-none flex flex-col items-center justify-center text-white">
-                    <div className="w-full max-w-sm px-6 space-y-3 text-sm leading-relaxed text-gray-400 [&>div]:rounded-2xl [&>div]:bg-white/5 [&>div]:px-5 [&>div]:py-4 [&>div]:ring-1 [&>div]:ring-white/10 [&_span]:text-white [&_span]:font-semibold">
+                <div className="w-1/2 bg-sidebar border-r border-gray-200 rounded-none flex flex-col items-center justify-center text-gray-900">
+                    <div className="w-full max-w-sm px-6 space-y-2 text-sm leading-relaxed text-gray-600 [&>div]:rounded-lg [&>div]:bg-white [&>div]:px-4 [&>div]:py-3 [&>div]:border [&>div]:border-gray-200 [&>div]:shadow-sm [&_span]:text-gray-900 [&_span]:font-semibold">
                         <div>
                             <p> <span className="font-bold"> 관리자</span> ID/PW </p>
                             <p>admin@example.com </p>
@@ -68,8 +68,8 @@ export default function LoginPage({ onFindPassword }: Props) {
                     <div className="w-full max-w-[380px]">
                         {/* Title */}
                         <div className="mb-12 text-center">
-                            <h1 className="text-5xl font-semibold text-gray-900">TaskBoard</h1>
-                            <p className="mt-3 text-[17px] text-gray-500">프로젝트 관리 시스템</p>
+                            <h1 className="text-5xl font-bold text-gray-900">TaskBoard</h1>
+                            <p className="mt-3 text-base text-gray-500">프로젝트 관리 시스템</p>
                         </div>
 
                         {/* Form */}
@@ -78,7 +78,7 @@ export default function LoginPage({ onFindPassword }: Props) {
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 placeholder="이메일을 입력하세요."
-                                className="field-control h-12"
+                                className="field-control h-10"
                                 autoComplete="email"
                             />
 
@@ -87,7 +87,7 @@ export default function LoginPage({ onFindPassword }: Props) {
                                 onChange={(e) => setPassword(e.target.value)}
                                 placeholder="비밀번호를 입력하세요."
                                 type="password"
-                                className="field-control h-12"
+                                className="field-control h-10"
                                 autoComplete="current-password"
                             />
 
@@ -98,7 +98,7 @@ export default function LoginPage({ onFindPassword }: Props) {
                             <button
                                 type="submit"
                                 disabled={loading}
-                                className="btn-primary mt-3 h-12 w-full text-[17px]"
+                                className="btn-primary mt-3 h-10 w-full"
                             >
                                 {loading ? "로그인 중..." : "로그인"}
                             </button>

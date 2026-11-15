@@ -25,7 +25,7 @@ export default function UrgentProjectsModal({ open, onClose }: Props) {
 
     return (
         <div
-            className="fixed inset-0 bg-black/40 backdrop-blur-[4px] flex items-center justify-center z-50 px-5"
+            className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 px-5"
             onClick={onClose}
         >
             <div
@@ -33,7 +33,7 @@ export default function UrgentProjectsModal({ open, onClose }: Props) {
                 onClick={(e) => e.stopPropagation()}
             >
                 {/* 헤더 - 고정 */}
-                <div className="flex justify-between items-center px-7 py-5 border-b border-gray-100 flex-shrink-0">
+                <div className="flex justify-between items-center px-6 py-4 border-b border-gray-200 flex-shrink-0">
                     <h2 className="modal-title">마감 임박 프로젝트</h2>
                     <button
                         onClick={onClose}
@@ -44,9 +44,9 @@ export default function UrgentProjectsModal({ open, onClose }: Props) {
                 </div>
 
                 {/* 내용 - 스크롤 영역 */}
-                <div className="overflow-y-auto custom-scrollbar p-6 bg-gray-50">
+                <div className="overflow-y-auto custom-scrollbar p-5 bg-sidebar">
                     {urgentProjects.length < 1 ? (
-                        <div className="flex items-center justify-center min-h-[200px] text-[15px] text-gray-500">
+                        <div className="flex items-center justify-center min-h-[200px] text-sm text-gray-500">
                             마감 임박 프로젝트가 없습니다.
                         </div>
                     ) : (
@@ -58,7 +58,7 @@ export default function UrgentProjectsModal({ open, onClose }: Props) {
                                         navigator(`/project/${project.id}`);
                                         onClose();
                                     }}
-                                    className="cursor-pointer rounded-[18px]"
+                                    className="cursor-pointer rounded-lg"
                                 >
                                     <ProjectCard project={project} />
                                 </div>

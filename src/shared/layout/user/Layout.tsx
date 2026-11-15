@@ -19,27 +19,27 @@ export default function Layout() {
     }, [fetchProjectSummary, fetchUrgentProjectsCount])
 
     return (
-        <div className="h-screen min-w-[1280px] flex flex-col bg-gray-100">
+        <div className="h-screen min-w-[1280px] flex flex-col bg-white">
             {/* 헤더 */}
-            <header className="shrink-0 bg-white border-b border-black/5">
+            <header className="shrink-0 bg-white border-b border-gray-200">
                 <Header />
             </header>
             {/* 메인 */}
-            <main className="flex-1 overflow-hidden">
-                <div className="h-full max-w-[1920px] mx-auto px-6 py-6 flex gap-6">
-                    {/* 사이드 메뉴 */}
-                    <aside className="w-[320px] shrink-0 overflow-y-auto custom-scrollbar pr-1">
-                        <SideMenu projectCount={projectCount} urgentProjectCount={urgentProjectCount} />
-                    </aside>
+            <main className="flex-1 flex overflow-hidden">
+                {/* 사이드 메뉴 — Notion 사이드바 */}
+                <aside className="w-[300px] shrink-0 bg-sidebar border-r border-gray-200 overflow-y-auto custom-scrollbar">
+                    <SideMenu projectCount={projectCount} urgentProjectCount={urgentProjectCount} />
+                </aside>
 
-                    {/* 본문 */}
-                    <section className="flex-1 min-w-0 flex flex-col gap-4 overflow-hidden">
+                {/* 본문 */}
+                <section className="flex-1 min-w-0 flex flex-col overflow-hidden bg-white">
+                    <div className="px-10 pt-6 pb-4">
                         <SearchBox />
-                        <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar">
-                            <Outlet />
-                        </div>
-                    </section>
-                </div>
+                    </div>
+                    <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar px-10">
+                        <Outlet />
+                    </div>
+                </section>
             </main>
         </div>
     );

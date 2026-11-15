@@ -24,7 +24,7 @@ export default function ContextMenu(
     if (!isEditable) {
         return (
             <div
-                className="fixed z-50 min-w-[168px] p-1.5 bg-white/95 backdrop-blur-xl rounded-xl ring-1 ring-black/5 shadow-[0_12px_32px_rgba(0,0,0,0.14)] text-sm"
+                className="fixed z-50 min-w-[180px] p-1 bg-white rounded-lg shadow-lg text-sm"
                 style={{
                     left: contextMenu.x,
                     top: contextMenu.y,
@@ -42,7 +42,7 @@ export default function ContextMenu(
     } else {
         return (
             <div
-                className="fixed z-50 min-w-[168px] p-1.5 bg-white/95 backdrop-blur-xl rounded-xl ring-1 ring-black/5 shadow-[0_12px_32px_rgba(0,0,0,0.14)] text-sm"
+                className="fixed z-50 min-w-[180px] p-1 bg-white rounded-lg shadow-lg text-sm"
                 style={{
                     left: contextMenu.x,
                     top: contextMenu.y,
@@ -57,7 +57,7 @@ export default function ContextMenu(
                         onEdit();
                         onClose();
                     }}
-                    className="w-full px-3 py-2 text-left rounded-lg hover:bg-gray-100 flex items-center gap-2.5 cursor-pointer"
+                    className="w-full h-8 px-2.5 text-left rounded-md hover:bg-hover flex items-center gap-2.5 cursor-pointer"
                 >
                     <div>✏️</div>
                     <div>수정</div>
@@ -67,7 +67,7 @@ export default function ContextMenu(
                         onDelete();
                         onClose();
                     }}
-                    className="w-full px-3 py-2 text-left rounded-lg hover:bg-danger/10 flex items-center gap-2.5 text-danger cursor-pointer"
+                    className="w-full h-8 px-2.5 text-left rounded-md hover:bg-callout-red flex items-center gap-2.5 text-danger cursor-pointer"
                 >
                     <div>🗑️</div>
                     <div>삭제</div>

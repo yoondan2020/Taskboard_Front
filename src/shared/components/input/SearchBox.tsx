@@ -79,13 +79,13 @@ export default function SearchBox() {
 
     return (
         <div className="w-full">
-            <div className="surface-card w-full h-16 flex items-center gap-3 px-3">
+            <div className="w-full h-12 flex items-center gap-2 px-2 rounded-lg bg-white border border-gray-200 shadow-sm">
                 {/* 왼쪽 select들 */}
-                <div className="flex items-center gap-2 h-full">
+                <div className="flex items-center gap-1 h-full">
                     {/* 프로젝트 그룹 */}
-                    <div className="min-w-[180px] flex items-center h-full">
+                    <div className="min-w-[150px] flex items-center h-full">
                         <select
-                            className="select-chevron w-full h-10 pl-4 rounded-full bg-gray-100 hover:bg-gray-200 text-sm text-gray-900 outline-none transition"
+                            className="select-chevron w-full h-8 pl-2.5 rounded-md bg-transparent hover:bg-hover text-sm text-gray-700 outline-none transition"
                             value={filters.productGroupId ?? ""}
                             onChange={(e) =>
                                 setFilters({
@@ -102,9 +102,9 @@ export default function SearchBox() {
                     </div>
 
                     {/* 상태 */}
-                    <div className="min-w-[180px] flex items-center h-full">
+                    <div className="min-w-[150px] flex items-center h-full">
                         <select
-                            className="select-chevron w-full h-10 pl-4 rounded-full bg-gray-100 hover:bg-gray-200 text-sm text-gray-900 outline-none transition"
+                            className="select-chevron w-full h-8 pl-2.5 rounded-md bg-transparent hover:bg-hover text-sm text-gray-700 outline-none transition"
                             value={filters.stateId ?? ""}
                             onChange={(e) =>
                                 setFilters({
@@ -121,9 +121,9 @@ export default function SearchBox() {
                     </div>
 
                     {/* 담당자 */}
-                    <div className="min-w-[180px] flex items-center h-full">
+                    <div className="min-w-[150px] flex items-center h-full">
                         <select
-                            className="select-chevron w-full h-10 pl-4 rounded-full bg-gray-100 hover:bg-gray-200 text-sm text-gray-900 outline-none transition"
+                            className="select-chevron w-full h-8 pl-2.5 rounded-md bg-transparent hover:bg-hover text-sm text-gray-700 outline-none transition"
                             value={filters.onwerId ?? ""}
                             onChange={(e) =>
                                 setFilters({
@@ -141,16 +141,16 @@ export default function SearchBox() {
                 </div>
 
                 {/* divider */}
-                <div className="h-6 w-px bg-gray-200 mx-1" />
+                <div className="h-5 w-px bg-gray-200 mx-1" />
 
                 {/* 검색 input */}
-                <div className="flex-1 flex items-center gap-2 h-10 px-3 rounded-full hover:bg-gray-50 focus-within:bg-gray-50 transition">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="text-gray-500 shrink-0" aria-hidden="true">
+                <div className="flex-1 flex items-center gap-2 h-8 px-2.5 rounded-md hover:bg-hover focus-within:bg-hover transition">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" className="text-gray-400 shrink-0" aria-hidden="true">
                         <path d="M11 19a8 8 0 1 1 0-16 8 8 0 0 1 0 16Z" stroke="currentColor" strokeWidth="2" />
                         <path d="M21 21l-4.35-4.35" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                     </svg>
                     <input
-                        className="w-full bg-transparent outline-none text-[15px] text-gray-900 placeholder:text-gray-500"
+                        className="w-full bg-transparent outline-none text-sm text-gray-900 placeholder:text-gray-400"
                         placeholder="검색어를 입력해주세요"
                         value={qLocal}
                         onChange={(e) => setQLocal(e.target.value)}
@@ -160,7 +160,7 @@ export default function SearchBox() {
                 {/* 돋보기 버튼 */}
                 <button
                     type="button"
-                    className="btn-primary h-10 px-5 shrink-0"
+                    className="btn-primary h-8 px-3 shrink-0"
                     onClick={() => setFilters({ q: qLocal })}
                     aria-label="search"
                 >

@@ -9,7 +9,7 @@ export default function PlusButton({ buttonLabel, onClick }: Props) {
     return (
         <button
             onClick={onClick}
-            className="btn-primary w-full h-11">
+            className="btn-primary w-full h-9">
             <PlusFile /> 새로운 {buttonLabel} 추가
         </button>
     )
